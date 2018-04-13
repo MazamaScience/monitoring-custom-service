@@ -5,7 +5,13 @@ MAINTAINER Jonathan Callahan <jonathan@mazamascience.com>
 # For the monitor-custom app
 RUN install2.r --error \
     jug \
-    MazamaWebUtils
+    MazamaWebUtils \
+    ggplot2
+
+# Install latest development versions of packages
+RUN installGithub.r \
+    MazamaScience/PWFSLSmoke \
+    MazamaScience/PWFSLSmokePlots
 
 #######################################################################
 # jug instance configuration
