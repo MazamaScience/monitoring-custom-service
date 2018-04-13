@@ -1,5 +1,11 @@
-.Rproj.user
+# R files
 .Rhistory
+.Rapp.history
 .RData
-.Ruserdata
-*.Rproj
+.Rproj.user/
+
+# mac files
+.DS_Store
+
+# Project directories
+output/
