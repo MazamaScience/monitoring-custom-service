@@ -1,0 +1,2 @@
+ERROR [2018-04-13 11:42:28] Error in dev.off() : 
+  QuartzBitmap_Output - unable to open file 'output/8d725b2ce3623ad78794c9f945dde411.png'

@@ -1,0 +1,11 @@
+version: '2'
+services:
+  web:
+    restart: unless-stopped
+    container_name: monitor-custom-desktop
+    image: monitor-custom-desktop
+    ports:
+     - "8080:6669"
+    volumes:
+      - ${PWD}/monitor-custom/logs:/app/logs
+      - ${PWD}/monitor-custom/data:/app/data
