@@ -46,7 +46,7 @@ desktop_download_data:
 
 # NOTE:  DESKTOP reuses Dockerfile-test but has a separate docker-compse-desktop.yml
 desktop_build:
-	cd monitor-custom; docker build -t monitor-custom-desktop:v1.0.18 -t monitor-custom-desktop:latest -f Dockerfile-test .
+	cd monitor-custom; docker build -t monitor-custom-desktop:v1.0.18 -t monitor-custom-desktop:latest -f Dockerfile-test .; mkdir -p output
 
 desktop_up:
 	docker-compose -f docker-compose-desktop.yml -p monitorplotdesktop up -d
@@ -71,7 +71,7 @@ test_configure_ui:
 		monitor-custom/UI/dist/__dist.min.js > monitor-custom/UI/dist/dist.min.js
 
 test_build:
-	cd monitor-custom; docker build -t monitor-custom-test:v1.0.18 -t monitor-custom-test:latest -f Dockerfile-test .
+	cd monitor-custom; docker build -t monitor-custom-test:v1.0.18 -t monitor-custom-test:latest -f Dockerfile-test .; mkdir -p output
 
 test_up:
 	docker-compose -f docker-compose-test.yml -p monitorplottest up -d
@@ -102,7 +102,7 @@ operational_configure_ui:
 		monitor-custom/UI/dist/__dist.min.js > monitor-custom/UI/dist/dist.min.js
 
 operational_build:
-	cd monitor-custom; docker build -t monitor-custom-v4:v1.0.18 -t monitor-custom-v4:latest -f Dockerfile .
+	cd monitor-custom; docker build -t monitor-custom-v4:v1.0.18 -t monitor-custom-v4:latest -f Dockerfile .; mkdir -p output
 
 operational_up:
 	docker-compose -f docker-compose-v4.yml -p monitorplotv4 up -d
