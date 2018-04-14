@@ -1,9 +1,9 @@
 ################################################################################
 # monitor-custom-app.R
 #
-# Author: Helen Miller 
+# Author: Helen Miller
 #         Jonathan Callahan <jonathan@mazamscience.com>
-#         
+#
 # Top level web framework based on the jug package.
 #
 # Source this script and a jug instance will be running at http://localhost:8080 until the script is ended.
@@ -58,7 +58,7 @@ if ( Sys.getenv("JUG_HOST") == "" ) { # Running from RStudio
 
   # Clean out the cache (only when running from RStudio)
   removalStatus <- file.remove( list.files(CACHE_DIR, full.names=TRUE) )
-  
+
 } else { # Running from Docker
 
   # jug instance configuration
@@ -130,48 +130,36 @@ logger.debug('LOG_DIR = %s', LOG_DIR)
 # ----- BEGIN jug app ---------------------------------------------------------
 
 jug() %>%
-  
+
   # Return json dscription of this service ------------------------------------
   get(paste0("/",SERVICE_PATH,"/?$"), function(req, res, err) { # regex matches zero or one final '/'
-    
+
     logger.info("----- %s -----", SERVICE_PATH)
-    
+
     json <- jsonlite::toJSON(createAPIList(SERVICE_PATH, VERSION), pretty=TRUE, auto_unbox=TRUE)
     res$content_type("application/json")
-    
+
     return(json)
-    
+
   }) %>%
 
   # Return json dscription of this service ------------------------------------
   get(paste0("/",SERVICE_PATH,"/[Aa][Pp][Ii]/?$"), function(req, res, err) { # regex ignores capitalization and matches zero or one final '/'
-    
+
     logger.info("----- %s/API -----", SERVICE_PATH)
-    
+
     json <- jsonlite::toJSON(createAPIList(SERVICE_PATH, VERSION), pretty=TRUE, auto_unbox=TRUE)
     res$content_type("application/json")
-    
+
     return(json)
-    
+
   }) %>%
-  
-  # Return UI -----------------------------------------------------------------
-  get(paste0("/",SERVICE_PATH,"/[Uu][Ii]/?$"), function(req, res, err) {  # regex ignores capitalization and matches zero or one final '/'
-    
-    logger.info("----- %s/UI -----", SERVICE_PATH)
-    
-    html <- readr::read_file("UI/index.html")
-    res$content_type("text/html")
-    
-    return(html)
-    
-  }) %>%
-  
+
   # Plot -----------------------------------------------------------------
   get(paste0("/",SERVICE_PATH,"/plot"), function(req, res, err) {
 
     logger.info("----- %s/plot -----", SERVICE_PATH)
-    
+
     result <- try({
       infoList <- createInfoList(req)
       # Create png, json, and html file names based on uniqueID
@@ -181,31 +169,31 @@ jug() %>%
       jsonPath <- paste0(basePath,".json")
     }, silent = TRUE)
     stopOnError(result)
-    
+
     # Create new png and json files if they don't already exist
     if ( !file.exists(pngPath) || !file.exists(jsonPath) ) {
 
       logger.debug('%d graphics devices currently open', length(dev.list()) )
-      
-      # Manage the cache      
+
+      # Manage the cache
       result <- try({
         MazamaWebUtils::manageCache(CACHE_DIR, c("json","png"))
         # Create the plot
         logger.info("generating %s", infoList$plottype)
         if ( infoList$plottype == "aqilegend" ) {
-          
+
           png(pngPath, width=infoList$plotwidth, height=infoList$plotheight, units="px")
           AQILegend(dataList=list(), infoList, textList=list())
           dev.off()
-          
+
         } else if ( infoList$plottype == "aqilegendadvice" ) {
-          
+
           png(pngPath, width=infoList$plotwidth, height=infoList$plotheight, units="px")
           AQILegendAdvice(dataList=list(), infoList, textList=list())
           dev.off()
-          
+
         } else {
-          
+
           dataList <- createDataList(infoList, DATA_DIR)
           # Get language dependent plot labels
           textListScript = paste('R/createTextList_',infoList$language, '.R', sep="")
@@ -227,14 +215,14 @@ jug() %>%
             stop("invalid plotType", call. = FALSE)
           }
           dev.off()
-          
+
         }
       }, silent = TRUE)
       stopOnError(result)
-      
+
       # Create the json file
       result <- try({
-        
+
         logger.debug("writing %s", jsonPath)
 
         responseList <- list(status="OK",
@@ -242,15 +230,15 @@ jug() %>%
                              image_path=paste0(SERVICE_PATH, "/", pngPath))
         json <- jsonlite::toJSON(responseList, na="null", pretty=TRUE, auto_unbox=TRUE)
         write(json, jsonPath)
-        
+
       }, silent = TRUE)
       stopOnError(result)
-      
+
     } # finished creating png and json files
 
     logger.info("successfully created %s", pngPath)
     logger.info("successfully created %s", jsonPath)
-    
+
     # Return the appropriate file based on infoList$responsetype
     result <- try({
       if ( infoList$responsetype == "json" ) {
@@ -265,8 +253,8 @@ jug() %>%
       }
     }, silent = TRUE)
     stopOnError(result)
-    
-  }) %>% 
+
+  }) %>%
 
   # Serve static files --------------------------------------------------------
 
@@ -278,7 +266,7 @@ jug() %>%
 
   # Error handling ------------------------------------------------------------
   simple_error_handler_json() %>%
-    
+
   # Return --------------------------------------------------------------------
   serve_it(host=JUG_HOST, port=as.integer(JUG_PORT))
 

@@ -55,7 +55,6 @@ WORKDIR /app
 COPY monitor-custom-app.R /app
 COPY output /app/output
 COPY R /app/R
-COPY UI /app/UI
 
 # Start the jug app when the image starts up
 CMD [ "Rscript", "/app/monitor-custom-app.R" ]
