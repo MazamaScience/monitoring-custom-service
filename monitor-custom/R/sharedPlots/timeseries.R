@@ -13,18 +13,22 @@ timeseries <- function(dataList=NULL, infoList=NULL, textList=NULL) {
   if ( is.null(infoList) ) stop(paste0("Required parameter 'infoList' is missing."), call.=FALSE)
   if ( is.null(textList) ) stop(paste0("Required parameter 'textList' is missing."), call.=FALSE)
   
-  # ----- Extract variables from the 'infoList' and 'dataList' objects ------------------------
+  # ----- Extract variables from the 'infoList' object ------------------------
   
   ws_monitor <- dataList$ws_monitor
+  siteName <- ws_monitor$meta$siteName
+  timezone <- ws_monitor$meta$timezone
   monitorID <- infoList$monitorid
-  lookbackDays <- infoList$lookbackdays
-  size <- infoList$size
+  tlim <- infoList$tlim
+
+  # Make the title
+  title <- paste("Hourly PM2.5 Values and NowCast \n Site:", siteName, "\n ID:", monitorID)
   
-  style <- ifelse(size <= 500, "small", "large")
+  monitorPlot_timeseries(ws_monitor,
+                         monitorID = infoList$monitorid,
+                         tlim = infoList$tlim)
   
-  # ----- Draw the plot -------------------------------------------------------
-  
-  monitorPlot_latestTimeseries(ws_monitor, monitorID, lookbackDays = lookbackDays, size = style)
-  
+  addAQILines()
+
 }
 
