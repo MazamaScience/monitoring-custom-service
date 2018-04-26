@@ -96,7 +96,7 @@ result <- try({
 stopOnError(result, "Could not create log files.")
 
 if (Sys.getenv("JUG_HOST") == "") { # Running from RStudio
-  logger.setLevel(TRACE)            # send error messages to the console (RStudio)
+  logger.setLevel(TRACE)            # send error messages to console (RStudio)
 }
 
 # Capture session info
@@ -157,11 +157,11 @@ jug() %>%
     }, silent = TRUE)
     stopOnError(result)
 
-    # Create a new pptx file if it isn't in the cache
-    if (!file.exists(infoList$pptxPath)) {
+    # Create a new plot file if it isn't in the cache
+    if (!file.exists(infoList$plotPath)) {
 
       # Manage the cache
-      MazamaWebUtils::manageCache(CACHE_DIR, c("json", "png", "pptx"))
+      MazamaWebUtils::manageCache(CACHE_DIR, c("json", "png", "pdf"))
 
       result <- try({
 
@@ -176,12 +176,12 @@ jug() %>%
         # Create presentation
         createPresentation(dataList, infoList, textList)
 
-        logger.info("successfully created %s", infoList$pptxPath)
+        logger.info("successfully created %s", infoList$plotPath)
 
       }, silent = TRUE)
       stopOnError(result)
 
-    } # finished creating pptx file
+    } # finished creating plot file
 
 
     # Create a new json file if it isn't in the cache
@@ -192,9 +192,9 @@ jug() %>%
         logger.debug("writing %s", infoList$jsonPath)
 
         responseList <- list(
-          status = "OK",
-          rel_base = paste0(SERVICE_PATH, "/", infoList$basePath),
-          pptx_path = paste0(SERVICE_PATH, "/", infoList$pptxPath)
+          status <- "OK",
+          rel_base <- paste0(SERVICE_PATH, "/", infoList$basePath),
+          plot_path <- paste0(SERVICE_PATH, "/", infoList$plotPath)
         )
 
         json <- jsonlite::toJSON(responseList, na = "null", pretty = TRUE, auto_unbox = TRUE)
@@ -212,7 +212,7 @@ jug() %>%
       if (infoList$responsetype == "raw") {
 
         res$content_type("application/vnd.openxmlformats-officedocument.presentationml.presentation")
-        return(readr::read_file_raw(infoList$pptxPath))
+        return(readr::read_file_raw(infoList$plotPath))
 
       } else if (infoList$responsetype == "json") {
 
