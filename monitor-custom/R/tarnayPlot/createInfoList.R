@@ -1,5 +1,5 @@
 ########################################################################
-# demo/createInfoList.R
+# tarnayplot/createInfoList.R
 #
 # Create an infoList from a jug request object.
 #
@@ -15,8 +15,8 @@ createInfoList <- function(req = NULL,
 
   logger.trace("----- createInfoList() -----")
 
-  if ( is.null(req) ) stop(paste0("Required parameter 'req' is missing."), call. = FALSE)
-  if ( is.null(cacheDir) ) stop(paste0("Required parameter 'cacheDir' is missing."), call.=FALSE)
+  if (is.null(req)) stop(paste0("Required parameter 'req' is missing."), call. = FALSE)
+  if (is.null(cacheDir)) stop(paste0("Required parameter 'cacheDir' is missing."), call. = FALSE)
 
   # Initialize the infoList from the request parameters
   infoList <- req$params
@@ -57,9 +57,9 @@ createInfoList <- function(req = NULL,
   infoList$plotheight <- ifelse(is.null(infoList$plotheight), 1080, as.numeric(infoList$plotheight))
 
   # Validate parameters
-  if ( !infoList$language %in% c('en','es') ) { stop("invalid language", call. = FALSE) }
-  if ( !infoList$responsetype %in% c('raw', 'json') ) { stop("invalid responsetype", call. = FALSE) }
-  if ( infoList$lookbackdays < 2 ) { infoList$lookbackdays <- 2 }
+  if (!infoList$language %in% c('en','es')) { stop("invalid language", call. = FALSE) }
+  if (!infoList$responsetype %in% c('raw', 'json')) { stop("invalid responsetype", call. = FALSE) }
+  if (infoList$lookbackdays < 2 ) { infoList$lookbackdays <- 2 }
 
   # TODO:  Sort out what's going on with startdate, enddate, in this next chunk.
   # TODO:  Shouldn't enddate, perhaps in string format, be part of infoList?
@@ -73,7 +73,7 @@ createInfoList <- function(req = NULL,
   endtime <- parseDatetime(infoList$enddate)
   starttime <- endtime - lubridate::days(infoList$lookbackdays)
   infoList$startdate <- strftime(starttime, format = "%Y%m%d", tz = "UTC")
-  infoList$tlim <- c(infoList$startdate,infoList$enddate)
+  infoList$tlim <- c(infoList$startdate, infoList$enddate)
 
   # ----- Create uniqueID based on parameters that affect the presentation ----
 
@@ -87,9 +87,9 @@ createInfoList <- function(req = NULL,
   infoList$uniqueID <- digest::digest(uniqueList, algo = "md5")
 
   # Create paths
-  infoList$basePath <- paste0(cacheDir,"/",infoList$uniqueID)
-  infoList$plotPath <- paste0(infoList$basePath,".png")
-  infoList$jsonPath <- paste0(infoList$basePath,".json")
+  infoList$basePath <- paste0(cacheDir, "/", infoList$uniqueID)
+  infoList$plotPath <- paste0(infoList$basePath, ".png")
+  infoList$jsonPath <- paste0(infoList$basePath, ".json")
 
   # Create plot sizing information
   infoList$units <- "in"

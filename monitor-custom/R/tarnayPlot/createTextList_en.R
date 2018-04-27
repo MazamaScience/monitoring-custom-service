@@ -1,5 +1,5 @@
 ########################################################################
-# textList_en.R
+# tarnayplot/textList_en.R
 #
 # English language text strings.
 #

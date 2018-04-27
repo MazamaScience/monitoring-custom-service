@@ -1,5 +1,5 @@
 ########################################################################
-# demo/textList_es.R
+# tarnayplot/textList_es.R
 #
 # Spanish language text strings.
 #
