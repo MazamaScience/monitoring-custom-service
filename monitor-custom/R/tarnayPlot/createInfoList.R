@@ -46,19 +46,22 @@ createInfoList <- function(req = NULL,
   # ----- Set parameter defaults ----------------------------------------------
 
   # Set defaults
-  infoList$language <- tolower(ifelse(is.null(infoList$language),'en',infoList$language))
+  infoList$language <- tolower(ifelse(is.null(infoList$language),"en",infoList$language))
   infoList$responsetype <- tolower(ifelse(is.null(infoList$responsetype), "raw", infoList$responsetype))
   infoList$lookbackdays <- ifelse(is.null(infoList$lookbackdays), 7, trunc(as.numeric(infoList$lookbackdays)))
-  infoList$plottheme <- tolower(ifelse(is.null(infoList$plottheme), "base", infoList$plottheme))
+  infoList$columns <- ifelse(is.null(infoList$columns), 1, infoList$columns)
+  infoList$output <- ifelse(is.null(infoList$output), "png", infoList$output)
 
-  # NOTE:  plotwidth and plotheight are undocumented parameters for expert use only
-  # Use plotwidth and plotHeight if they are passed in.
-  infoList$plotwidth <- ifelse(is.null(infoList$plotwidth), 1920, as.numeric(infoList$plotwidth))
-  infoList$plotheight <- ifelse(is.null(infoList$plotheight), 1080, as.numeric(infoList$plotheight))
+  infoList$width <- ifelse(is.null(infoList$width), 8, as.numeric(infoList$width))
+  infoList$height <- ifelse(is.null(infoList$height), 8, as.numeric(infoList$height))
+  infoList$units <- ifelse(is.null(infoList$units), "in", infoList$units)
+  infoList$dpi <- 300
 
   # Validate parameters
-  if (!infoList$language %in% c('en','es')) { stop("invalid language", call. = FALSE) }
-  if (!infoList$responsetype %in% c('raw', 'json')) { stop("invalid responsetype", call. = FALSE) }
+  if (!infoList$language %in% c("en","es")) { stop("invalid language", call. = FALSE) }
+  if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype", call. = FALSE) }
+  if (!infoList$output %in% c("png", "pdf")) { stop("invalid file format", call. = FALSE) }
+  if (!infoList$units %in% c("in", "cm", "mm")) { stop("invalid units", call. = FALSE) }
   if (infoList$lookbackdays < 2 ) { infoList$lookbackdays <- 2 }
 
   # TODO:  Sort out what's going on with startdate, enddate, in this next chunk.
@@ -80,7 +83,10 @@ createInfoList <- function(req = NULL,
   uniqueList <- list(
     infoList$monitorids,
     infoList$language,
-    infoList$plottheme,
+    infoList$columns,
+    infoList$height,
+    infoList$width,
+    infoList$dpi,
     infoList$startdate,
     infoList$enddate)
 
@@ -88,14 +94,8 @@ createInfoList <- function(req = NULL,
 
   # Create paths
   infoList$basePath <- paste0(cacheDir, "/", infoList$uniqueID)
-  infoList$plotPath <- paste0(infoList$basePath, ".png")
+  infoList$plotPath <- paste0(infoList$basePath, ".", infoList$output)
   infoList$jsonPath <- paste0(infoList$basePath, ".json")
-
-  # Create plot sizing information
-  infoList$units <- "in"
-  infoList$dpi <- 150
-  infoList$width <- infoList$plotwidth / infoList$dpi
-  infoList$height <- infoList$plotheight / infoList$dpi
 
   return(infoList)
 

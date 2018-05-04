@@ -20,14 +20,34 @@ createPlot <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
   # ----- get parameters ------------------------------------------------------
 
+  ws_monitor <- dataList$ws_monitor
+  monitorIDs <- infoList$monitorIDs
+  columns <- infoList$columns
 
+  plotPath <- infoList$plotPath
+  width <- infoList$width
+  height <- infoList$height
+  dpi <- infoList$dpi
+  units <- infoList$units
 
   # ----- Create plot ---------------------------------------------------------
 
-
+  plot <- PWFSLSmokePlots::createTarnayPlot(
+    monitors = monitorIDs,
+    data = ws_monitor,
+    columns = columns
+  )
 
   # ----- Save plot -----------------------------------------------------------
 
+  ggsave(
+    plotPath,
+    plot = plot,
+    width = width,
+    height = height,
+    dpi = dpi,
+    units = units
+  )
 
   return(invisible())
 }

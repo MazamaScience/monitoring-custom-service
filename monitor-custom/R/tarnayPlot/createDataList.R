@@ -24,9 +24,9 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   # Load latest monitoring data (most recent 45 days)
   logger.debug("loading latest monitoring data from %s", dataDir)
   result <- try({
-    load(file.path(dataDir, "airnow_pm25_latest.RData"))   # NOTE:  v3 monitorIDs
-    load(file.path(dataDir, "airsis_pm25_latest.RData"))   # NOTE:  v3 monitorIDs
-    load(file.path(dataDir, "wrcc_pm25_latest.RData"))     # NOTE:  v3 monitorIDs
+    load(file.path(dataDir, "airnow_PM2.5_latest10.RData"))   # NOTE:  v3 monitorIDs
+    load(file.path(dataDir, "airsis_PM2.5_latest10.RData"))   # NOTE:  v3 monitorIDs
+    load(file.path(dataDir, "wrcc_PM2.5_latest10.RData"))     # NOTE:  v3 monitorIDs
   }, silent = TRUE)
 
   if ("try-error" %in% class(result)) {
@@ -34,9 +34,9 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
     stop(paste0("Error loading data: ", err_msg))
   }
 
-  combinedData <- monitor_combine(list(airnow_pm25_latest,
-                                       airsis_pm25_latest,
-                                       wrcc_pm25_latest)
+  combinedData <- monitor_combine(list(airnow_PM2.5_latest10,
+                                       airsis_PM2.5_latest10,
+                                       wrcc_PM2.5_latest10)
                                  )
 
   # ----- Validate data -------------------------------------------------------

@@ -1,5 +1,5 @@
 ################################################################################
-# monitor-presentation-app.R
+# monitor-custom-app.R
 #
 # Author: Spencer Pease
 #         Jonathan Callahan <jonathan@mazamscience.com>
@@ -38,7 +38,7 @@ source("R/sharedUtils/createAPIList.R") # create a list of API parameters
 source("R/sharedUtils/setMonitorIDs.R") # helper function to parse monitor IDs
 source("R/sharedUtils/stopOnError.R")   # error handling/translation function
 
-# Additional files are sourced inside of <subservice>/createPresentation.R
+# Additional files are sourced inside of <subservice>/createPlot.R
 
 # Specify global (configurable) variables -------------------------------------
 
@@ -53,7 +53,7 @@ if (Sys.getenv("JUG_HOST") == "") { # Running from RStudio
   JUG_PORT <- "8080"      # jug default
 
   # path and cache
-  SERVICE_PATH <- "monitor-presentation/dev"
+  SERVICE_PATH <- "monitor-custom/dev"
   CACHE_SIZE <- 100 # megabytes
 
   # directories for log output, data, and cache
@@ -141,7 +141,7 @@ jug() %>%
     # Create subservice script paths
     infoListScript <- paste0("R/", subservice, "/createInfoList.R")
     dataListScript <- paste0("R/", subservice, "/createDataList.R")
-    presentationScript <- paste0("R/", subservice, "/createPresentation.R")
+    presentationScript <- paste0("R/", subservice, "/createPlot.R")
 
     # Source these scripts
     result <- try({
@@ -174,7 +174,7 @@ jug() %>%
         textList <- createTextList(dataList, infoList)
 
         # Create presentation
-        createPresentation(dataList, infoList, textList)
+        createPlot(dataList, infoList, textList)
 
         logger.info("successfully created %s", infoList$plotPath)
 
@@ -211,8 +211,14 @@ jug() %>%
 
       if (infoList$responsetype == "raw") {
 
-        res$content_type("application/vnd.openxmlformats-officedocument.presentationml.presentation")
+        if (infoList$output == "png") {
+          res$content_type("image/png")
+        } else if (infoList$output == "pdf") {
+          res$content_type("application/pdf")
+        }
+
         return(readr::read_file_raw(infoList$plotPath))
+
 
       } else if (infoList$responsetype == "json") {
 
