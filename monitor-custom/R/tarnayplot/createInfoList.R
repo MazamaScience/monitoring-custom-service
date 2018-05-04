@@ -27,6 +27,7 @@ createInfoList <- function(req = NULL,
 
   # ----- Check for required parameters ----------------------------------------
 
+  # TODO: handle lowercase monitorids
   requiredParams <- c("monitorIDs")
 
   if ("monitorIDs" %in% requiredParams) {
@@ -84,6 +85,7 @@ createInfoList <- function(req = NULL,
     infoList$monitorids,
     infoList$language,
     infoList$columns,
+    infoList$output,
     infoList$height,
     infoList$width,
     infoList$dpi,

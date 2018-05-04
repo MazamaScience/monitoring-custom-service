@@ -19,7 +19,8 @@
 
 # Specficic packages and scripts for this service -----------------------------
 
-# NOTE:  Use library() so that these package versions will be documented by sessionInfo()
+# NOTE:  Use library() so that these package versions will be documented by
+#        sessionInfo()
 
 suppressPackageStartupMessages({
   library(methods)                # always included for Rscripts
@@ -28,17 +29,22 @@ suppressPackageStartupMessages({
   library(digest)                 # creation of uniqueID
   library(stringr)                # manipulation of data in InfoList
 
-  library(PWFSLSmoke)             # workhorse package for everything smoke related
-                                  # includes magrittr and dplyr
+  library(PWFSLSmoke)             # workhorse package for everything smoke
+                                  #   related. Includes magrittr and dplyr
   library(PWFSLSmokePlots)        # Custom plots for ws_monitor data
 })
 
-# Shared utility functions
-source("R/sharedUtils/createAPIList.R") # create a list of API parameters
-source("R/sharedUtils/setMonitorIDs.R") # helper function to parse monitor IDs
-source("R/sharedUtils/stopOnError.R")   # error handling/translation function
-
+# Load all shared utility functions
+#   - createAPIList: create a list of API parameters
+#   - setMonitorIDs: convert monitor ids t standard format
+#   - stopOnError:   error handling/translation
 # Additional files are sourced inside of <subservice>/createPlot.R
+
+utilFiles <- list.files("R/sharedUtils", pattern = ".+\\.R", full.names = TRUE)
+
+for (file in utilFiles) {
+  source(file.path(getwd(), file))
+}
 
 # Specify global (configurable) variables -------------------------------------
 
@@ -108,11 +114,16 @@ logger.debug(capture.output(sessionInfo()))
 jug() %>%
 
   # Return json dscription of this service ------------------------------------
-  get(paste0("/", SERVICE_PATH, "/?$"), function(req, res, err) { # regex matches zero or one final '/'
+
+  # regex matches zero or one final '/'
+  get(paste0("/", SERVICE_PATH, "/?$"), function(req, res, err) {
 
     logger.info("----- %s -----", SERVICE_PATH)
 
-    json <- jsonlite::toJSON(createAPIList(SERVICE_PATH, VERSION), pretty = TRUE, auto_unbox = TRUE)
+    json <- jsonlite::toJSON(
+      createAPIList(SERVICE_PATH, VERSION),
+      pretty = TRUE,
+      auto_unbox = TRUE)
     res$content_type("application/json")
 
     return(json)
@@ -120,34 +131,46 @@ jug() %>%
   }) %>%
 
   # Return json dscription of this service ------------------------------------
-  get(paste0("/", SERVICE_PATH, "/[Aa][Pp][Ii]/?$"), function(req, res, err) { # regex ignores capitalization and matches zero or one final '/'
+
+  # regex ignores capitalization and matches zero or one final '/'
+  get(paste0("/", SERVICE_PATH, "/[Aa][Pp][Ii]/?$"), function(req, res, err) {
 
     logger.info("----- %s/api -----", SERVICE_PATH)
 
-    json <- jsonlite::toJSON(createAPIList(SERVICE_PATH, VERSION), pretty = TRUE, auto_unbox = TRUE)
+    json <- jsonlite::toJSON(
+      createAPIList(SERVICE_PATH, VERSION),
+      pretty = TRUE,
+      auto_unbox = TRUE)
+
     res$content_type("application/json")
 
     return(json)
 
   }) %>%
 
-  # Presentations -------------------------------------------------------------
-  get(paste0("/", SERVICE_PATH, "/[[:alnum:]]+/?"), function(req, res, err) { # regex matches alphanumerics and zero or one final '/'
+  # Products -----------------------------------------------------------------
 
-    subservice <- stringr::str_replace(req$path, SERVICE_PATH, "") %>% stringr::str_replace_all("/", "")
+  # regex matches alphanumerics and zero or one final '/'
+  get(paste0("/", SERVICE_PATH, "/[[:alnum:]]+/?"), function(req, res, err) {
+
+    subservice <-
+      stringr::str_replace(req$path, SERVICE_PATH, "") %>%
+      stringr::str_replace_all("/", "") %>%
+      stringr::str_to_lower()
 
     logger.info("----- %s -----", req$path)
 
     # Create subservice script paths
     infoListScript <- paste0("R/", subservice, "/createInfoList.R")
     dataListScript <- paste0("R/", subservice, "/createDataList.R")
-    presentationScript <- paste0("R/", subservice, "/createPlot.R")
+    productScript <- paste0("R/", subservice, "/createPlot.R")
 
     # Source these scripts
     result <- try({
-      source(infoListScript)        # function to convert request into infoList required by presentation
-      source(dataListScript)        # function to load data required by presentation
-      source(presentationScript)    # function to create presentation
+      source(infoListScript)        # function to convert request into infoList
+                                    #   required by product
+      source(dataListScript)        # function to load data required by product
+      source(productScript)         # function to create product
     }, silent = TRUE)
     stopOnError(result)
 
@@ -165,15 +188,17 @@ jug() %>%
 
       result <- try({
 
-        # Get data and text for this presentation
+        # Get data and text for this product
         dataList <- createDataList(infoList, DATA_DIR)
 
         # Get language dependent plot labels
-        textListScript <- paste("R/", subservice, "/createTextList_", infoList$language, ".R", sep = "")
+        textListScript <- paste(
+          "R/", subservice, "/createTextList_", infoList$language, ".R",
+          sep = "")
         source(textListScript)
         textList <- createTextList(dataList, infoList)
 
-        # Create presentation
+        # Create product
         createPlot(dataList, infoList, textList)
 
         logger.info("successfully created %s", infoList$plotPath)
@@ -197,7 +222,11 @@ jug() %>%
           plot_path <- paste0(SERVICE_PATH, "/", infoList$plotPath)
         )
 
-        json <- jsonlite::toJSON(responseList, na = "null", pretty = TRUE, auto_unbox = TRUE)
+        json <- jsonlite::toJSON(
+          responseList,
+          na = "null",
+          pretty = TRUE,
+          auto_unbox = TRUE)
         write(json, infoList$jsonPath)
         logger.info("successfully created %s", infoList$jsonPath)
 

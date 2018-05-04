@@ -6,6 +6,7 @@
 # Author: Spencer Pease, Jonathan Callahan
 ########################################################################
 
+# TODO: update description
 #' @title Create 'tarnay' summary barplot
 #' @description Function passing appropriate parameters to plot function and
 #'    saving the plot
