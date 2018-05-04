@@ -1,8 +1,11 @@
 # R files
 .Rhistory
 .Rapp.history
-.RData
+*.RData
 .Rproj.user
+
+# Project files
+*.log
 
 # mac files
 .DS_Store
