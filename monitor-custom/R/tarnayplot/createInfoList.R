@@ -27,7 +27,6 @@ createInfoList <- function(req = NULL,
 
   # ----- Check for required parameters ----------------------------------------
 
-  # TODO: handle lowercase monitorids
   requiredParams <- c("monitorIDs")
 
   if ("monitorIDs" %in% requiredParams) {
@@ -72,7 +71,12 @@ createInfoList <- function(req = NULL,
   # NOTE:  enddate is specified here for creating the uniqueList. Enddate for plotting is specified
   # NOTE:  in the plotting function using localTime to set the default.
 
-  infoList$enddate <- ifelse(is.null(infoList$enddate), strftime(lubridate::now(tzone = "UTC"), format = "%Y%m%d", tz = "UTC"), infoList$enddate)
+  infoList$enddate <-
+    ifelse(
+      is.null(infoList$enddate),
+      strftime(lubridate::now(tzone = "UTC"), format = "%Y%m%d", tz = "UTC"),
+      infoList$enddate
+    )
 
   endtime <- parseDatetime(infoList$enddate)
   starttime <- endtime - lubridate::days(infoList$lookbackdays)
@@ -82,7 +86,7 @@ createInfoList <- function(req = NULL,
   # ----- Create uniqueID based on parameters that affect the presentation ----
 
   uniqueList <- list(
-    infoList$monitorids,
+    infoList$monitorIDs,
     infoList$language,
     infoList$columns,
     infoList$output,
