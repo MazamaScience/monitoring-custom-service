@@ -7,46 +7,35 @@
 ########################################################################
 
 createAPIList <- function(name=NULL, version=NULL) {
-  
+
   logger.debug("----- createAPIList() -----")
-  
-  if ( is.null(name) ) stop(paste0("Required parameter 'name' is missing."), call.=FALSE)
-  if ( is.null(version) ) stop(paste0("Required parameter 'version' is missing."), call.=FALSE)
-  
+
+  if ( is.null(name) ) stop(paste0("Required parameter 'name' is missing."), call. = FALSE)
+  if ( is.null(version) ) stop(paste0("Required parameter 'version' is missing."), call. = FALSE)
+
   # Service definition to be desplayed as JSON when no UI exists
-  # NOTE:  The 'style' parameter is intentionally omitted as an internal-use-only parameter.
   APIList <- list(
-    name = "monitor-presentation",
+    name = "monitor-custom",
     version = version,
     services = list(
-      "demo" = list(
+      "tarnayplot" = list(
         method = "GET",
         params = list(
           monitors = "monitorID [repeatable parameter] [will be deprecated in favor of monitorids]",
           monitorids = "comma-separated list of monitorIDs (ignored if monitors is defined)",
-          language = "language code [default = en; en|es]",
-          plottheme = "plot theme [default = hc; base|calc|economist|economist_white|excel|few|fivethirtyeight|foundation|gdocs|hc|igray|map|pander|solarized|solarized_2|solid|stata|tufte|wsj]",
+          columns = "number of columns a faceted plot will have [default = 1]",
+          width =  "width of the graphic in given units [default = 8]",
+          height = "height of the graphic in given units [default = 8]",
+          dpi = "dpi (in pixels per unit) of the graphic [default = 300]",
+          units = "units to determine graphic size [default = in; in|cm|mm]",
+          output = "output type of the graphic [default = png; png|pdf]",
+          responsetype = "response type [default = raw; raw|json]",
           lookbackdays = "days of data to include [default = 7]",
-          responsetype = "response type [default = raw; raw|json]"
-        )),
-      "outlook" = list(
-        method = "GET",
-        params = list(
-          outlookurl = "URL of a Smoke Outlook .json file",
-          language = "language code [default = en; en|es]",
-          plottheme = "plot theme [default = hc; base|calc|economist|economist_white|excel|few|fivethirtyeight|foundation|gdocs|hc|igray|map|pander|solarized|solarized_2|solid|stata|tufte|wsj]",
-          responsetype = "response type [default = raw; raw|json]"
-        )),
-      "custom" = list(
-        method = "GET",
-        params = list(
-          language = "language code [default = en; en|es]",
-          plottheme = "plot theme [default = hc; base|calc|economist|economist_white|excel|few|fivethirtyeight|foundation|gdocs|hc|igray|map|pander|solarized|solarized_2|solid|stata|tufte|wsj]",
-          responsetype = "response type [default = raw; raw|json]"
-        ))
+          language = "[not implemented] language code [default = en; en|es]"
+        )
+      )
     ) # END of services list
   ) # END of APIList
-  
+
   return(APIList)
-  
 }
