@@ -8,12 +8,15 @@
 
 # TODO: update description
 #' @title Create 'tarnay' summary barplot
-#' @description Function passing appropriate parameters to plot function and
-#'    saving the plot
+#'
+#' @description
+#' Function that grabs the appropriate parameters from `infoList`, data from
+#' `dataList`, passes it along to `PWFSLSmokePlots::createTarnayPlot()`, and
+#' then saves the returned graphic.
 
 createPlot <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
-  logger.trace("----- createPresentation() -----")
+  logger.trace("----- createPlot() [tarnayPlot] -----")
 
   if (is.null(dataList)) stop(paste0("Required parameter 'dataList' is missing."), call. = FALSE)
   if (is.null(infoList)) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)
