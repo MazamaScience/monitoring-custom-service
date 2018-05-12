@@ -6,7 +6,6 @@
 # Author: Spencer Pease, Jonathan Callahan
 ########################################################################
 
-# TODO: update description
 #' @title Create 'tarnay' summary barplot
 #'
 #' @description
