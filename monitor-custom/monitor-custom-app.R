@@ -38,7 +38,7 @@ suppressPackageStartupMessages({
 #   - createAPIList: create a list of API parameters
 #   - setMonitorIDs: convert monitor ids t standard format
 #   - stopOnError:   error handling/translation
-# Additional files are sourced inside of <subservice>/createPlot.R
+# Additional files are sourced inside of <subservice>/createProduct.R
 
 utilFiles <- list.files("R/sharedUtils", pattern = ".+\\.R", full.names = TRUE)
 
@@ -163,7 +163,7 @@ jug() %>%
     # Create subservice script paths
     infoListScript <- paste0("R/", subservice, "/createInfoList.R")
     dataListScript <- paste0("R/", subservice, "/createDataList.R")
-    productScript <- paste0("R/", subservice, "/createPlot.R")
+    productScript <- paste0("R/", subservice, "/createProduct.R")
 
     # Source these scripts
     result <- try({
@@ -199,7 +199,7 @@ jug() %>%
         textList <- createTextList(dataList, infoList)
 
         # Create product
-        createPlot(dataList, infoList, textList)
+        createProduct(dataList, infoList, textList)
 
         logger.info("successfully created %s", infoList$plotPath)
 

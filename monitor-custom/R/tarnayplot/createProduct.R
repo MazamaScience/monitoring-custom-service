@@ -1,5 +1,5 @@
 ########################################################################
-# tarnayplot/createPlot.R
+# tarnayplot/createProduct.R
 #
 # Create the a 'tarnay' summary barplot.
 #
@@ -14,9 +14,9 @@
 #' `dataList`, passes it along to `PWFSLSmokePlots::createTarnayPlot()`, and
 #' then saves the returned graphic.
 
-createPlot <- function(dataList = NULL, infoList = NULL, textList = NULL) {
+createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
-  logger.trace("----- createPlot() [tarnayPlot] -----")
+  logger.trace("----- createProduct() [tarnayPlot] -----")
 
   if (is.null(dataList)) stop(paste0("Required parameter 'dataList' is missing."), call. = FALSE)
   if (is.null(infoList)) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)
