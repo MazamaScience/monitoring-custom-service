@@ -3,6 +3,7 @@
 .Rapp.history
 *.RData
 .Rproj.user
+*.Rproj
 
 # Project files
 *.log
