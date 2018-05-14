@@ -46,16 +46,17 @@ desktop_download_data:
 
 # NOTE:  DESKTOP reuses Dockerfile-test but has a separate docker-compse-desktop.yml
 desktop_build:
-	cd monitor-custom; docker build -t monitor-custom-desktop:v1.0.18 -t monitor-custom-desktop:latest -f Dockerfile-test .; mkdir -p output
+	-mkdir monitor-custom/output
+	cd monitor-custom; docker build -t monitor-custom-desktop:v1.0.20 -t monitor-custom-desktop:latest -f Dockerfile-test .
 
 desktop_up:
-	docker-compose -f docker-compose-desktop.yml -p monitorplotdesktop up -d
+	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop up -d
 
 desktop_down:
-	docker-compose -f docker-compose-desktop.yml -p monitorplotdesktop down
+	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop down
 
 desktop_logs:
-	docker-compose -f docker-compose-desktop.yml -p monitorplotdesktop logs -f
+	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop logs -f
 
 desktop_reboot: desktop_down desktop_download_data desktop_build desktop_up
 
@@ -71,24 +72,25 @@ test_configure_ui:
 		monitor-custom/UI/dist/__dist.min.js > monitor-custom/UI/dist/dist.min.js
 
 test_build:
-	cd monitor-custom; docker build -t monitor-custom-test:v1.0.18 -t monitor-custom-test:latest -f Dockerfile-test .; mkdir -p output
+	-mkdir monitor-custom/output
+	cd monitor-custom; docker build -t monitor-custom-test:v1.0.20 -t monitor-custom-test:latest -f Dockerfile-test .
 
 test_up:
-	docker-compose -f docker-compose-test.yml -p monitorplottest up -d
+	docker-compose -f docker-compose-test.yml -p monitorcustomtest up -d
 
 test_down:
-	docker-compose -f docker-compose-test.yml -p monitorplottest down
+	docker-compose -f docker-compose-test.yml -p monitorcustomtest down
 
 test_container_logs:
-	docker-compose -f docker-compose.yml -p monitorplottest logs
+	docker-compose -f docker-compose.yml -p monitorcustomtest logs
 
 test_logs:
 	cat /var/log/$(SERVICE_PATH_TEST)/app/DEBUG.log
 
-test_copy_logs:
+test_copy_debug_log:
 	-cp /var/log/$(SERVICE_PATH_TEST)/app/DEBUG.log ./test_DEBUG.log.$(DATE)
 
-test_reboot: test_copy_logs test_down test_build test_up
+test_reboot: test_copy_debug_log test_down test_build test_up
 
 
 # OPERATIONAL version ----------------------------------------------------------
@@ -102,22 +104,23 @@ operational_configure_ui:
 		monitor-custom/UI/dist/__dist.min.js > monitor-custom/UI/dist/dist.min.js
 
 operational_build:
-	cd monitor-custom; docker build -t monitor-custom-v4:v1.0.18 -t monitor-custom-v4:latest -f Dockerfile .; mkdir -p output
+	-mkdir monitor-custom/output
+	cd monitor-custom; docker build -t monitor-custom-v4:v1.0.20 -t monitor-custom-v4:latest -f Dockerfile-v4 .
 
 operational_up:
-	docker-compose -f docker-compose-v4.yml -p monitorplotv4 up -d
+	docker-compose -f docker-compose-v4.yml -p monitorcustomv4 up -d
 
 operational_down:
-	docker-compose -f docker-compose-v4.yml -p monitorplotv4 down
+	docker-compose -f docker-compose-v4.yml -p monitorcustomv4 down
 
 operational_container_logs:
-	docker-compose -f docker-compose-v4.yml -p monitorplotv4 logs
+	docker-compose -f docker-compose-v4.yml -p monitorcustomv4 logs
 
 operational_logs:
 	cat /var/log/$(SERVICE_PATH)/app/DEBUG.log
 
-operational_copy_logs:
+operational_copy_debug_log:
 	-cp /var/log/$(SERVICE_PATH)/app/DEBUG.log ./operational_DEBUG.log.$(DATE)
 
-operational_reboot: operational_copy_logs operational_down operational_build operational_up
+operational_reboot: operational_copy_debug_log operational_down operational_build operational_up
 

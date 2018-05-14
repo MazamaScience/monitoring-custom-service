@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:v1.0.18
+FROM mazamascience/pwfslsmoke:v1.0.20
 MAINTAINER Jonathan Callahan <jonathan@mazamascience.com>
 
 #######################################################################
@@ -41,7 +41,7 @@ EXPOSE 6664
 # path and cache (see apache ProxyPass settings)
 ENV SERVICE_PATH monitor-custom/v4
 ENV CACHE_DIR output
-ENV CACHE_SIZE 100
+ENV CACHE_SIZE 1000
 
 # mounted directories
 ENV DATA_DIR /app/data
