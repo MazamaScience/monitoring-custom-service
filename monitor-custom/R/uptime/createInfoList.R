@@ -40,8 +40,8 @@ createInfoList <- function(req = NULL,
 
   infoList$output <- ifelse(is.null(infoList$output), "png", infoList$output)
 
-  infoList$width <- ifelse(is.null(infoList$width), 8, as.numeric(infoList$width))
-  infoList$height <- ifelse(is.null(infoList$height), 8, as.numeric(infoList$height))
+  infoList$width <- ifelse(is.null(infoList$width), 10, as.numeric(infoList$width))
+  infoList$height <- ifelse(is.null(infoList$height), 6, as.numeric(infoList$height))
   infoList$units <- ifelse(is.null(infoList$units), "in", infoList$units)
   infoList$dpi <- 300
 

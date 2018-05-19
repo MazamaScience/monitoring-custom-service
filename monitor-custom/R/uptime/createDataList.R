@@ -16,6 +16,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
 
   serverID <- infoList$serverid
   logUrl <- paste0('https://', serverID, '.airfire.org/logs/uptime.log')
+  startDate <- lubridate::ymd(infoList$startdate)
 
   uptimeData <-
     readr::read_csv(
@@ -26,7 +27,8 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
       datetime = lubridate::ymd_hms(str_sub(datetime, 1, 19)),
       load_1_min = as.numeric(str_replace(load_1_min, "load average: ", ""))
     ) %>%
-    select(-hms, -user)
+    select(-hms, -user) %>%
+    filter(datetime >= startDate)
 
   # ----- Validate data -------------------------------------------------------
 
