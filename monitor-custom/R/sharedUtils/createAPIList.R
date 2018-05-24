@@ -26,7 +26,22 @@ createAPIList <- function(name=NULL, version=NULL) {
           columns = "number of columns a faceted plot will have [default = 1]",
           width =  "width of the graphic in given units [default = 8]",
           height = "height of the graphic in given units [default = 8]",
-          dpi = "dpi (in pixels per unit) of the graphic [default = 300]",
+          dpi = "dpi (in pixels per unit) of the graphic [default = 100]",
+          units = "units to determine graphic size [default = in; in|cm|mm]",
+          output = "output type of the graphic [default = png; png|pdf]",
+          responsetype = "response type [default = raw; raw|json]",
+          lookbackdays = "days of data to include [default = 7]",
+          language = "[not implemented] language code [default = en; en|es]"
+        )
+      ),
+      "uptime" = list(
+        method = "GET",
+        params = list(
+          serverid = "name of the server to get uptime data from [default = tools-c3]",
+          ymax = "upper bound on the y axis of the uptime chart [default = 1.5]",
+          width =  "width of the graphic in given units [default = 10]",
+          height = "height of the graphic in given units [default = 6]",
+          dpi = "dpi (in pixels per unit) of the graphic [default = 100]",
           units = "units to determine graphic size [default = in; in|cm|mm]",
           outputfiletype = "file type of the output graphic [default = png; png|pdf]",
           responsetype = "response type [default = raw; raw|json]",
