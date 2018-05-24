@@ -43,7 +43,7 @@ createInfoList <- function(req = NULL,
   infoList$width <- ifelse(is.null(infoList$width), 10, as.numeric(infoList$width))
   infoList$height <- ifelse(is.null(infoList$height), 6, as.numeric(infoList$height))
   infoList$units <- ifelse(is.null(infoList$units), "in", infoList$units)
-  infoList$dpi <- 300
+  infoList$dpi <- ifelse(is.null(infoList$dpi), 100, as.numeric(infoList$dpi))
 
   # Validate parameters
   if (!infoList$language %in% c("en","es")) { stop("invalid language", call. = FALSE) }
