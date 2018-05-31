@@ -6,7 +6,9 @@ MAINTAINER Jonathan Callahan <jonathan@mazamascience.com>
 RUN install2.r --error \
     jug \
     MazamaWebUtils \
-    ggplot2
+    ggplot2 \
+    ggthemes
+
 
 # Install latest development versions of packages
 RUN installGithub.r \
