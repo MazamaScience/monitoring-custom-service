@@ -80,8 +80,9 @@ createInfoList <- function(req = NULL,
     infoList$height,
     infoList$width,
     infoList$dpi,
-    infoList$startdate,
-    infoList$enddate,
+    infoList$serverid,
+    infoList$ymax,
+    infoList$lookbackdays,
     strftime(lubridate::now(), "%Y%m%d%H%M"))
 
   infoList$uniqueID <- digest::digest(uniqueList, algo = "md5")

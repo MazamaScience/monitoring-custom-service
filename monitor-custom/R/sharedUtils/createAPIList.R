@@ -33,6 +33,14 @@ createAPIList <- function(name=NULL, version=NULL) {
           lookbackdays = "days of data to include [default = 7]",
           language = "[not implemented] language code [default = en; en|es]"
         )
+      ),
+      "uptime" = list(
+        method = "GET",
+        params = list(
+          lookbackdays = "days of data to include [default = 7]",
+          serverid = "<serverid>.airfire.org [default = 'tools-c3']",
+          ymax = "y-axis maximum [default = 1.5]"
+        )
       )
     ) # END of services list
   ) # END of APIList
