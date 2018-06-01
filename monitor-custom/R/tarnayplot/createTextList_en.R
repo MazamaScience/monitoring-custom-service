@@ -15,7 +15,7 @@ createTextList <- function(dataList=NULL, infoList=NULL) {
 
   # Commonly used labels
   textList <- list(
-    AQI_category_labels = c('Good','Moderate','USG','Unhealthy','Very Unhealthy','Hazardous'),
+    AQI_category_labels = AQI_en$names,
     AQI_legend_title = 'AQI Level',
     date = 'Date',
     pm25_name = 'PM2.5'

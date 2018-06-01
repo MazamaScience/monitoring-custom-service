@@ -43,6 +43,9 @@ desktop_download_data:
 	curl https://haze.airfire.org/monitoring/latest/RData/airnow_PM2.5_latest10.RData -o monitor-custom/data/airnow_PM2.5_latest10.RData --create-dirs
 	curl https://haze.airfire.org/monitoring/latest/RData/airsis_PM2.5_latest10.RData -o monitor-custom/data/airsis_PM2.5_latest10.RData --create-dirs
 	curl https://haze.airfire.org/monitoring/latest/RData/wrcc_PM2.5_latest10.RData -o monitor-custom/data/wrcc_PM2.5_latest10.RData --create-dirs
+	curl https://haze.airfire.org/monitoring/latest/RData/airnow_PM2.5_latest45.RData -o monitor-custom/data/airnow_PM2.5_latest45.RData --create-dirs
+	curl https://haze.airfire.org/monitoring/latest/RData/airsis_PM2.5_latest45.RData -o monitor-custom/data/airsis_PM2.5_latest45.RData --create-dirs
+	curl https://haze.airfire.org/monitoring/latest/RData/wrcc_PM2.5_latest45.RData -o monitor-custom/data/wrcc_PM2.5_latest45.RData --create-dirs
 
 # NOTE:  DESKTOP reuses Dockerfile-test but has a separate docker-compse-desktop.yml
 desktop_build:

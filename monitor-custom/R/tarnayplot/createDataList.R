@@ -22,46 +22,34 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   # ----- Load data -----------------------------------------------------------
 
   # Load latest monitoring data (most recent 45 days)
-  logger.debug("loading latest monitoring data from %s", dataDir)
-  result <- try({
-    load(file.path(dataDir, "airnow_PM2.5_latest10.RData"))
-    load(file.path(dataDir, "airsis_PM2.5_latest10.RData"))
-    load(file.path(dataDir, "wrcc_PM2.5_latest10.RData"))
-  }, silent = TRUE)
-
-  if ("try-error" %in% class(result)) {
-    err_msg <- geterrmessage()
-    stop(paste0("Error loading data: ", err_msg))
-  }
-
-  combinedData <- monitor_combine(
-    list(
-      airnow_PM2.5_latest10,
-      airsis_PM2.5_latest10,
-      wrcc_PM2.5_latest10
-    )
-  )
+  combinedData <- loadDaily()
 
   # ----- Validate data -------------------------------------------------------
 
   # Check for bad monitorIDs
   badMonitorIDs <- setdiff(monitorIDs, combinedData$meta$monitorID)
   goodMonitorIDs <- intersect(monitorIDs, combinedData$meta$monitorID)
-  if (length(badMonitorIDs) > 0) {
+  if ( length(badMonitorIDs) > 0 ) {
     logger.debug(
       "The following monitors are not in the latest data: %s",
       paste0(badMonitorsIDs, collapse = ", "))
   }
-  if (length(goodMonitorIDs) == 0) {
-    stop("No data available for selected monitors", call. = FALSE)
+  if ( length(goodMonitorIDs) == 0 ) {
+    stop("No data available for the selected monitors", call. = FALSE)
   }
+  
+  # Get the timezone from the first goodMonitorID
+  timezone <- combinedData$meta[goodMonitorIDs[1], 'timezone']
 
-  # Combine all monitor data into a single ws_monitor object
-  ws_monitor <- monitor_subset(combinedData, monitorIDs = goodMonitorIDs)
+  # Subset the data based on monitorIDs
+  ws_monitor <- monitor_subset(combinedData,
+                               monitorIDs = goodMonitorIDs,
+                               tlim = infoList$tlim, 
+                               timezone = timezone)
 
-  # Is there data for the given tlim?
-  if (monitor_isEmpty(monitor_subset(ws_monitor, tlim = infoList$tlim))) {
-    stop(paste("No data availabe at the specified dates"), call. = FALSE)
+  # Is there any data left?
+  if ( monitor_isEmpty(monitor_subset(ws_monitor)) ) {
+    stop(paste("No data available for the specified dates"), call. = FALSE)
   }
 
   # ----- Create data structures ----------------------------------------------

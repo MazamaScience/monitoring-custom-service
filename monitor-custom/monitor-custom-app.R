@@ -48,7 +48,7 @@ for (file in utilFiles) {
 
 # Specify global (configurable) variables -------------------------------------
 
-VERSION <- "1.0.2"
+VERSION <- "1.0.3" # 1 . ---- . Jon's tarnayplot data updates
 
 # Set up configurable variables
 
@@ -150,9 +150,20 @@ jug() %>%
 
   # Products -----------------------------------------------------------------
 
+  # NOTE:  All subservices are handled the same way. Each has its own subdirectory
+  # NOTE:  with files that define the following top-level functions:
+  # NOTE:   * createDataList
+  # NOTE:   * createInfoList
+  # NOTE:   * createProduct
+  # NOTE:   * createTextList
+  # NOTE:  
+  # NOTE:  This standard protocol allows the following chunk of code to be
+  # NOTE:  run for every custom product.
+
   # regex matches alphanumerics and zero or one final '/'
   get(paste0("/", SERVICE_PATH, "/[[:alnum:]]+/?"), function(req, res, err) {
 
+    # Extract lowercase subservice name
     subservice <-
       stringr::str_replace(req$path, SERVICE_PATH, "") %>%
       stringr::str_replace_all("/", "") %>%
@@ -167,8 +178,7 @@ jug() %>%
 
     # Source these scripts
     result <- try({
-      source(infoListScript)        # function to convert request into infoList
-                                    #   required by product
+      source(infoListScript)        # function to convert request into infoList required by product
       source(dataListScript)        # function to load data required by product
       source(productScript)         # function to create product
     }, silent = TRUE)
@@ -184,7 +194,7 @@ jug() %>%
     if (!file.exists(infoList$plotPath)) {
 
       # Manage the cache
-      MazamaWebUtils::manageCache(CACHE_DIR, c("json", "png", "pdf"))
+      MazamaWebUtils::manageCache(CACHE_DIR, c("json", "png", "pdf")) # TODO:  Other potential output types?
 
       result <- try({
 
@@ -206,7 +216,7 @@ jug() %>%
       }, silent = TRUE)
       stopOnError(result)
 
-    } # finished creating plot file
+    } # finished creating product file
 
 
     # Create a new json file if it isn't in the cache
@@ -267,10 +277,6 @@ jug() %>%
   }) %>%
 
   # Serve static files --------------------------------------------------------
-
-  # NOTE:  As of jug 0.1.7.900, the serve_static_files() function removes any
-  # NOTE:  'path' argument from 'req$path' and this can be used to remove the
-  # NOTE:  ProxyPass settings in the apache config file. Works quite nicely.
 
   serve_static_files(SERVICE_PATH) %>%
 
