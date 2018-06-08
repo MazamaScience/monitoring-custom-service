@@ -50,7 +50,7 @@ createInfoList <- function(req = NULL,
   infoList$responsetype <- tolower(ifelse(is.null(infoList$responsetype), "raw", infoList$responsetype))
   infoList$lookbackdays <- ifelse(is.null(infoList$lookbackdays), 7, trunc(as.numeric(infoList$lookbackdays)))
   infoList$columns <- ifelse(is.null(infoList$columns), 1, infoList$columns)
-  infoList$output <- ifelse(is.null(infoList$output), "png", infoList$output)
+  infoList$outputfiletype <- ifelse(is.null(infoList$outputfiletype), "png", infoList$outputfiletype)
 
   infoList$width <- ifelse(is.null(infoList$width), 8, as.numeric(infoList$width))
   infoList$height <- ifelse(is.null(infoList$height), 8, as.numeric(infoList$height))
@@ -60,7 +60,7 @@ createInfoList <- function(req = NULL,
   # Validate parameters
   if (!infoList$language %in% c("en","es")) { stop("invalid language", call. = FALSE) }
   if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype", call. = FALSE) }
-  if (!infoList$output %in% c("png", "pdf")) { stop("invalid file format", call. = FALSE) }
+  if (!infoList$outputfiletype %in% c("png", "pdf")) { stop("invalid file format", call. = FALSE) }
   if (!infoList$units %in% c("in", "cm", "mm")) { stop("invalid units", call. = FALSE) }
   if (infoList$lookbackdays < 2 ) { infoList$lookbackdays <- 2 }
 
@@ -89,7 +89,7 @@ createInfoList <- function(req = NULL,
     infoList$monitorIDs,
     infoList$language,
     infoList$columns,
-    infoList$output,
+    infoList$outputfiletype,
     infoList$height,
     infoList$width,
     infoList$dpi,
@@ -100,7 +100,7 @@ createInfoList <- function(req = NULL,
 
   # Create paths
   infoList$basePath <- paste0(cacheDir, "/", infoList$uniqueID)
-  infoList$plotPath <- paste0(infoList$basePath, ".", infoList$output)
+  infoList$plotPath <- paste0(infoList$basePath, ".", infoList$outputfiletype)
   infoList$jsonPath <- paste0(infoList$basePath, ".json")
 
   return(infoList)

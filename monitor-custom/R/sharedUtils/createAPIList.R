@@ -28,7 +28,7 @@ createAPIList <- function(name=NULL, version=NULL) {
           height = "height of the graphic in given units [default = 8]",
           dpi = "dpi (in pixels per unit) of the graphic [default = 300]",
           units = "units to determine graphic size [default = in; in|cm|mm]",
-          output = "output type of the graphic [default = png; png|pdf]",
+          outputfiletype = "file type of the output graphic [default = png; png|pdf]",
           responsetype = "response type [default = raw; raw|json]",
           lookbackdays = "days of data to include [default = 7]",
           language = "[not implemented] language code [default = en; en|es]"

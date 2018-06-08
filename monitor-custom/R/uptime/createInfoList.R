@@ -20,8 +20,7 @@ if ( FALSE ) {
   req <- list(
     params = list(
       serverid = "tools-c3",
-      lookbackdays = "3",
-      ymax = "10"
+      lookbackdays = "3"
     )
   )
   
@@ -53,13 +52,15 @@ createInfoList <- function(req = NULL,
 
   # Set defaults
   infoList$serverid <- tolower(ifelse(is.null(infoList$serverid), "tools-c3", infoList$serverid))
-  infoList$ymax <- ifelse(is.null(infoList$ymax), 1.5, as.numeric(infoList$ymax))
+  # NOTE:  During plotting, ymax will take the minimum of the data maximum or infoList$ymax
+  # NOTE:  We default to a large number so that data maximum will be used unless the users specifies something smaller.
+  infoList$ymax <- ifelse(is.null(infoList$ymax), 1000, as.numeric(infoList$ymax))
 
   infoList$language <- tolower(ifelse(is.null(infoList$language),"en", infoList$language))
   infoList$responsetype <- tolower(ifelse(is.null(infoList$responsetype), "raw", infoList$responsetype))
   infoList$lookbackdays <- ifelse(is.null(infoList$lookbackdays), 7, trunc(as.numeric(infoList$lookbackdays)))
 
-  infoList$output <- ifelse(is.null(infoList$output), "png", infoList$output)
+  infoList$outputfiletype <- ifelse(is.null(infoList$outputfiletype), "png", infoList$outputfiletype)
 
   infoList$width <- ifelse(is.null(infoList$width), 10, as.numeric(infoList$width))
   infoList$height <- ifelse(is.null(infoList$height), 6, as.numeric(infoList$height))
@@ -69,7 +70,7 @@ createInfoList <- function(req = NULL,
   # Validate parameters
   if (!infoList$language %in% c("en","es")) { stop("invalid language", call. = FALSE) }
   if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype", call. = FALSE) }
-  if (!infoList$output %in% c("png", "pdf")) { stop("invalid file format", call. = FALSE) }
+  if (!infoList$outputfiletype %in% c("png", "pdf")) { stop("invalid file format", call. = FALSE) }
   if (!infoList$units %in% c("in", "cm", "mm")) { stop("invalid units", call. = FALSE) }
   if (infoList$lookbackdays < 2 ) { infoList$lookbackdays <- 2 }
 
@@ -97,7 +98,7 @@ createInfoList <- function(req = NULL,
   # TODO: handle creating unique plots for shorter time intervals
   uniqueList <- list(
     infoList$language,
-    infoList$output,
+    infoList$outputfiletype,
     infoList$height,
     infoList$width,
     infoList$dpi,
@@ -110,7 +111,7 @@ createInfoList <- function(req = NULL,
 
   # Create paths
   infoList$basePath <- paste0(cacheDir, "/", infoList$uniqueID)
-  infoList$plotPath <- paste0(infoList$basePath, ".", infoList$output)
+  infoList$plotPath <- paste0(infoList$basePath, ".", infoList$outputfiletype)
   infoList$jsonPath <- paste0(infoList$basePath, ".json")
 
   return(infoList)

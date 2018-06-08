@@ -48,7 +48,7 @@ for (file in utilFiles) {
 
 # Specify global (configurable) variables -------------------------------------
 
-VERSION <- "1.0.3" # 1 . ---- . Jon's tarnayplot data updates
+VERSION <- "1.0.4" # 1 . ---- . Jon's uptime improvements
 
 # Set up configurable variables
 
@@ -194,7 +194,7 @@ jug() %>%
     if (!file.exists(infoList$plotPath)) {
 
       # Manage the cache
-      MazamaWebUtils::manageCache(CACHE_DIR, c("json", "png", "pdf")) # TODO:  Other potential output types?
+      MazamaWebUtils::manageCache(CACHE_DIR, c("json", "png", "pdf")) # TODO:  Other potential output formats?
 
       result <- try({
 
@@ -250,9 +250,9 @@ jug() %>%
 
       if (infoList$responsetype == "raw") {
 
-        if (infoList$output == "png") {
+        if (infoList$outputfiletype == "png") {
           res$content_type("image/png")
-        } else if (infoList$output == "pdf") {
+        } else if (infoList$outputfiletype == "pdf") {
           res$content_type("application/pdf")
         }
 

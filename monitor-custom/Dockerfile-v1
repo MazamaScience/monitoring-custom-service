@@ -9,7 +9,6 @@ RUN install2.r --error \
     ggplot2 \
     ggthemes
 
-
 # Install latest development versions of packages
 RUN installGithub.r \
     MazamaScience/PWFSLSmoke \
@@ -29,9 +28,9 @@ RUN installGithub.r \
 #
 # The block of ports 6660-6669 is reserved for the 'monitor-custom' service
 ENV JUG_HOST 0.0.0.0
-ENV JUG_PORT 6664
+ENV JUG_PORT 6661
 
-EXPOSE 6664
+EXPOSE 6661
 
 #######################################################################
 # app
@@ -41,7 +40,7 @@ EXPOSE 6664
 # Environment variables ---------------
 
 # path and cache (see apache ProxyPass settings)
-ENV SERVICE_PATH monitor-custom/v4
+ENV SERVICE_PATH monitor-custom/v1
 ENV CACHE_DIR output
 ENV CACHE_SIZE 1000
 

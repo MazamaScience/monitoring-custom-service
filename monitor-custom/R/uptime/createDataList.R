@@ -16,18 +16,44 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
 
   serverID <- infoList$serverid
   logUrl <- paste0('https://', serverID, '.airfire.org/logs/uptime.log')
-  startDate <- lubridate::ymd(infoList$startdate)
 
+  # NOTE:  Need to watch out for reboots that change the number of commas
+  #
+  # 2018-06-07 18:16:01 up 35 days, 59 min,  0 users,  load average: 0.05, 0.01, 0.09
+  # 2018-06-07 18:31:01 up 1 min,  0 users,  load average: 3.70, 1.99, 0.76
+  #
+  # Sigh ... Why is nothing ever easy?
+  
+  # Instead, load the data as lines for further parsing
+  lines <- readr::read_lines(logUrl)
+
+  # Pull out elements using
+  regex_datetime <- "([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})"
+  datetimeString <- stringr::str_extract(lines, regex_datetime)
+
+  regex_users <- "([0-9]+ user.?,)"
+  usersString <- stringr::str_extract(lines, regex_users)
+  # For userCount, use everything to the left of the first ' '
+  usersString = stringr::str_split_fixed(usersString, ' ', 2)[,1]
+  
+  regex_load <- "(load average: .+$)"
+  loadString <- stringr::str_extract(lines, regex_load)
+  loadString <- stringr::str_replace(loadString, "load average: ", "")
+  loadString <- stringr::str_replace_all(loadString, " ", "")
+  
+  # Now reassemble a cleaned up, artificial CSV file 
+  fakeLines <- paste(datetimeString, usersString, loadString, sep=",")
+  # Omit any lines with "NA"
+  fakeLines <- fakeLines[ !stringr::str_detect(fakeLines, "NA") ]
+  fakeFile <- paste(fakeLines, collapse="\n")
+ 
+  uptimeData <- readr::read_csv(fakeFile,
+                                col_names = c('datetime', 'userCount', 'load_1_min', 'load_5_min', 'load_15_min'))
+  
+  # Use dplyr to filter
+  startDate <- lubridate::ymd_hm(infoList$startdate) # NOTE:  only to the minute, not second
   uptimeData <-
-    readr::read_csv(
-      logUrl,
-      col_names = c('datetime', 'hms', 'user', 'load_1_min', 'load_5_min', 'load_15_min')
-    ) %>%
-    mutate(
-      datetime = lubridate::ymd_hms(str_sub(datetime, 1, 19)),
-      load_1_min = as.numeric(str_replace(load_1_min, "load average: ", ""))
-    ) %>%
-    select(-hms, -user) %>%
+    uptimeData %>%
     filter(datetime >= startDate)
 
   # ----- Validate data -------------------------------------------------------
