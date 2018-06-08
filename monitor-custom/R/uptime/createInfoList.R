@@ -10,6 +10,27 @@
 # Author: Spencer Pease, Jonathan Callahan
 ########################################################################
 
+# DEBUGGING
+if ( FALSE ) {
+  
+  library(PWFSLSmoke)
+  logger.setup()
+  logger.setLevel(TRACE)
+  
+  req <- list(
+    params = list(
+      serverid = "tools-c3",
+      lookbackdays = "3",
+      ymax = "10"
+    )
+  )
+  
+  cacheDir = "~/Projects/PWFSL/monitoring-custom-service/monitor-custom/output"
+  
+}
+
+########################################################################
+
 createInfoList <- function(req = NULL,
                            cacheDir = NULL) {
 
@@ -62,13 +83,13 @@ createInfoList <- function(req = NULL,
   infoList$enddate <-
     ifelse(
       is.null(infoList$enddate),
-      strftime(lubridate::now(tzone = "UTC"), format = "%Y%m%d", tz = "UTC"),
+      strftime(lubridate::now(tzone = "UTC"), format = "%Y%m%d%H%M", tz = "UTC"),
       infoList$enddate
     )
 
   endtime <- parseDatetime(infoList$enddate)
   starttime <- endtime - lubridate::days(infoList$lookbackdays)
-  infoList$startdate <- strftime(starttime, format = "%Y%m%d", tz = "UTC")
+  infoList$startdate <- strftime(starttime, format = "%Y%m%d%H%M", tz = "UTC")
   infoList$tlim <- c(infoList$startdate, infoList$enddate)
 
   # ----- Create uniqueID based on parameters that affect the presentation ----
