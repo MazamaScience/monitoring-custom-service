@@ -36,7 +36,7 @@ desktop_download_data:
 # NOTE:  DESKTOP reuses Dockerfile-test but has a separate docker-compse-desktop.yml
 desktop_build:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build -t monitor-custom-desktop:v1.0.4 -t monitor-custom-desktop:latest -f Dockerfile-test .
+	cd monitor-custom; docker build -t monitor-custom-desktop:v1.0.5 -t monitor-custom-desktop:latest -f Dockerfile-test .
 
 desktop_up:
 	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop up -d
@@ -54,7 +54,7 @@ desktop_reboot: desktop_down desktop_download_data desktop_build desktop_up
 
 test_build:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build -t monitor-custom-test:v1.0.4 -t monitor-custom-test:latest -f Dockerfile-test .
+	cd monitor-custom; docker build -t monitor-custom-test:v1.0.5 -t monitor-custom-test:latest -f Dockerfile-test .
 
 test_up:
 	docker-compose -f docker-compose-test.yml -p monitorcustomtest up -d
@@ -81,7 +81,7 @@ test_reboot: test_copy_debug_log test_down test_build test_up
 
 production_build:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build -t monitor-custom-v1:v1.0.4 -t monitor-custom-v1:latest -f Dockerfile-v1 .
+	cd monitor-custom; docker build -t monitor-custom-v1:v1.0.5 -t monitor-custom-v1:latest -f Dockerfile-v1 .
 
 production_up:
 	docker-compose -f docker-compose-v1.yml -p monitorcustomv1 up -d

@@ -35,7 +35,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
   basePlot <- ggplot(uptimeData, aes(x = datetime)) +
     geom_step(aes(y = load_15_min)) +
-    ylim(0, min(ymax, max(uptimeData$load_15_min) * 1.1)) +
+    ylim(0, max(ymax, max(uptimeData$load_15_min) * 1.1)) +
     labs(
       title = paste("Uptime for:", serverid),
       x = "Time",

@@ -52,9 +52,9 @@ createInfoList <- function(req = NULL,
 
   # Set defaults
   infoList$serverid <- tolower(ifelse(is.null(infoList$serverid), "tools-c3", infoList$serverid))
-  # NOTE:  During plotting, ymax will take the minimum of the data maximum or infoList$ymax
-  # NOTE:  We default to a large number so that data maximum will be used unless the users specifies something smaller.
-  infoList$ymax <- ifelse(is.null(infoList$ymax), 1000, as.numeric(infoList$ymax))
+  # NOTE:  During plotting, ymax will take the maximum of the data maximum or infoList$ymax
+  # NOTE:  We default to a small number so that data maximum will be used unless the users specifies something larger
+  infoList$ymax <- ifelse(is.null(infoList$ymax), .01, as.numeric(infoList$ymax))
 
   infoList$language <- tolower(ifelse(is.null(infoList$language),"en", infoList$language))
   infoList$responsetype <- tolower(ifelse(is.null(infoList$responsetype), "raw", infoList$responsetype))

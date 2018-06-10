@@ -48,7 +48,7 @@ for (file in utilFiles) {
 
 # Specify global (configurable) variables -------------------------------------
 
-VERSION <- "1.0.4" # 1 . ---- . Jon's uptime improvements
+VERSION <- "1.0.5" # 1 . ---- . fixed usage of 'ymax' in uptime sub-service
 
 # Set up configurable variables
 
