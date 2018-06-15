@@ -1,5 +1,5 @@
 ########################################################################
-# tarnayplot/textList_es.R
+# dailyhourlybarplot/textList_es.R
 #
 # Spanish language text strings.
 #

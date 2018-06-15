@@ -1,7 +1,7 @@
 ########################################################################
 # uptime/createProduct.R
 #
-# Create the a 'tarnay' summary barplot.
+# Create a Uptime / load timeseries chart.
 #
 # Author: Spencer Pease, Jonathan Callahan
 ########################################################################
@@ -41,28 +41,28 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       x = "Time",
       y = "Load (15 Minute Average)") +
     ggthemes::theme_hc()
-    
+
   if ( infoList$lookbackdays < 3 ) {
-    
+
     # start <- lubridate::floor_date(range(uptimeData$datetime)[1], unit="day")
     # end <- lubridate::ceiling_date(range(uptimeData$datetime)[2], unit="day")
     # minor_breaks <- seq.POSIXt(start, end, by="3 hour")
-    
+
     uptimePlot <- basePlot +
       scale_x_datetime(
         date_labels = "%b %d",
         date_breaks = "1 day",
         date_minor_breaks = "3 hours" # TODO:  Why aren't these showing?
       )
-    
+
   } else {
-    
+
     uptimePlot <- basePlot +
       scale_x_datetime(
         date_labels = "%b %d",
         date_breaks = "1 day"
       )
-    
+
   }
 
   # ----- Save plot -----------------------------------------------------------

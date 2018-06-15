@@ -1,12 +1,12 @@
 ########################################################################
-# tarnayplot/createProduct.R
+# dailyhourlybarplot/createProduct.R
 #
-# Create the a 'tarnay' summary barplot.
+# Create the a daily and hourly summary barplot.
 #
 # Author: Spencer Pease, Jonathan Callahan
 ########################################################################
 
-#' @title Create 'tarnay' summary barplot
+#' @title Create daily and hourly summary barplot
 #'
 #' @description
 #' Function that grabs the appropriate parameters from `infoList`, data from
@@ -15,7 +15,7 @@
 
 createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
-  logger.trace("----- createProduct() [tarnayPlot] -----")
+  logger.trace("----- createProduct() [dailyhourlybarplot] -----")
 
   if (is.null(dataList)) stop(paste0("Required parameter 'dataList' is missing."), call. = FALSE)
   if (is.null(infoList)) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)

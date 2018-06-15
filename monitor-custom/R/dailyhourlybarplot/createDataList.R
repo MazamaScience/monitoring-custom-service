@@ -1,5 +1,5 @@
 ########################################################################
-# tarnayplot/createDataList.R
+# dailyhourlybarplot/createDataList.R
 #
 # Create a list of data needed to generate the plot.
 #
@@ -37,14 +37,14 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   if ( length(goodMonitorIDs) == 0 ) {
     stop("No data available for the selected monitors", call. = FALSE)
   }
-  
+
   # Get the timezone from the first goodMonitorID
   timezone <- combinedData$meta[goodMonitorIDs[1], 'timezone']
 
   # Subset the data based on monitorIDs
   ws_monitor <- monitor_subset(combinedData,
                                monitorIDs = goodMonitorIDs,
-                               tlim = infoList$tlim, 
+                               tlim = infoList$tlim,
                                timezone = timezone)
 
   # Is there any data left?

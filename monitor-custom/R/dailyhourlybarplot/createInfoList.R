@@ -1,5 +1,5 @@
 ########################################################################
-# tarnayplot/createInfoList.R
+# dailyhourlybarplot/createInfoList.R
 #
 # Create an infoList from a jug request object.
 #

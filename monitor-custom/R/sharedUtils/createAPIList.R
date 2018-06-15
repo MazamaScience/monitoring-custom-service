@@ -18,7 +18,7 @@ createAPIList <- function(name=NULL, version=NULL) {
     name = "monitor-custom",
     version = version,
     services = list(
-      "tarnayplot" = list(
+      "dailyhourlybarplot" = list(
         method = "GET",
         params = list(
           monitors = "monitorID [repeatable parameter] [will be deprecated in favor of monitorids]",
