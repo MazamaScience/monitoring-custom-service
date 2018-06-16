@@ -26,6 +26,11 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   ws_monitor <- dataList$ws_monitor
   monitorIDs <- infoList$monitorIDs
   columns <- infoList$columns
+  includeLink <- infoList$includelink
+  hourlyType <- infoList$hourlytype
+  title <- infoList$title
+  xLabel <- infoList$xLabel
+  yLabel <- infoList$yLabel
 
   plotPath <- infoList$plotPath
   width <- infoList$width
@@ -38,7 +43,12 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   plot <- PWFSLSmokePlots::createTarnayPlot(
     monitors = monitorIDs,
     data = ws_monitor,
-    columns = columns
+    columns = columns,
+    title = title,
+    xLabel = xLabel,
+    yLabel = yLabel,
+    includeLink = includeLink,
+    hourlyType = hourlyType
   )
 
   # ----- Save plot -----------------------------------------------------------

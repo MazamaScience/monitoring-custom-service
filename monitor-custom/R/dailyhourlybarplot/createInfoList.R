@@ -47,9 +47,15 @@ createInfoList <- function(req = NULL,
 
   # Set defaults
   infoList$language <- tolower(ifelse(is.null(infoList$language),"en",infoList$language))
-  infoList$responsetype <- tolower(ifelse(is.null(infoList$responsetype), "raw", infoList$responsetype))
   infoList$lookbackdays <- ifelse(is.null(infoList$lookbackdays), 7, trunc(as.numeric(infoList$lookbackdays)))
   infoList$columns <- ifelse(is.null(infoList$columns), 1, infoList$columns)
+  infoList$includelink <- ifelse(is.null(infoList$includelink), TRUE, infoList$includelink)
+  infoList$hourlytype <- ifelse(is.null(infoList$hourlytype), "nowcast", infoList$hourlytype)
+  # infoList$title should default to NULL
+  # infoList$xlabel should default to NULL
+  # infoList$ylabel should default to NULL
+
+  infoList$responsetype <- tolower(ifelse(is.null(infoList$responsetype), "raw", infoList$responsetype))
   infoList$outputfiletype <- ifelse(is.null(infoList$outputfiletype), "png", infoList$outputfiletype)
 
   infoList$width <- ifelse(is.null(infoList$width), 8, as.numeric(infoList$width))
@@ -63,6 +69,15 @@ createInfoList <- function(req = NULL,
   if (!infoList$outputfiletype %in% c("png", "pdf")) { stop("invalid file format", call. = FALSE) }
   if (!infoList$units %in% c("in", "cm", "mm")) { stop("invalid units", call. = FALSE) }
   if (infoList$lookbackdays < 2 ) { infoList$lookbackdays <- 2 }
+  if (!infoList$hourlytype %in% c("nowcast", "raw", "none")) { stop("invalid hourly data type", call. = FALSE) }
+
+  if (tolower(infoList$includelink) == "true") {
+    infoList$includelink <- TRUE
+  } else if (tolower(infoList$includelink) == "false") {
+    infoList$includelink <- FALSE
+  } else if (!is(infoList$includelink, "logical")) {
+    stop("includelink must be either 'true' or 'false'", call. = FALSE)
+  }
 
   # TODO:  Sort out what's going on with startdate, enddate, in this next chunk.
   # TODO:  Shouldn't enddate, perhaps in string format, be part of infoList?
@@ -89,6 +104,11 @@ createInfoList <- function(req = NULL,
     infoList$monitorIDs,
     infoList$language,
     infoList$columns,
+    infoList$includelink,
+    infoList$hourlytype,
+    infoList$title,
+    infoList$xlabel,
+    infoList$ylabel,
     infoList$outputfiletype,
     infoList$height,
     infoList$width,
