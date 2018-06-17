@@ -78,6 +78,12 @@ createInfoList <- function(req = NULL,
   } else if (!is(infoList$includelink, "logical")) {
     stop("includelink must be either 'true' or 'false'", call. = FALSE)
   }
+  
+  # PDF defaults to 8.5 x 11
+  if ( infoList$outputfiletype == "pdf" ) {
+    infoList$width <- 8.5
+    infoList$height <- 11
+  }
 
   # TODO:  Sort out what's going on with startdate, enddate, in this next chunk.
   # TODO:  Shouldn't enddate, perhaps in string format, be part of infoList?

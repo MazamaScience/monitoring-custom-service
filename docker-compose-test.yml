@@ -7,7 +7,7 @@ services:
     networks:
       - custom
     ports:
-    - "6669:6669"
+      - "6669:6669"
     volumes:
       - /var/log/monitor-custom/test/app:/app/logs
       - /data/monitoring/latest/RData:/app/data

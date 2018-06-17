@@ -32,7 +32,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   if ( length(badMonitorIDs) > 0 ) {
     logger.debug(
       "The following monitors are not in the latest data: %s",
-      paste0(badMonitorsIDs, collapse = ", "))
+      paste0(badMonitorIDs, collapse = ", "))
   }
   if ( length(goodMonitorIDs) == 0 ) {
     stop("No data available for the selected monitors", call. = FALSE)
@@ -45,12 +45,19 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   ws_monitor <- monitor_subset(combinedData,
                                monitorIDs = goodMonitorIDs,
                                tlim = infoList$tlim,
-                               timezone = timezone)
+                               timezone = timezone,
+                               dropMonitors = FALSE)
 
   # Is there any data left?
   if ( monitor_isEmpty(monitor_subset(ws_monitor)) ) {
     stop(paste("No data available for the specified dates"), call. = FALSE)
   }
+  
+  # NOTE:  siteName is used in the table and for facet_wrap() in the ggplot code.
+  # NOTE:  Bad things happen if siteName == NA. Here we replace  missing values
+  # NOTE:  with monitorID.
+  badSiteMask <- is.na(ws_monitor$meta$siteName)
+  ws_monitor$meta$siteName[badSiteMask] <- ws_monitor$meta$monitorID[badSiteMask]
 
   # ----- Create data structures ----------------------------------------------
 
