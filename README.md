@@ -5,7 +5,7 @@ code and returns various types of custom products.
 
 ## Reboot Instructions for an Operational Site
 
-```make operational_reboot```
+```make production_bounce```
 
 *(Yes, that's it.)*
 
@@ -62,7 +62,7 @@ The app will be available at:
 
 [localhost:8080/monitor-custom/test/](localhost:8080/monitor-custom/test/)
  
-The `Makefile` has targets for three different types of deployment: `desktop`, `test`, `operational`.
+The `Makefile` has targets for three different types of deployment: `desktop`, `test`, `production`.
 
 A quick refresher on docker commands is available at the [docker cheatsheet](https://github.com/wsargent/docker-cheat-sheet).
 
@@ -81,7 +81,7 @@ docker app must have a crontab to regularly copy latest data files.
 
 Log files will be written to a directory named after the deployment type:
 
-`/var/log/monitor-custom/test/app` or `/var/log/monitor-custom/operational/app`
+`/var/log/monitor-custom/test/app` or `/var/log/monitor-custom/production/app`
 
 except for `desktop` which are written to:
 

@@ -54,6 +54,10 @@ desktop_reboot: desktop_down desktop_download_data desktop_build desktop_up
 
 # TEST version -----------------------------------------------------------------
 
+test_build_no-cache:
+	-mkdir monitor-custom/output
+	cd monitor-custom; docker build --no-cache -t monitor-custom-test:v1.1.1 -t monitor-custom-test:latest -f Dockerfile-test .
+
 test_build:
 	-mkdir monitor-custom/output
 	cd monitor-custom; docker build -t monitor-custom-test:v1.1.1 -t monitor-custom-test:latest -f Dockerfile-test .
@@ -79,6 +83,10 @@ test_reboot: test_down test_build test_up
 
 
 # PRODUCTION version -----------------------------------------------------------
+
+production_build_no-cache:
+	-mkdir monitor-custom/output
+	cd monitor-custom; docker build --no-cache -t monitor-custom-v1:v1.1.1 -t monitor-custom-v1:latest -f Dockerfile-v1 .
 
 production_build:
 	-mkdir monitor-custom/output
