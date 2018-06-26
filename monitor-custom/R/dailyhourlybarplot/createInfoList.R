@@ -57,11 +57,7 @@ createInfoList <- function(req = NULL,
 
   infoList$responsetype <- tolower(ifelse(is.null(infoList$responsetype), "raw", infoList$responsetype))
   infoList$outputfiletype <- ifelse(is.null(infoList$outputfiletype), "png", infoList$outputfiletype)
-
-  infoList$width <- ifelse(is.null(infoList$width), 8, as.numeric(infoList$width))
-  infoList$height <- ifelse(is.null(infoList$height), 8, as.numeric(infoList$height))
   infoList$units <- ifelse(is.null(infoList$units), "in", infoList$units)
-  infoList$dpi <- ifelse(is.null(infoList$dpi), 100, as.numeric(infoList$dpi))
 
   # Validate parameters
   if (!infoList$language %in% c("en","es")) { stop("invalid language", call. = FALSE) }
@@ -78,12 +74,24 @@ createInfoList <- function(req = NULL,
   } else if (!is(infoList$includelink, "logical")) {
     stop("includelink must be either 'true' or 'false'", call. = FALSE)
   }
-  
-  # PDF defaults to 8.5 x 11
-  if ( infoList$outputfiletype == "pdf" ) {
-    infoList$width <- 8.5
-    infoList$height <- 11
+
+  # Handle plot sizing
+
+  if (infoList$outputfiletype == "pdf") {
+
+    # PDF defaults to 8.5 x 11 in page
+    infoList$dpi <- ifelse(is.null(infoList$dpi), 300, as.numeric(infoList$dpi))
+    infoList$width <- ifelse(is.null(infoList$width), 8.5, as.numeric(infoList$width))
+    infoList$height <- ifelse(is.null(infoList$height), 11, as.numeric(infoList$height))
+
+  } else if (infoList$outputfiletype == "png") {
+
+    # png defaults to 800 x 800 px image
+    infoList$dpi <- ifelse(is.null(infoList$dpi), 100, as.numeric(infoList$dpi))
+    infoList$width <- ifelse(is.null(infoList$width), 8, as.numeric(infoList$width))
+    infoList$height <- ifelse(is.null(infoList$height), 8, as.numeric(infoList$height))
   }
+
 
   # TODO:  Sort out what's going on with startdate, enddate, in this next chunk.
   # TODO:  Shouldn't enddate, perhaps in string format, be part of infoList?
