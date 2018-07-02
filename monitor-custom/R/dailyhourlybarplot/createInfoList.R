@@ -51,6 +51,7 @@ createInfoList <- function(req = NULL,
   infoList$columns <- ifelse(is.null(infoList$columns), 1, infoList$columns)
   infoList$includelink <- ifelse(is.null(infoList$includelink), TRUE, infoList$includelink)
   infoList$hourlytype <- ifelse(is.null(infoList$hourlytype), "nowcast", infoList$hourlytype)
+  infoList$includethirdcol <- ifelse(is.null(infoList$includethirdcol), FALSE, infoList$includethirdcol)
   # infoList$title should default to NULL
   # infoList$xlabel should default to NULL
   # infoList$ylabel should default to NULL
@@ -73,6 +74,14 @@ createInfoList <- function(req = NULL,
     infoList$includelink <- FALSE
   } else if (!is(infoList$includelink, "logical")) {
     stop("includelink must be either 'true' or 'false'", call. = FALSE)
+  }
+
+  if (tolower(infoList$includethirdcol) == "true") {
+    infoList$includethirdcol <- TRUE
+  } else if (tolower(infoList$includethirdcol) == "false") {
+    infoList$includethirdcol <- FALSE
+  } else if (!is(infoList$includethirdcol, "logical")) {
+    stop("includethirdcol must be either 'true' or 'false'", call. = FALSE)
   }
 
   # Handle plot sizing
@@ -124,6 +133,7 @@ createInfoList <- function(req = NULL,
     infoList$xlabel,
     infoList$ylabel,
     infoList$outputfiletype,
+    infoList$includethirdcol,
     infoList$height,
     infoList$width,
     infoList$dpi,

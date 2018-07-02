@@ -27,6 +27,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   monitorIDs <- infoList$monitorIDs
   columns <- infoList$columns
   includeLink <- infoList$includelink
+  includeThirdCol <- infoList$includethirdcol
   hourlyType <- infoList$hourlytype
   title <- infoList$title
   xLabel <- infoList$xLabel
@@ -48,7 +49,8 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     xLabel = xLabel,
     yLabel = yLabel,
     includeLink = includeLink,
-    hourlyType = hourlyType
+    hourlyType = hourlyType,
+    includeThirdCol = includeThirdCol
   )
 
   # ----- Save plot -----------------------------------------------------------
