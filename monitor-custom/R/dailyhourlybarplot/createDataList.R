@@ -23,7 +23,12 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
 
   # Load latest monitoring data (most recent 45 days)
   combinedData <- loadDaily()
-
+  
+  # NOTE:  The daily dataset ends on UTC days and will not have the last several
+  # NOTE:  hours of yesterday's local time data for locations in North America.
+  
+  # TODO:  Stich on the most recent hourly data after subsetting to specific monitorIDs.
+  
   # ----- Validate data -------------------------------------------------------
 
   # Check for bad monitorIDs
@@ -41,11 +46,19 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   # Get the timezone from the first goodMonitorID
   timezone <- combinedData$meta[goodMonitorIDs[1], 'timezone']
 
+  # Create starttime and endtime in monitor local time
+  # NOTE:  Don't use lubridate::today() as it generates class 'Date' which causes confusion.
+  # NOTE:  Instead, stick with lubridate::now() which generates class 'POSIXct'.
+  now <- lubridate::now(tzone = timezone)
+  today <- lubridate::floor_date(now, unit = 'day')
+  endtime <- today - lubridate::dhours(1)
+  starttime <- today - lubridate::ddays(infoList$lookbackdays)
+  tlim <- as.POSIXct(c(starttime, endtime)) # Guarantee they are of class POSIXct
+  
   # Subset the data based on monitorIDs
   ws_monitor <- monitor_subset(combinedData,
                                monitorIDs = goodMonitorIDs,
-                               tlim = infoList$tlim,
-                               timezone = timezone,
+                               tlim = tlim,
                                dropMonitors = FALSE)
 
   # Is there any data left?

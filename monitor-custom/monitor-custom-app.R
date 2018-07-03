@@ -48,7 +48,7 @@ for (file in utilFiles) {
 
 # Specify global (configurable) variables -------------------------------------
 
-VERSION <- "1.1.1" # 1 . dailyhourlybarplot . Jon's adjustments
+VERSION <- "1.1.2" # 1 . dailyhourlybarplot . improved styling for dailyhourlybarplot
 
 # Set up configurable variables
 

@@ -6,6 +6,10 @@
 
 ## Version 1.1 -- dailyhourlybarplot
 
+### monitor-custom 1.1.2
+
+ * improved styling for `dailyhourlybarplot()`
+ 
 ### monitor-custom 1.1.1
 
  * consistent versioning and NEWS.md

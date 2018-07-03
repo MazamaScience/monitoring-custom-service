@@ -101,30 +101,14 @@ createInfoList <- function(req = NULL,
     infoList$height <- ifelse(is.null(infoList$height), 8, as.numeric(infoList$height))
   }
 
-
-  # TODO:  Sort out what's going on with startdate, enddate, in this next chunk.
-  # TODO:  Shouldn't enddate, perhaps in string format, be part of infoList?
-  # TODO:  Don't we need to include the hour so that this plot gets regenerated once per hour
-
-  # NOTE:  enddate is specified here for creating the uniqueList. Enddate for plotting is specified
-  # NOTE:  in the plotting function using localTime to set the default.
-
-  infoList$enddate <-
-    ifelse(
-      is.null(infoList$enddate),
-      strftime(lubridate::now(tzone = "UTC"), format = "%Y%m%d", tz = "UTC"),
-      infoList$enddate
-    )
-
-  endtime <- parseDatetime(infoList$enddate)
-  starttime <- endtime - lubridate::days(infoList$lookbackdays)
-  infoList$startdate <- strftime(starttime, format = "%Y%m%d", tz = "UTC")
-  infoList$tlim <- c(infoList$startdate, infoList$enddate)
-
+  # Get the currentHour so that the plot will is updated once per hour
+  currentHour <- lubridate::floor_date(lubridate::now('UTC'), unit='hour')
+  
   # ----- Create uniqueID based on parameters that affect the presentation ----
 
   uniqueList <- list(
     infoList$monitorIDs,
+    infoList$lookbackdays,
     infoList$language,
     infoList$columns,
     infoList$includelink,
@@ -137,8 +121,7 @@ createInfoList <- function(req = NULL,
     infoList$height,
     infoList$width,
     infoList$dpi,
-    infoList$startdate,
-    infoList$enddate)
+    currentHour)
 
   infoList$uniqueID <- digest::digest(uniqueList, algo = "md5")
 
