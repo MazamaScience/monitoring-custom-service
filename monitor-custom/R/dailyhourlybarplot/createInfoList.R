@@ -48,7 +48,15 @@ createInfoList <- function(req = NULL,
   # Set defaults
   infoList$language <- tolower(ifelse(is.null(infoList$language),"en",infoList$language))
   infoList$lookbackdays <- ifelse(is.null(infoList$lookbackdays), 7, trunc(as.numeric(infoList$lookbackdays)))
-  infoList$columns <- ifelse(is.null(infoList$columns), 1, infoList$columns)
+  if ( is.null(infoList$columns) ) {
+    if ( length(infoList$monitorIDs) <= 6 ) {
+      infoList$columns = 1
+    } else if ( length(infoList$monitorIDs) <= 12 ) {
+      infoList$columns = 2
+    } else {
+      infoList$columns = 3
+    }
+  }
   infoList$includelink <- ifelse(is.null(infoList$includelink), TRUE, infoList$includelink)
   infoList$hourlytype <- ifelse(is.null(infoList$hourlytype), "nowcast", infoList$hourlytype)
   infoList$includethirdcol <- ifelse(is.null(infoList$includethirdcol), FALSE, infoList$includethirdcol)

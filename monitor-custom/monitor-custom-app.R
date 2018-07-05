@@ -48,7 +48,7 @@ for (file in utilFiles) {
 
 # Specify global (configurable) variables -------------------------------------
 
-VERSION <- "1.1.2" # 1 . dailyhourlybarplot . improved styling for dailyhourlybarplot
+VERSION <- "1.1.3" # 1 . dailyhourlybarplot . updated PWFSLSmokePlots package
 
 # Set up configurable variables
 

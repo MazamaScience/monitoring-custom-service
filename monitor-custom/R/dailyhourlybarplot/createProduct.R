@@ -51,21 +51,22 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   starttime <- today - lubridate::ddays(infoList$lookbackdays)
   tlim <- as.POSIXct(c(starttime, endtime)) # Guarantee they are of class POSIXct
   
-  # Subset the data based on monitorIDs
-  ws_monitor <- monitor_subset(ws_monitor,
-                               tlim = tlim,
-                               dropMonitors = FALSE)
-  
-  # Is there any data left?
-  if ( monitor_isEmpty(monitor_subset(ws_monitor)) ) {
-    stop(paste("No data available for the specified dates"), call. = FALSE)
-  }
+  # # Subset the data based on monitorIDs
+  # ws_monitor <- monitor_subset(ws_monitor,
+  #                              tlim = tlim,
+  #                              dropMonitors = FALSE)
+  # 
+  # # Is there any data left?
+  # if ( monitor_isEmpty(monitor_subset(ws_monitor)) ) {
+  #   stop(paste("No data available for the specified dates"), call. = FALSE)
+  # }
   
   # ----- Create plot ---------------------------------------------------------
 
   plot <- PWFSLSmokePlots::createTarnayPlot(
     monitors = monitorIDs,
     data = ws_monitor,
+    tlim = tlim,
     columns = columns,
     title = title,
     xLabel = xLabel,
