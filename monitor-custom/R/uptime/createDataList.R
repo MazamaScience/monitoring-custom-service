@@ -60,6 +60,21 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
 
   #TODO: handle empty
 
+  # ----- Load 'free -h' data -------------------------------------------------
+  
+  # url <- 'https://test-c1.airfire.org/logs/free_memory.log'
+  # col_names <- c('datetime','dummy','total','used','free','shared','buff_cache','available')
+  # df <- readr::read_fwf(url, readr::fwf_empty(url, col_names=col_names))
+  # df$dummy <- NULL
+  # 
+  # now <- lubridate::now('UTC')
+  # starttime <- now - lubridate::ddays(7)
+  # tlim <- c(starttime, now)
+  # 
+  # yhi <- max(df$total, na.rm=TRUE)
+  # plot(df$datetime, df$used, las=1, xlim=tlim, ylim=c(0,yhi), type='s')
+  # points(df$datetime, df$total, type='s', lwd=2, col='gray50')
+
   # ----- Create data structures ----------------------------------------------
 
   # Create dataList
