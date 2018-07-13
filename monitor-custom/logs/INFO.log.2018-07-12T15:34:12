@@ -1,3 +1,0 @@
-INFO [2018-07-12 15:33:48] ----- /monitor-custom/dev/uptime -----
-ERROR [2018-07-12 15:33:48] Error in open.connection(con, "rb") : 
-  Could not resolve host: test-c2.airfire.org

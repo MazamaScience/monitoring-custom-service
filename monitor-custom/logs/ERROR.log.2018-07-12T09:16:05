@@ -1,5 +1,0 @@
-ERROR [2018-07-12 09:12:58] Error in open.connection(con, "rb") : HTTP error 404.
-ERROR [2018-07-12 09:13:09] Error in open.connection(con, "rb") : 
-  Could not resolve host: tools-c1.airfire.org
-ERROR [2018-07-12 09:13:17] Error in open.connection(con, "rb") : HTTP error 404.
-ERROR [2018-07-12 09:13:25] Error in open.connection(con, "rb") : HTTP error 404.

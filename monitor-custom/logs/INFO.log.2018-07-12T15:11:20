@@ -1,2 +1,0 @@
-INFO [2018-07-12 15:10:18] ----- /monitor-custom/dev/uptime -----
-ERROR [2018-07-12 15:10:20] Error in FUN(X[[i]], ...) : object 'datetime' not found

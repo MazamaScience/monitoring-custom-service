@@ -1,6 +1,0 @@
-INFO [2018-07-11 14:36:54] ----- /monitor-custom/dev/uptime -----
-ERROR [2018-07-11 14:36:55] Error in open.connection(con, "rb") : 
-  Could not resolve host: test-c3.airfire.org
-INFO [2018-07-11 14:37:04] ----- /monitor-custom/dev/uptime -----
-ERROR [2018-07-11 14:37:04] Error in open.connection(con, "rb") : 
-  Could not resolve host: test-c3.airfire.org

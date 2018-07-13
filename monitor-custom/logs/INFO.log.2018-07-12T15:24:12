@@ -1,2 +1,0 @@
-INFO [2018-07-12 15:22:32] ----- /monitor-custom/dev/uptime -----
-ERROR [2018-07-12 15:22:33] Error : Invalid input: time_trans works with objects of class POSIXct only

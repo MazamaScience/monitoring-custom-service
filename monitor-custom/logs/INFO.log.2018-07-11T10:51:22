@@ -1,3 +1,0 @@
-INFO [2018-07-11 10:46:49] ----- monitor-custom/dev -----
-INFO [2018-07-11 10:50:20] ----- /monitor-custom/dev/uptime -----
-ERROR [2018-07-11 10:50:21] Error in loadNamespace(name) : there is no package called ‘ggthemes’

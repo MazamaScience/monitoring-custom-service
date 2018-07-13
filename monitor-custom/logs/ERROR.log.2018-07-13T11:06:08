@@ -1,2 +1,0 @@
-ERROR [2018-07-13 11:05:27] Error in if (endYear - startYear > 0) { : 
-  missing value where TRUE/FALSE needed

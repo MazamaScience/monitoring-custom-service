@@ -1,4 +1,0 @@
-ERROR [2018-07-12 15:41:10] Error in open.connection(con, "rb") : 
-  Could not resolve host: test-c2.airfire.org
-ERROR [2018-07-12 15:41:45] Error in open.connection(con, "rb") : 
-  Could not resolve host: test-c2.airfire.org

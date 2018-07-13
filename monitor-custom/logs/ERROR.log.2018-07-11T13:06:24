@@ -1,2 +1,0 @@
-ERROR [2018-07-11 13:05:49] Error in readr::read_lines(upTimeLogUrl) : 
-  object 'upTimeLogUrl' not found

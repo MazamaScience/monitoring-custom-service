@@ -1,9 +1,0 @@
-INFO [2018-07-12 09:19:44] ----- /monitor-custom/dev/uptime -----
-INFO [2018-07-12 09:19:46] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/a65a7d64c16f6f55f9a58a87b874bcca.png
-INFO [2018-07-12 09:19:46] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/a65a7d64c16f6f55f9a58a87b874bcca.json
-INFO [2018-07-12 09:22:57] ----- /monitor-custom/dev/uptime -----
-ERROR [2018-07-12 09:22:57] Error in open.connection(con, "rb") : 
-  Could not resolve host: tools-c1.airfire.org
-INFO [2018-07-12 09:23:19] ----- /monitor-custom/dev/uptime -----
-INFO [2018-07-12 09:23:20] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/a0e4f82b458bb3121e337287bb637d74.png
-INFO [2018-07-12 09:23:20] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/a0e4f82b458bb3121e337287bb637d74.json

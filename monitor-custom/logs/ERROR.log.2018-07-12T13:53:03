@@ -1,2 +1,0 @@
-ERROR [2018-07-12 13:52:14] Error in print.default("WOOOOOOO: ", uptimeData$datetime[0]) : 
-  invalid 'digits' argument

@@ -1,1 +1,0 @@
-ERROR [2018-07-12 10:11:13] Error in grDevices::col2rgb(colour, TRUE) : invalid color name ''

@@ -1,3 +1,0 @@
-INFO [2018-07-12 13:10:34] ----- /monitor-custom/dev/uptime -----
-ERROR [2018-07-12 13:10:36] Error in grid.Call.graphics(C_segments, x$x0, x$y0, x$x1, x$y1, x$arrow) : 
-  invalid line type: must be length 2, 4, 6 or 8
