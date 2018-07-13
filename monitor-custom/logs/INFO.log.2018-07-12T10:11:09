@@ -1,0 +1,2 @@
+INFO [2018-07-12 10:10:58] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-12 10:10:59] Error in grDevices::col2rgb(colour, TRUE) : invalid color name ''

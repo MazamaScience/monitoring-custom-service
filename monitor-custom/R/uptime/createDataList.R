@@ -14,9 +14,6 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
 
   # ----- Load data -----------------------------------------------------------
 
-  serverID <- infoList$serverid
-  logUrl <- paste0('https://', serverID, '.airfire.org/logs/uptime.log')
-
   # NOTE:  Need to watch out for reboots that change the number of commas
   #
   # 2018-06-07 18:16:01 up 35 days, 59 min,  0 users,  load average: 0.05, 0.01, 0.09
@@ -24,8 +21,11 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   #
   # Sigh ... Why is nothing ever easy?
   
+  serverID <- infoList$serverid
+  uptimeLogUrl <- paste0('https://', serverID, '.airfire.org/logs/uptime.log')
+  
   # Instead, load the data as lines for further parsing
-  lines <- readr::read_lines(logUrl)
+  lines <- readr::read_lines(uptimeLogUrl)
 
   # Pull out elements using
   regex_datetime <- "([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})"
@@ -62,24 +62,33 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
 
   # ----- Load 'free -h' data -------------------------------------------------
   
-  # url <- 'https://test-c1.airfire.org/logs/free_memory.log'
-  # col_names <- c('datetime','dummy','total','used','free','shared','buff_cache','available')
-  # df <- readr::read_fwf(url, readr::fwf_empty(url, col_names=col_names))
-  # df$dummy <- NULL
-  # 
-  # now <- lubridate::now('UTC')
-  # starttime <- now - lubridate::ddays(7)
-  # tlim <- c(starttime, now)
-  # 
-  # yhi <- max(df$total, na.rm=TRUE)
-  # plot(df$datetime, df$used, las=1, xlim=tlim, ylim=c(0,yhi), type='s')
-  # points(df$datetime, df$total, type='s', lwd=2, col='gray50')
+  memoryData = NULL
+  
+  result <- try({
+    memoryLogUrl <- paste0('https://', serverID, '.airfire.org/logs/free_memory.log')
+    col_names <- c('datetime','dummy','total','used','free','shared','buff_cache','available')
+    memoryData <- readr::read_fwf(memoryLogUrl, readr::fwf_empty(memoryLogUrl, col_names=col_names))
+    memoryData$dummy <- NULL
+    
+    memoryData <-
+      memoryData %>%
+      filter(datetime >= startDate)
+  }, silent=TRUE)
+  
+  # Create dummy data to use if the memory log is unavailible 
+  if ( "try-error" %in% class(result) ) {
+    err_msg <- geterrmessage()
+    # Could log the error message
+    memoryData <- data.frame(Sys.time(), 0, 0)
+    colnames(memoryData) <- c("datetime", "total", "used")
+  }
 
   # ----- Create data structures ----------------------------------------------
 
   # Create dataList
   dataList <- list(
-    uptimeData = uptimeData
+    uptimeData = uptimeData,
+    memoryData = memoryData
   )
 
   return(dataList)

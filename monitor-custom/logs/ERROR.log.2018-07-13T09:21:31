@@ -1,0 +1,2 @@
+ERROR [2018-07-13 09:19:37] Error in open.connection(con, "rb") : 
+  Could not resolve host: test-c3.airfire.org

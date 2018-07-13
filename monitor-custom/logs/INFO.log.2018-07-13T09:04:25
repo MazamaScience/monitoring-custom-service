@@ -1,0 +1,6 @@
+INFO [2018-07-12 15:42:36] ----- /monitor-custom/dev/uptime -----
+INFO [2018-07-12 15:42:38] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/c9c2aefa9817c20595dd184823ae3754.png
+INFO [2018-07-12 15:42:38] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/c9c2aefa9817c20595dd184823ae3754.json
+INFO [2018-07-12 15:42:44] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-12 15:42:44] Error in open.connection(con, "rb") : 
+  Could not resolve host: test-c2.airfire.org

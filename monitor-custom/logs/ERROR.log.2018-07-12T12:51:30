@@ -1,0 +1,2 @@
+ERROR [2018-07-12 12:51:03] Error in grDevices::col2rgb(colour, TRUE) : 
+  invalid color name 'brickred2'

@@ -1,0 +1,6 @@
+INFO [2018-07-11 11:38:00] ----- monitor-custom/dev -----
+INFO [2018-07-11 11:38:04] ----- monitor-custom/dev/api -----
+INFO [2018-07-11 11:38:09] ----- /monitor-custom/dev/apio -----
+ERROR [2018-07-11 11:38:09] Error in file(filename, "r", encoding = encoding) : 
+  cannot open the connection
+INFO [2018-07-11 11:38:17] ----- monitor-custom/dev/api -----

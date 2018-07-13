@@ -1,0 +1,3 @@
+ERROR [2018-07-13 09:11:34] Error in open.connection(con, "rb") : 
+  Could not resolve host: test-c2.airfire.org
+ERROR [2018-07-13 09:11:43] Error in ggplot() : could not find function "ggplot"

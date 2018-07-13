@@ -1,0 +1,4 @@
+INFO [2018-07-11 13:05:44] ----- monitor-custom/dev/api -----
+INFO [2018-07-11 13:05:49] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-11 13:05:49] Error in readr::read_lines(upTimeLogUrl) : 
+  object 'upTimeLogUrl' not found

@@ -1,0 +1,22 @@
+DEBUG [2018-07-13 09:07:46] R version 3.5.1 (2018-07-02)
+DEBUG [2018-07-13 09:07:46] Platform: x86_64-apple-darwin15.6.0 (64-bit)
+DEBUG [2018-07-13 09:07:46] Running under: macOS Sierra 10.12.6
+DEBUG [2018-07-13 09:07:46] 
+DEBUG [2018-07-13 09:07:46] Matrix products: default
+DEBUG [2018-07-13 09:07:46] BLAS: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+DEBUG [2018-07-13 09:07:46] LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+DEBUG [2018-07-13 09:07:46] 
+DEBUG [2018-07-13 09:07:46] locale:
+DEBUG [2018-07-13 09:07:46] [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+DEBUG [2018-07-13 09:07:46] 
+DEBUG [2018-07-13 09:07:46] attached base packages:
+DEBUG [2018-07-13 09:07:46] [1] stats     graphics  grDevices utils     datasets  methods   base     
+DEBUG [2018-07-13 09:07:46] 
+DEBUG [2018-07-13 09:07:46] other attached packages:
+DEBUG [2018-07-13 09:07:46] [1] PWFSLSmoke_1.0.20        MazamaSpatialUtils_0.5.2 sp_1.3-1                 maps_3.3.0               magrittr_1.5             dplyr_0.7.6             
+DEBUG [2018-07-13 09:07:46] 
+DEBUG [2018-07-13 09:07:46] loaded via a namespace (and not attached):
+DEBUG [2018-07-13 09:07:46]  [1] Rcpp_0.12.17         bindr_0.1.1          tidyselect_0.2.4     lattice_0.20-35      R6_2.2.2             rlang_0.2.1          stringr_1.3.1       
+DEBUG [2018-07-13 09:07:46]  [8] tools_3.5.1          rgdal_1.3-3          grid_3.5.1           lambda.r_1.2.3       futile.logger_1.4.3  assertthat_0.2.0     digest_0.6.15       
+DEBUG [2018-07-13 09:07:46] [15] tibble_1.4.2         bindrcpp_0.2.2       formatR_1.5          purrr_0.2.5          mapproj_1.2.6        futile.options_1.0.1 glue_1.2.0          
+DEBUG [2018-07-13 09:07:46] [22] stringi_1.2.3        compiler_3.5.1       pillar_1.2.3         lubridate_1.7.4      pkgconfig_2.0.1     

@@ -1,0 +1,2 @@
+INFO [2018-07-12 13:14:23] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-12 13:14:26] Error : Cannot add ggproto objects together. Did you forget to add this object to a ggplot object?

@@ -1,0 +1,2 @@
+INFO [2018-07-12 10:42:25] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-12 10:42:26] Error : Insufficient values in manual scale. 3 needed but only 2 provided.

@@ -1,0 +1,108 @@
+DEBUG [2018-07-11 14:29:31] R version 3.5.1 (2018-07-02)
+DEBUG [2018-07-11 14:29:31] Platform: x86_64-apple-darwin15.6.0 (64-bit)
+DEBUG [2018-07-11 14:29:31] Running under: macOS Sierra 10.12.6
+DEBUG [2018-07-11 14:29:31] 
+DEBUG [2018-07-11 14:29:31] Matrix products: default
+DEBUG [2018-07-11 14:29:31] BLAS: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+DEBUG [2018-07-11 14:29:31] LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+DEBUG [2018-07-11 14:29:31] 
+DEBUG [2018-07-11 14:29:31] locale:
+DEBUG [2018-07-11 14:29:31] [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+DEBUG [2018-07-11 14:29:31] 
+DEBUG [2018-07-11 14:29:31] attached base packages:
+DEBUG [2018-07-11 14:29:31] [1] stats     graphics  grDevices utils     datasets  methods   base     
+DEBUG [2018-07-11 14:29:31] 
+DEBUG [2018-07-11 14:29:31] other attached packages:
+DEBUG [2018-07-11 14:29:31]  [1] bindrcpp_0.2.2           stringr_1.3.1            digest_0.6.15            MazamaWebUtils_0.1.5     jug_0.1.7                PWFSLSmokePlots_0.3.3   
+DEBUG [2018-07-11 14:29:31]  [7] PWFSLSmoke_1.0.20        MazamaSpatialUtils_0.5.2 sp_1.3-1                 maps_3.3.0               magrittr_1.5             ggplot2_3.0.0           
+DEBUG [2018-07-11 14:29:31] [13] dplyr_0.7.6             
+DEBUG [2018-07-11 14:29:31] 
+DEBUG [2018-07-11 14:29:31] loaded via a namespace (and not attached):
+DEBUG [2018-07-11 14:29:31]  [1] Rcpp_0.12.17         later_0.7.3          formatR_1.5          pillar_1.2.3         compiler_3.5.1       futile.logger_1.4.3  plyr_1.8.4          
+DEBUG [2018-07-11 14:29:31]  [8] bindr_0.1.1          futile.options_1.0.1 base64enc_0.1-3      tools_3.5.1          jsonlite_1.5         lubridate_1.7.4      tibble_1.4.2        
+DEBUG [2018-07-11 14:29:31] [15] gtable_0.2.0         lattice_0.20-35      pkgconfig_2.0.1      rlang_0.2.1          cli_1.0.0            rstudioapi_0.7       mapproj_1.2.6       
+DEBUG [2018-07-11 14:29:31] [22] curl_3.2             rgdal_1.3-3          withr_2.1.2          hms_0.4.2            grid_3.5.1           tidyselect_0.2.4     glue_1.2.0          
+DEBUG [2018-07-11 14:29:31] [29] R6_2.2.2             readr_1.1.1          lambda.r_1.2.3       purrr_0.2.5          ggthemes_3.5.0       webutils_0.6         promises_1.0.1      
+DEBUG [2018-07-11 14:29:31] [36] scales_0.5.0         assertthat_0.2.0     colorspace_1.3-2     httpuv_1.4.4.2       labeling_0.3         utf8_1.1.4           stringi_1.2.3       
+DEBUG [2018-07-11 14:29:31] [43] lazyeval_0.2.1       munsell_0.5.0        crayon_1.3.4        
+INFO [2018-07-11 14:29:34] ----- /monitor-custom/dev/uptime -----
+TRACE [2018-07-11 14:29:34] ----- createInfoList() -----
+DEBUG [2018-07-11 14:29:34] req$params
+DEBUG [2018-07-11 14:29:34] List of 2
+DEBUG [2018-07-11 14:29:34]  $ serverid    : chr "tools-c2"
+DEBUG [2018-07-11 14:29:34]  $ lookbackdays: chr "8"
+TRACE [2018-07-11 14:29:34] ----- createDataList() -----
+TRACE [2018-07-11 14:29:35] ----- createTextList() -----
+TRACE [2018-07-11 14:29:35] ----- createProduct() [uptime] -----
+INFO [2018-07-11 14:29:35] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/27bfdbd7179d8de137716c8c6ed9cfb3.png
+DEBUG [2018-07-11 14:29:35] writing /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/27bfdbd7179d8de137716c8c6ed9cfb3.json
+INFO [2018-07-11 14:29:35] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/27bfdbd7179d8de137716c8c6ed9cfb3.json
+INFO [2018-07-11 14:29:43] ----- /monitor-custom/dev/uptime -----
+TRACE [2018-07-11 14:29:43] ----- createInfoList() -----
+DEBUG [2018-07-11 14:29:43] req$params
+DEBUG [2018-07-11 14:29:43] List of 2
+DEBUG [2018-07-11 14:29:43]  $ serverid    : chr "tools-c2"
+DEBUG [2018-07-11 14:29:43]  $ lookbackdays: chr "3"
+TRACE [2018-07-11 14:29:43] ----- createDataList() -----
+TRACE [2018-07-11 14:29:45] ----- createTextList() -----
+TRACE [2018-07-11 14:29:45] ----- createProduct() [uptime] -----
+INFO [2018-07-11 14:29:45] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/5787a0711a51ffaeb081a8e3fec39ce8.png
+DEBUG [2018-07-11 14:29:45] writing /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/5787a0711a51ffaeb081a8e3fec39ce8.json
+INFO [2018-07-11 14:29:45] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/5787a0711a51ffaeb081a8e3fec39ce8.json
+INFO [2018-07-11 14:33:36] ----- /monitor-custom/dev/uptime -----
+TRACE [2018-07-11 14:33:36] ----- createInfoList() -----
+DEBUG [2018-07-11 14:33:36] req$params
+DEBUG [2018-07-11 14:33:36] List of 2
+DEBUG [2018-07-11 14:33:36]  $ serverid    : chr "tools-c1"
+DEBUG [2018-07-11 14:33:36]  $ lookbackdays: chr "3"
+TRACE [2018-07-11 14:33:36] ----- createDataList() -----
+ERROR [2018-07-11 14:33:36] Error in open.connection(con, "rb") : 
+  Could not resolve host: tools-c1.airfire.org
+INFO [2018-07-11 14:33:48] ----- /monitor-custom/dev/uptime -----
+TRACE [2018-07-11 14:33:48] ----- createInfoList() -----
+DEBUG [2018-07-11 14:33:48] req$params
+DEBUG [2018-07-11 14:33:48] List of 2
+DEBUG [2018-07-11 14:33:48]  $ serverid    : chr "tools-c2"
+DEBUG [2018-07-11 14:33:48]  $ lookbackdays: chr "3"
+TRACE [2018-07-11 14:33:48] ----- createDataList() -----
+TRACE [2018-07-11 14:33:49] ----- createTextList() -----
+TRACE [2018-07-11 14:33:49] ----- createProduct() [uptime] -----
+INFO [2018-07-11 14:33:50] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/5d1cac0388a4347c5b768c3863ec0f16.png
+DEBUG [2018-07-11 14:33:50] writing /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/5d1cac0388a4347c5b768c3863ec0f16.json
+INFO [2018-07-11 14:33:50] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/5d1cac0388a4347c5b768c3863ec0f16.json
+INFO [2018-07-11 14:33:56] ----- /monitor-custom/dev/uptime -----
+TRACE [2018-07-11 14:33:56] ----- createInfoList() -----
+DEBUG [2018-07-11 14:33:56] req$params
+DEBUG [2018-07-11 14:33:56] List of 2
+DEBUG [2018-07-11 14:33:56]  $ serverid    : chr "tools-c3"
+DEBUG [2018-07-11 14:33:56]  $ lookbackdays: chr "3"
+TRACE [2018-07-11 14:33:57] ----- createDataList() -----
+TRACE [2018-07-11 14:33:58] ----- createTextList() -----
+TRACE [2018-07-11 14:33:58] ----- createProduct() [uptime] -----
+INFO [2018-07-11 14:33:58] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/971d55bf8ea0eeb2205c8ba35a4870c0.png
+DEBUG [2018-07-11 14:33:58] writing /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/971d55bf8ea0eeb2205c8ba35a4870c0.json
+INFO [2018-07-11 14:33:58] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/971d55bf8ea0eeb2205c8ba35a4870c0.json
+INFO [2018-07-11 14:34:46] ----- /monitor-custom/dev/uptime -----
+TRACE [2018-07-11 14:34:46] ----- createInfoList() -----
+DEBUG [2018-07-11 14:34:46] req$params
+DEBUG [2018-07-11 14:34:46] List of 2
+DEBUG [2018-07-11 14:34:46]  $ serverid    : chr "tools-c3"
+DEBUG [2018-07-11 14:34:46]  $ lookbackdays: chr "3"
+TRACE [2018-07-11 14:34:46] ----- createDataList() -----
+TRACE [2018-07-11 14:34:47] ----- createTextList() -----
+TRACE [2018-07-11 14:34:47] ----- createProduct() [uptime] -----
+INFO [2018-07-11 14:34:47] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/346a25fb084dcfdc24407c22aba223b1.png
+DEBUG [2018-07-11 14:34:47] writing /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/346a25fb084dcfdc24407c22aba223b1.json
+INFO [2018-07-11 14:34:47] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/346a25fb084dcfdc24407c22aba223b1.json
+INFO [2018-07-11 14:34:49] ----- /monitor-custom/dev/uptime -----
+TRACE [2018-07-11 14:34:50] ----- createInfoList() -----
+DEBUG [2018-07-11 14:34:50] req$params
+DEBUG [2018-07-11 14:34:50] List of 2
+DEBUG [2018-07-11 14:34:50]  $ serverid    : chr "tools-c2"
+DEBUG [2018-07-11 14:34:50]  $ lookbackdays: chr "3"
+TRACE [2018-07-11 14:34:50] ----- createDataList() -----
+TRACE [2018-07-11 14:34:51] ----- createTextList() -----
+TRACE [2018-07-11 14:34:51] ----- createProduct() [uptime] -----
+INFO [2018-07-11 14:34:51] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/6e12fdeb1443b090b86cab1f437ac956.png
+DEBUG [2018-07-11 14:34:51] writing /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/6e12fdeb1443b090b86cab1f437ac956.json
+INFO [2018-07-11 14:34:51] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/6e12fdeb1443b090b86cab1f437ac956.json

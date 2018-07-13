@@ -1,0 +1,5 @@
+ERROR [2018-07-11 13:33:37] Error in source(productScript) : 
+  R/uptime/createProduct.R:89:1: unexpected '}'
+88:   return(invisible())
+89: }
+    ^

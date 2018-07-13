@@ -1,0 +1,2 @@
+ERROR [2018-07-12 09:22:57] Error in open.connection(con, "rb") : 
+  Could not resolve host: tools-c1.airfire.org

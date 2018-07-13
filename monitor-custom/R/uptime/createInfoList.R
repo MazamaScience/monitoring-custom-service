@@ -19,7 +19,7 @@ if ( FALSE ) {
   
   req <- list(
     params = list(
-      serverid = "tools-c3",
+      serverid = "tools-c1",
       lookbackdays = "3"
     )
   )

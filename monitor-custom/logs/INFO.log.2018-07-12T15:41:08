@@ -1,0 +1,24 @@
+INFO [2018-07-12 15:34:15] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-12 15:34:15] Error in open.connection(con, "rb") : 
+  Could not resolve host: test-c2.airfire.org
+INFO [2018-07-12 15:34:32] ----- /monitor-custom/dev/uptime -----
+INFO [2018-07-12 15:34:34] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/c24721fee3399c219889d9da31850f9e.png
+INFO [2018-07-12 15:34:34] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/c24721fee3399c219889d9da31850f9e.json
+INFO [2018-07-12 15:36:19] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-12 15:36:19] Error in open.connection(con, "rb") : 
+  Could not resolve host: test-c2.airfire.org
+INFO [2018-07-12 15:38:11] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-12 15:38:12] Error in open.connection(con, "rb") : 
+  Could not resolve host: test-c2.airfire.org
+INFO [2018-07-12 15:38:16] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-12 15:38:16] Error in open.connection(con, "rb") : 
+  Could not resolve host: test-c4.airfire.org
+INFO [2018-07-12 15:38:22] ----- /monitor-custom/dev/uptime -----
+INFO [2018-07-12 15:38:25] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/b47a5f0cccbca9a537d6eba711a58936.png
+INFO [2018-07-12 15:38:25] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/b47a5f0cccbca9a537d6eba711a58936.json
+INFO [2018-07-12 15:39:05] ----- /monitor-custom/dev/uptime -----
+INFO [2018-07-12 15:39:08] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/28578f7cd145ab3d3bef90cca3c4a300.png
+INFO [2018-07-12 15:39:08] successfully created /Users/tate/Projects/monitoring-custom-service/monitor-custom/output/28578f7cd145ab3d3bef90cca3c4a300.json
+INFO [2018-07-12 15:39:15] ----- /monitor-custom/dev/uptime -----
+ERROR [2018-07-12 15:39:16] Error in open.connection(con, "rb") : 
+  Could not resolve host: test-c2.airfire.org

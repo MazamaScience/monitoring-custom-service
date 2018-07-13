@@ -1,0 +1,5 @@
+ERROR [2018-07-11 13:32:41] Error in source(productScript) : 
+  R/uptime/createProduct.R:49:5: unexpected 'else'
+48:       ggthemes::theme_hc()
+49:   } else
+        ^
