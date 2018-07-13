@@ -27,8 +27,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   uptimeData = NULL
   
   result <- try({
-    #uptimeLogUrl <- paste0('https://', serverID, '.airfire.org/logs/uptime.log')
-    uptimeLogUrl <- paste0('https://', 'tools-c1', '.airfire.org/logs/uptime.log')
+    uptimeLogUrl <- paste0('https://', serverID, '.airfire.org/logs/uptime.log')
     
     # Instead, load the data as lines for further parsing
     lines <- readr::read_lines(uptimeLogUrl)
@@ -65,8 +64,8 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   # Create dummy data to use if the uptime log is unavailible 
   if ("try-error" %in% class(result)) {
     err_msg = geterrmessage()
-    # Log error message
-    uptimeData <- data.frame(Sys.time(), 0)
+    logger.trace(err_msg)
+    #uptimeData <- data.frame(Sys.time(), 0)
     colnames(uptimeData) <- c("datetime", "load_15_min")
   }
 
@@ -77,8 +76,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   memoryData = NULL
   
   result <- try({
-    #memoryLogUrl <- paste0('https://', serverID, '.airfire.org/logs/free_memory.log')
-    memoryLogUrl <- paste0('https://', 'tools-c1', '.airfire.org/logs/free_memory.log')
+    memoryLogUrl <- paste0('https://', serverID, '.airfire.org/logs/free_memory.log')
     col_names <- c('datetime','dummy','total','used','free','shared','buff_cache','available')
     memoryData <- readr::read_fwf(memoryLogUrl, readr::fwf_empty(memoryLogUrl, col_names=col_names))
     memoryData$dummy <- NULL
@@ -89,27 +87,20 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   }, silent=TRUE)
   
   # Create dummy data to use if the memory log is unavailible 
-  if ( "try-error" %in% class(result) ) {
+  if ("try-error" %in% class(result)) {
     err_msg <- geterrmessage()
-    print(err_msg)
-    # Log error message
+    logger.trace(err_msg)
     memoryData <- data.frame(Sys.time(), 0, 0)
     colnames(memoryData) <- c("datetime", "total", "used")
   }
 
   # ----- Create data structures ----------------------------------------------
 
-  
-  
-  
   # Create dataList
   dataList <- list(
     uptimeData = uptimeData,
     memoryData = memoryData
   )
-
-  View(uptimeData)
-  View(memoryData)
   
   return(dataList)
 }

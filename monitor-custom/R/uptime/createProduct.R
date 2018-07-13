@@ -35,14 +35,6 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   # Memory data
   memoryData <- dataList$memoryData
   
-  startYear <- as.integer(format(uptimeData[nrow(uptimeData),1][[1]], "%Y"))
-  endYear <- as.integer(format(uptimeData[1,1][[1]], "%Y"))
-  xLabel <- paste0(endYear)
-  
-  if (endYear - startYear > 0) {
-    xLabel = paste0(startYear, "-", endYear)
-  }
-  
   # ----- Create plot ---------------------------------------------------------
 
   if (FALSE) {
@@ -55,7 +47,24 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
         y = "Load (15 Minute Average)") +
       ggthemes::theme_hc()
   } else {
-    primary_y_lim = max(1.0, max(uptimeData$load_15_min) * 1.1)
+    # Determine what year(s) should be displayed on the x axis
+    startYear <- as.integer(format(uptimeData[nrow(uptimeData),1][[1]], "%Y"))
+    endYear <- as.integer(format(uptimeData[1,1][[1]], "%Y"))
+    xLabel <- paste0(endYear)
+    if (endYear - startYear > 0) {
+      xLabel = paste0(startYear, "-", endYear)
+    }
+    
+    # Set uptime scale limit to 1.0 by default, max if the data exceedds 1, or to the value given by the user
+    if (ymax < 0.02) {
+      primary_y_lim = max(1.0, max(uptimeData$load_15_min) * 1.1)
+    } else {
+      primary_y_lim = ymax;
+    }
+    
+    
+    
+    # Scale the memory axis so the total memory matches the height of the uptime axis
     scale_factor = (2100) / primary_y_lim; 
     
     basePlot <- ggplot() +
@@ -64,7 +73,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       geom_line(data = memoryData, aes(x = datetime, y = total / scale_factor, linetype = "Total"), size = 1.3, color = "goldenrod1") + 
       scale_linetype_manual("Memory", values = c("Total" = "twodash", "Used" = "solid")) +
       scale_colour_manual("Load", values = c("Server load" = "black")) +
-      guides(color = guide_legend(order = 1, label.position = "right"), linetype = guide_legend(order = 2, label.position = "right")) + 
+      guides(color = guide_legend(order = 1), linetype = guide_legend(order = 2)) + 
       theme(legend.margin = unit(12, "cm")) + 
       scale_y_continuous(sec.axis = sec_axis(~.*scale_factor/1000, name = "\nMemory Usage (GB)\n")) +
       coord_cartesian(ylim = c(0, primary_y_lim)) +
