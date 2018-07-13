@@ -73,8 +73,9 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       geom_line(data = memoryData, aes(x = datetime, y = total / scale_factor, linetype = "Total"), size = 1.3, color = "goldenrod1") + 
       scale_linetype_manual("Memory", values = c("Total" = "twodash", "Used" = "solid")) +
       scale_colour_manual("Load", values = c("Server load" = "black")) +
-      guides(color = guide_legend(order = 1), linetype = guide_legend(order = 2)) + 
-      theme(legend.margin = unit(12, "cm")) + 
+      #guides(color = guide_legend(order = 1, label.position = "left"), linetype = guide_legend(order = 2, label.position = "right")) + 
+      #guides(color = guide_legend(order = 1), linetype = guide_legend(order = 2)) + 
+      #theme(legend.margin = unit(width, "cm")) + 
       scale_y_continuous(sec.axis = sec_axis(~.*scale_factor/1000, name = "\nMemory Usage (GB)\n")) +
       coord_cartesian(ylim = c(0, primary_y_lim)) +
       theme(legend.position="right") + 

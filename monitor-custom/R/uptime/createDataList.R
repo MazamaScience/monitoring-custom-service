@@ -65,7 +65,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   if ("try-error" %in% class(result)) {
     err_msg = geterrmessage()
     logger.trace(err_msg)
-    #uptimeData <- data.frame(Sys.time(), 0)
+    uptimeData <- data.frame(Sys.time(), 0)
     colnames(uptimeData) <- c("datetime", "load_15_min")
   }
 
