@@ -66,7 +66,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     
     
     # Scale the memory axis so the total memory matches the height of the uptime axis
-    scale_factor = (2000) / primary_y_lim
+    scale_factor = max(memoryData$total, na.rm=TRUE) / primary_y_lim
     
     basePlot <- ggplot() +
       geom_step(data = uptimeData, aes(x = datetime, y = load_15_min, color = "Server load")) +
