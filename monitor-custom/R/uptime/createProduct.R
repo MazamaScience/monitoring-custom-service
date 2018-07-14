@@ -37,6 +37,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   
   # ----- Create plot ---------------------------------------------------------
 
+  # TODO:  Clean up this debugging code. Shouldn't have "if (FALSE)" *inside* a function.
   if (FALSE) {
     basePlot <- ggplot(uptimeData, aes(x = datetime)) +
       geom_step(aes(y = load_15_min)) +
@@ -55,17 +56,17 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       xLabel = paste0(startYear, "-", endYear)
     }
     
-    # Set uptime scale limit to 1.0 by default, max if the data exceedds 1, or to the value given by the user
+    # Set uptime scale limit to 1.0 by default, max if the data exceeds 1, or to the value given by the user
     if (ymax < 0.02) {
       primary_y_lim = max(1.0, max(uptimeData$load_15_min) * 1.1)
     } else {
-      primary_y_lim = ymax;
+      primary_y_lim = ymax
     }
     
     
     
     # Scale the memory axis so the total memory matches the height of the uptime axis
-    scale_factor = (2100) / primary_y_lim; 
+    scale_factor = (2000) / primary_y_lim
     
     basePlot <- ggplot() +
       geom_step(data = uptimeData, aes(x = datetime, y = load_15_min, color = "Server load")) +

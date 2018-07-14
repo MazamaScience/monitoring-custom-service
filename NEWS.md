@@ -6,6 +6,14 @@
 
 ## Version 1.1 -- dailyhourlybarplot
 
+### monitor-custom 1.1.4
+
+ * uptime service now displays free_memory
+ 
+### monitor-custom 1.1.3
+
+ * updated to use new PWFSLSmokePlots
+ 
 ### monitor-custom 1.1.2
 
  * improved styling for `dailyhourlybarplot()`

@@ -18,6 +18,8 @@
 # NOTE:  the actual commands that are executed will evalute the backticked command.
 DATE=`date --rfc-3339='date'`
 
+VERSION=1.1.4
+
 # NOTE:  The SERVICE_PATH should match that found in Dockerfile and Dockerfile-test
 SERVICE_PATH_PRODUCTION=monitor-custom/v1
 SERVICE_PATH_TEST=monitor-custom/test
@@ -36,7 +38,7 @@ desktop_download_data:
 # NOTE:  DESKTOP reuses Dockerfile-test but has a separate docker-compse-desktop.yml
 desktop_build:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build -t monitor-custom-desktop:v1.1.3 -t monitor-custom-desktop:latest -f Dockerfile-test .
+	cd monitor-custom; docker build -t monitor-custom-desktop:v$(VERSION) -t monitor-custom-desktop:latest -f Dockerfile-test .
 
 desktop_up:
 	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop up -d
@@ -56,11 +58,11 @@ desktop_reboot: desktop_down desktop_download_data desktop_build desktop_up
 
 test_build_no-cache:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build --no-cache -t monitor-custom-test:v1.1.3 -t monitor-custom-test:latest -f Dockerfile-test .
+	cd monitor-custom; docker build --no-cache -t monitor-custom-test:v$(VERSION) -t monitor-custom-test:latest -f Dockerfile-test .
 
 test_build:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build -t monitor-custom-test:v1.1.3 -t monitor-custom-test:latest -f Dockerfile-test .
+	cd monitor-custom; docker build -t monitor-custom-test:v$(VERSION) -t monitor-custom-test:latest -f Dockerfile-test .
 
 test_up:
 	docker-compose -f docker-compose-test.yml -p monitorcustomtest up -d
@@ -86,11 +88,11 @@ test_reboot: test_down test_build test_up
 
 production_build_no-cache:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build --no-cache -t monitor-custom-v1:v1.1.3 -t monitor-custom-v1:latest -f Dockerfile-v1 .
+	cd monitor-custom; docker build --no-cache -t monitor-custom-v1:v$(VERSION) -t monitor-custom-v1:latest -f Dockerfile-v1 .
 
 production_build:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build -t monitor-custom-v1:v1.1.3 -t monitor-custom-v1:latest -f Dockerfile-v1 .
+	cd monitor-custom; docker build -t monitor-custom-v1:v$(VERSION) -t monitor-custom-v1:latest -f Dockerfile-v1 .
 
 production_up:
 	docker-compose -f docker-compose-v1.yml -p monitorcustomv1 up -d

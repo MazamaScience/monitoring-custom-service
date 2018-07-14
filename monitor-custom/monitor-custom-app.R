@@ -22,6 +22,18 @@
 # NOTE:  Use library() so that these package versions will be documented by
 #        sessionInfo()
 
+suppressPackageStartupMessages({
+  library(methods)                # always included for Rscripts
+  library(jug)                    # web service framework
+  library(MazamaWebUtils)         # cache management
+  library(digest)                 # creation of uniqueID
+  library(stringr)                # manipulation of data in InfoList
+  
+  library(PWFSLSmoke)             # workhorse package for everything smoke
+  #   related. Includes magrittr and dplyr
+  library(PWFSLSmokePlots)        # Custom plots for ws_monitor data
+})
+
 # Load all shared utility functions
 #   - createAPIList: create a list of API parameters
 #   - setMonitorIDs: convert monitor ids t standard format
@@ -36,7 +48,7 @@ for (file in utilFiles) {
 
 # Specify global (configurable) variables -------------------------------------
 
-VERSION <- "1.1.3" # 1 . dailyhourlybarplot . updated PWFSLSmokePlots package
+VERSION <- "1.1.4" # 1 . dailyhourlybarplot . uptime plot now displays free_memmory
 
 # Set up configurable variables
 
