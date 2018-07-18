@@ -35,7 +35,7 @@ EXPOSE 6661
 #######################################################################
 # app
 #
-# Setup for haze.airfire.org
+# Setup for AWS hosts
 
 # Environment variables ---------------
 
