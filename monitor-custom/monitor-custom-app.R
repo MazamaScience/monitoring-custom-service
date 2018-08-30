@@ -48,7 +48,7 @@ for (file in utilFiles) {
 
 # Specify global (configurable) variables -------------------------------------
 
-VERSION <- "1.1.4" # 1 . dailyhourlybarplot . uptime plot now displays free_memmory
+VERSION <- "1.1.5" # 1 . dailyhourlybarplot . logging environment variables
 
 # Set up configurable variables
 
@@ -124,6 +124,15 @@ if (Sys.getenv("JUG_HOST") == "") { # Running from RStudio
 
 # Capture session info
 logger.debug(capture.output(sessionInfo()))
+
+# Log environment variables
+logger.debug('JUG_HOST = %s', JUG_HOST)
+logger.debug('JUG_PORT = %s', JUG_PORT)
+logger.debug('SERVICE_PATH = %s', SERVICE_PATH)
+logger.debug('CACHE_DIR = %s', CACHE_DIR)
+logger.debug('CACHE_SIZE = %s', CACHE_SIZE)
+logger.debug('DATA_DIR = %s', DATA_DIR)
+logger.debug('LOG_DIR = %s', LOG_DIR)
 
 
 # ----- BEGIN jug app ---------------------------------------------------------

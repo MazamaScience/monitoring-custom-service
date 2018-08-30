@@ -14,11 +14,7 @@
 # Test these settings with:    sudo apache2ctl configtest
 # Reload these settings with:  sudo service apache2 reload
 
-# NOTE:  The commands that are echoed to the screen will contain this string but
-# NOTE:  the actual commands that are executed will evalute the backticked command.
-DATE=`date --rfc-3339='date'`
-
-VERSION=1.1.4
+VERSION=1.1.5
 
 # NOTE:  The SERVICE_PATH should match that found in Dockerfile and Dockerfile-test
 SERVICE_PATH_PRODUCTION=monitor-custom/v1

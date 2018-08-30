@@ -6,6 +6,11 @@
 
 ## Version 1.1 -- dailyhourlybarplot
 
+### monitor-custom 1.1.5
+
+ * logging environment variables
+ * updated API documentation
+ 
 ### monitor-custom 1.1.4
 
  * uptime service now displays free_memory

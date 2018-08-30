@@ -50,7 +50,7 @@ createAPIList <- function(name=NULL, version=NULL) {
           units = "units to determine graphic size [default = in; in|cm|mm]",
           outputfiletype = "file type of the output graphic [default = png; png|pdf]",
           responsetype = "response type [default = raw; raw|json]",
-          lookbackdays = "days of data to include [default = 7]",
+          lookbackdays = "days of data to include [default = 7, max=45]",
           language = "[not implemented] language code [default = en; en|es]"
         )
       )
