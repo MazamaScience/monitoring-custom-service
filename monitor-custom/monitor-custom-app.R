@@ -48,7 +48,7 @@ for (file in utilFiles) {
 
 # Specify global (configurable) variables -------------------------------------
 
-VERSION <- "1.1.5" # 1 . dailyhourlybarplot . logging environment variables
+VERSION <- "1.1.6" # 1 . dailyhourlybarplot . using PWFSLSmoke v1.0.29
 
 # Set up configurable variables
 
@@ -161,8 +161,8 @@ jug() %>%
   # regex ignores capitalization and matches zero or one final '/'
   get(paste0("/", SERVICE_PATH, "/[Aa][Pp][Ii]/?$"), function(req, res, err) {
 
-    logger.info("----- %s/api -----", SERVICE_PATH)
-
+    logger.info("----- %s -----", req$path)
+    
     json <- jsonlite::toJSON(
       createAPIList(SERVICE_PATH, VERSION),
       pretty = TRUE,
@@ -264,7 +264,7 @@ jug() %>%
           pretty = TRUE,
           auto_unbox = TRUE)
         write(json, infoList$jsonPath)
-        logger.info("successfully created %s", infoList$jsonPath)
+        logger.debug("successfully created %s", infoList$jsonPath)
 
       }, silent = TRUE)
       stopOnError(result)

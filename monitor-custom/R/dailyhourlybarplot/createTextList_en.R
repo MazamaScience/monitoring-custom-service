@@ -8,7 +8,7 @@
 
 createTextList <- function(dataList=NULL, infoList=NULL) {
 
-  logger.trace("----- createTextList() -----")
+  logger.debug("----- createTextList() -----")
 
   if ( is.null(dataList) ) stop(paste0("Required parameter 'dataList' is missing."), call. = FALSE)
   if ( is.null(infoList) ) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)

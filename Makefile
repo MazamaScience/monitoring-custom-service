@@ -14,7 +14,7 @@
 # Test these settings with:    sudo apache2ctl configtest
 # Reload these settings with:  sudo service apache2 reload
 
-VERSION=1.1.5
+VERSION=1.1.6
 
 # NOTE:  The SERVICE_PATH should match that found in Dockerfile and Dockerfile-test
 SERVICE_PATH_PRODUCTION=monitor-custom/v1
@@ -75,6 +75,12 @@ test_trace_log:
 test_debug_log:
 	cat /var/log/$(SERVICE_PATH_TEST)/app/DEBUG.log
 
+test_info_log:
+	cat /var/log/$(SERVICE_PATH_TEST)/app/INFO.log
+
+test_error_log:
+	cat /var/log/$(SERVICE_PATH_TEST)/app/ERROR.log
+
 test_bounce: test_down test_up
 
 test_reboot: test_down test_build test_up
@@ -104,6 +110,12 @@ production_trace_log:
 
 production_debug_log:
 	cat /var/log/$(SERVICE_PATH_PRODUCTION)/app/DEBUG.log
+
+production_info_log:
+	cat /var/log/$(SERVICE_PATH_PRODUCTION)/app/INFO.log
+
+production_error_log:
+	cat /var/log/$(SERVICE_PATH_PRODUCTION)/app/ERROR.log
 
 production_bounce: production_down production_up
 

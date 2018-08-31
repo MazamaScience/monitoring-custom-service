@@ -15,7 +15,7 @@
 
 createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
-  logger.trace("----- createProduct() [dailyhourlybarplot] -----")
+  logger.debug("----- createProduct() [dailyhourlybarplot] -----")
 
   if (is.null(dataList)) stop(paste0("Required parameter 'dataList' is missing."), call. = FALSE)
   if (is.null(infoList)) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)

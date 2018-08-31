@@ -13,7 +13,7 @@
 createInfoList <- function(req = NULL,
                            cacheDir = NULL) {
 
-  logger.trace("----- createInfoList() -----")
+  logger.debug("----- createInfoList() -----")
 
   if (is.null(req)) stop(paste0("Required parameter 'req' is missing."), call. = FALSE)
   if (is.null(cacheDir)) stop(paste0("Required parameter 'cacheDir' is missing."), call. = FALSE)
@@ -22,8 +22,8 @@ createInfoList <- function(req = NULL,
   infoList <- req$params
   names(infoList) <- tolower(names(infoList))
 
-  logger.debug("req$params")
-  logger.debug(capture.output(str(req$params)))
+  logger.trace("req$params")
+  logger.trace(capture.output(str(req$params)))
 
   # ----- Check for required parameters ----------------------------------------
 

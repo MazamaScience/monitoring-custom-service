@@ -8,7 +8,7 @@
 
 createDataList <- function(infoList = NULL, dataDir = NULL) {
   
-  logger.trace("----- createDataList() -----")
+  logger.debug("----- createDataList() -----")
   
   if (is.null(infoList)) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)
   if (is.null(dataDir)) stop(paste0("Required parameter 'dataDir' is missing."), call. = FALSE)
@@ -17,7 +17,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   # Get parameters
   monitorIDs <- infoList$monitorIDs
   
-  logger.debug("monitorID = '%s'", paste0(monitorIDs, collapse = ","))
+  logger.trace("monitorID = '%s'", paste0(monitorIDs, collapse = ","))
   
   # ----- Load and subset data ------------------------------------------------
   
@@ -32,7 +32,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   badMonitorIDs <- setdiff(monitorIDs, ws_monitor$meta$monitorID)
   goodMonitorIDs <- intersect(monitorIDs, ws_monitor$meta$monitorID)
   if ( length(badMonitorIDs) > 0 ) {
-    logger.debug(
+    logger.trace(
       "The following monitors are not found in the most recent 45 days of data: %s",
       paste0(badMonitorIDs, collapse = ", "))
   }

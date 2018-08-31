@@ -6,6 +6,11 @@
 
 ## Version 1.1 -- dailyhourlybarplot
 
+### monitor-custom 1.1.6
+
+ * using PWFSLSmoke v1.0.29
+ * general cleanup
+
 ### monitor-custom 1.1.5
 
  * logging environment variables
