@@ -6,6 +6,10 @@
 
 ## Version 1.1 -- dailyhourlybarplot
 
+### monitor-custom 1.1.7
+
+ * using pwfslsmoke:1.0.33
+
 ### monitor-custom 1.1.6
 
  * using PWFSLSmoke v1.0.29

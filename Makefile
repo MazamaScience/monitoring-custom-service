@@ -14,7 +14,7 @@
 # Test these settings with:    sudo apache2ctl configtest
 # Reload these settings with:  sudo service apache2 reload
 
-VERSION=1.1.6
+VERSION=1.1.7
 
 # NOTE:  The SERVICE_PATH should match that found in Dockerfile and Dockerfile-test
 SERVICE_PATH_PRODUCTION=monitor-custom/v1

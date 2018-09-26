@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:v1.0.20
+FROM mazamascience/pwfslsmoke:1.0.33
 MAINTAINER Jonathan Callahan <jonathan@mazamascience.com>
 
 #######################################################################
@@ -11,7 +11,7 @@ RUN install2.r --error \
 
 # Install latest development versions of packages
 RUN installGithub.r \
-    MazamaScience/PWFSLSmoke \
+#    MazamaScience/PWFSLSmoke \
     MazamaScience/PWFSLSmokePlots
 
 #######################################################################
