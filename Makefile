@@ -14,7 +14,8 @@
 # Test these settings with:    sudo apache2ctl configtest
 # Reload these settings with:  sudo service apache2 reload
 
-VERSION=1.1.7
+# ---- . ---- . updated to use latest PWFSLSmokePlots
+VERSION=1.1.8
 
 # NOTE:  The SERVICE_PATH should match that found in Dockerfile and Dockerfile-test
 SERVICE_PATH_PRODUCTION=monitor-custom/v1
@@ -67,7 +68,7 @@ test_down:
 	docker-compose -f docker-compose-test.yml -p monitorcustomtest down
 
 test_container_logs:
-	docker-compose -f docker-compose.yml -p monitorcustomtest logs
+	docker-compose -f docker-compose-test.yml -p monitorcustomtest logs
 
 test_trace_log:
 	cat /var/log/$(SERVICE_PATH_TEST)/app/TRACE.log
