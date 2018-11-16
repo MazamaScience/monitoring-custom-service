@@ -46,7 +46,7 @@ desktop_down:
 desktop_logs:
 	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop logs -f
 
-desktop_buonce: desktop_down desktop_up
+desktop_bounce: desktop_down desktop_up
 
 desktop_reboot: desktop_down desktop_download_data desktop_build desktop_up
 

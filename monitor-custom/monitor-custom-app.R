@@ -220,7 +220,7 @@ jug() %>%
     if (!file.exists(infoList$plotPath)) {
 
       # Manage the cache
-      MazamaWebUtils::manageCache(CACHE_DIR, c("json", "png", "pdf")) # TODO:  Other potential output formats?
+      MazamaCoreUtils::manageCache(CACHE_DIR, c("json", "png", "pdf")) # TODO:  Other potential output formats?
 
       result <- try({
 
