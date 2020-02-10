@@ -7,5 +7,6 @@ services:
     ports:
      - "8080:6669"
     volumes:
-      - ${PWD}/monitor-custom/logs:/app/logs
       - ${PWD}/monitor-custom/data:/app/data
+      - ${PWD}/monitor-custom/logs:/app/logs
+      - ${PWD}/monitor-custom/output:/app/output

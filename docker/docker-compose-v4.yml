@@ -1,0 +1,24 @@
+version: '2'
+services:
+  web:
+    restart: unless-stopped
+    container_name: monitor-custom-v4
+    image: monitor-custom-v4
+    networks:
+      - custom
+    ports:
+      - "6664:6664"
+    volumes:
+      - /data/monitoring/latest/RData:/app/data
+      - /var/log/monitor-custom/v4/app:/app/logs
+      - /var/cache/monitor-qc-report/v4/app:/app/output
+
+networks:
+  custom:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.66.64.0/24
+          gateway: 172.66.64.1
+

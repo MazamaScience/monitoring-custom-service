@@ -2,6 +2,15 @@
 
 ----
 
+# Version 4.x -- PWFSLSmoke version 4 metadata
+
+## Version 4.4 -- 'beakr' refactor
+
+### monitor-data 4.4.0
+
+ * using beakr 0.3.1
+ * refactored directory structure to "latest Mazama standard"
+ 
 # Version 1.x -- 2018 Fire Season
 
 ## Version 1.1 -- dailyhourlybarplot

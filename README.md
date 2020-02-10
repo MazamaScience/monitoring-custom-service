@@ -44,7 +44,7 @@ Inside RStudio you can run the app with:
 
  * `cd monitor-custom/`
  * "Set As Working Directoroy"
- * open up `monitor-custom-app.R`
+ * open up `R/monitor-custom-app.R`
  * set breakpoints if desired
  * click the 'Source' button
 
@@ -54,17 +54,24 @@ The app will be available at:
 
 ## Running the app with Docker ##
 
-You can create and run a docker image with the app by:
+You can create and run a docker image with the with:
 
- * typing `make desktop_reboot`
+ * `make desktop_reboot`
  
 The app will be available at:
 
 [localhost:8080/monitor-custom/test/](localhost:8080/monitor-custom/test/)
  
-The `Makefile` has targets for three different types of deployment: `desktop`, `test`, `production`.
+You can clean the data download directory by typing:
 
-A quick refresher on docker commands is available at the [docker cheatsheet](https://github.com/wsargent/docker-cheat-sheet).
+* `make clean`
+
+The `Makefile` has targets for three different types of deployment: 
+`desktop`, `test`, `production`. The `test` and `production` targets are
+intended to be deployed on an AWS instance.
+
+A quick refresher on docker commands is available at the
+[docker cheatsheet](https://github.com/wsargent/docker-cheat-sheet).
 
 ## Host Computer Settings ##
 
@@ -74,8 +81,9 @@ Latest data .RData files are mounted from the following directory which must exi
 
 `/data/monitoring/RData`
 
-Currently, data are being generated on 'haze' so any other computer hosting this
-docker app must have a crontab to regularly copy latest data files.
+In production, a crontab on the host machine will keep this directory
+up-to-date.
+
 
 ### Log Files ###
 
@@ -89,22 +97,23 @@ except for `desktop` which are written to:
 
 ### ProxyPass Settings ###
 
-On the computer 'haze', ProxyPass settings are defined in:
+On AWS instances, ProxyPass settings are defined in:
 
 `/etc/apache2/sites-enabled/default-ssl.conf`
 
 ## Testing the app ##
 
-You can ask to see the `api`:
+You can ask to see the `api` by hitting the service with no sub-service
+specified:
 
-[localhost:8080/monitor-custom/test/api](localhost:8080/monitor-custom/test/api)
+[localhost:8080/monitor-custom/test](localhost:8080/monitor-custom/test)
 
 You can ask for a `plot`:
 
-[localhost:8080/monitor-custom/test/plot?monitorid=530331011&plottype=timeseries](localhost:8080/monitor-custom/test/plot?monitorid=530331011&plottype=timeseries)
+[localhost:8080/monitor-custom/test/plot?monitorid=530331011_01&plottype=timeseries](localhost:8080/monitor-custom/test/plot?monitorid=530331011_01&plottype=timeseries)
 
 You can specify `responsetype=json` to have the service return a json response for use by javascript code in a user interface:
 
-[localhost:8080/monitor-custom/test/plot?monitorid=530331011&plottype=timeseries&responsetype=json](localhost:8080/monitor-custom/test/plot?monitorid=530331011&plottype=timeseries&responsetype=json)
+[localhost:8080/monitor-custom/test/plot?monitorid=530331011_01&plottype=timeseries&responsetype=json](localhost:8080/monitor-custom/test/plot?monitorid=530331011_01&plottype=timeseries&responsetype=json)
 
 ***

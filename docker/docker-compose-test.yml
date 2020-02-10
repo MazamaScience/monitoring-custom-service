@@ -9,8 +9,9 @@ services:
     ports:
       - "6669:6669"
     volumes:
-      - /var/log/monitor-custom/test/app:/app/logs
       - /data/monitoring/latest/RData:/app/data
+      - /var/log/monitor-custom/test/app:/app/logs
+      - /var/cache/monitor-qc-report/test/app:/app/output
 
 networks:
   custom:
