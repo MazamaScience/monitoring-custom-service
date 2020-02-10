@@ -10,9 +10,9 @@ RUN install2.r --error \
     
 # Install latest development versions of packages
 RUN installGithub.r \
+    MazamaScience/beakr \
     MazamaScience/MazamaCoreUtils \
-    MazamaScience/AirMonitorPlots \
-    MazamaScience/beakr
+    MazamaScience/PWFSLSmokePlots
 
 #######################################################################
 # beakr instance configuration
@@ -27,8 +27,8 @@ RUN installGithub.r \
 #  * port 66#9 is reserved for a "test" version
 #
 # The block of ports 6660-6669 is reserved for the 'monitor-custom' service
-ENV JUG_HOST 0.0.0.0
-ENV JUG_PORT 6664
+ENV BEAKR_HOST 0.0.0.0
+ENV BEAKR_PORT 6664
 
 EXPOSE 6664
 

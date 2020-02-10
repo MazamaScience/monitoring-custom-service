@@ -60,13 +60,13 @@ desktop_build_no-cache:
 	cd monitor-custom; docker build --no-cache -t monitor-custom-desktop:$(VERSION) -t monitor-custom-desktop:latest -f Dockerfile-test .
 
 desktop_up:
-	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop up -d
+	docker-compose -f docker/docker-compose-desktop.yml -p monitorcustomdesktop up -d
 
 desktop_down:
-	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop down
+	docker-compose -f docker/docker-compose-desktop.yml -p monitorcustomdesktop down
 
 desktop_container_logs:
-	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop logs -f
+	docker-compose -f docker/docker-compose-desktop.yml -p monitorcustomdesktop logs -f
 
 desktop_bounce: desktop_down desktop_up
 
@@ -84,13 +84,13 @@ test_build_no-cache:
 	cd monitor-custom; docker build --no-cache -t monitor-custom-test:$(VERSION) -t monitor-custom-test:latest -f Dockerfile-test .
 
 test_up:
-	docker-compose -f docker-compose-test.yml -p monitorcustomtest up -d
+	docker-compose -f docker/docker-compose-test.yml -p monitorcustomtest up -d
 
 test_down:
-	docker-compose -f docker-compose-test.yml -p monitorcustomtest down
+	docker-compose -f docker/docker-compose-test.yml -p monitorcustomtest down
 
 test_container_logs:
-	docker-compose -f docker-compose-test.yml -p monitorcustomtest logs
+	docker-compose -f docker/docker-compose-test.yml -p monitorcustomtest logs
 
 test_trace_log:
 	cat /var/log/$(SERVICE_PATH_TEST)/app/TRACE.log
@@ -120,13 +120,13 @@ production_build_no-cache:
 	cd monitor-custom; docker build --no-cache -t monitor-custom-v4:$(VERSION) -t monitor-custom-v4:latest -f Dockerfile-v4 .
 
 production_up:
-	docker-compose -f docker-compose-v4.yml -p monitorcustomv4 up -d
+	docker-compose -f docker/docker-compose-v4.yml -p monitorcustomv4 up -d
 
 production_down:
-	docker-compose -f docker-compose-v4.yml -p monitorcustomv4 down
+	docker-compose -f docker/docker-compose-v4.yml -p monitorcustomv4 down
 
 production_container_logs:
-	docker-compose -f docker-compose-v4.yml -p monitorcustomv4 logs
+	docker-compose -f docker/docker-compose-v4.yml -p monitorcustomv4 logs
 
 production_trace_log:
 	cat /var/log/$(SERVICE_PATH_PRODUCTION)/app/TRACE.log
