@@ -43,21 +43,21 @@ configure_app_osx:
 # DESKTOP version -------------------------------------------------------------
 
 desktop_download_data:
-	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v4/RData/airnow_PM2.5_latest10.RData -o monitor-custom/data/airnow_PM2.5_latest10.RData --create-dirs
-	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v4/RData/airsis_PM2.5_latest10.RData -o monitor-custom/data/airsis_PM2.5_latest10.RData --create-dirs
-	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v4/RData/wrcc_PM2.5_latest10.RData -o monitor-custom/data/wrcc_PM2.5_latest10.RData --create-dirs
-	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v4/RData/airnow_PM2.5_latest45.RData -o monitor-custom/data/airnow_PM2.5_latest45.RData --create-dirs
-	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v4/RData/airsis_PM2.5_latest45.RData -o monitor-custom/data/airsis_PM2.5_latest45.RData --create-dirs
-	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v4/RData/wrcc_PM2.5_latest45.RData -o monitor-custom/data/wrcc_PM2.5_latest45.RData --create-dirs
+	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v1/RData/airnow_PM2.5_latest10.RData -o monitor-custom/data/airnow_PM2.5_latest10.RData --create-dirs
+	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v1/RData/airsis_PM2.5_latest10.RData -o monitor-custom/data/airsis_PM2.5_latest10.RData --create-dirs
+	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v1/RData/wrcc_PM2.5_latest10.RData -o monitor-custom/data/wrcc_PM2.5_latest10.RData --create-dirs
+	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v1/RData/airnow_PM2.5_latest45.RData -o monitor-custom/data/airnow_PM2.5_latest45.RData --create-dirs
+	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v1/RData/airsis_PM2.5_latest45.RData -o monitor-custom/data/airsis_PM2.5_latest45.RData --create-dirs
+	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v1/RData/wrcc_PM2.5_latest45.RData -o monitor-custom/data/wrcc_PM2.5_latest45.RData --create-dirs
 
 # NOTE:  DESKTOP reuses Dockerfile-test but has a separate docker-compse-desktop.yml
 desktop_build:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build -t monitor-custom-desktop:v$(VERSION) -t monitor-custom-desktop:latest -f Dockerfile-test .
+	cd monitor-custom; docker build -t monitor-custom-desktop:$(VERSION) -t monitor-custom-desktop:latest -f Dockerfile-test .
 
 desktop_build_no-cache:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build --no-cache -t monitor-custom-desktop:v$(VERSION) -t monitor-custom-desktop:latest -f Dockerfile-test .
+	cd monitor-custom; docker build --no-cache -t monitor-custom-desktop:$(VERSION) -t monitor-custom-desktop:latest -f Dockerfile-test .
 
 desktop_up:
 	docker-compose -f docker-compose-desktop.yml -p monitorcustomdesktop up -d
@@ -77,11 +77,11 @@ desktop_reboot: desktop_download_data desktop_build desktop_bounce
 
 test_build:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build -t monitor-custom-test:v$(VERSION) -t monitor-custom-test:latest -f Dockerfile-test .
+	cd monitor-custom; docker build -t monitor-custom-test:$(VERSION) -t monitor-custom-test:latest -f Dockerfile-test .
 
 test_build_no-cache:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build --no-cache -t monitor-custom-test:v$(VERSION) -t monitor-custom-test:latest -f Dockerfile-test .
+	cd monitor-custom; docker build --no-cache -t monitor-custom-test:$(VERSION) -t monitor-custom-test:latest -f Dockerfile-test .
 
 test_up:
 	docker-compose -f docker-compose-test.yml -p monitorcustomtest up -d
@@ -113,11 +113,11 @@ test_reboot: test_build test_bounce
 
 production_build:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build -t monitor-custom-v4:v$(VERSION) -t monitor-custom-v4:latest -f Dockerfile-v4 .
+	cd monitor-custom; docker build -t monitor-custom-v4:$(VERSION) -t monitor-custom-v4:latest -f Dockerfile-v4 .
 
 production_build_no-cache:
 	-mkdir monitor-custom/output
-	cd monitor-custom; docker build --no-cache -t monitor-custom-v4:v$(VERSION) -t monitor-custom-v4:latest -f Dockerfile-v4 .
+	cd monitor-custom; docker build --no-cache -t monitor-custom-v4:$(VERSION) -t monitor-custom-v4:latest -f Dockerfile-v4 .
 
 production_up:
 	docker-compose -f docker-compose-v4.yml -p monitorcustomv4 up -d

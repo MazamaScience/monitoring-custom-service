@@ -4,80 +4,75 @@
 # Author: Spencer Pease
 #         Jonathan Callahan <jonathan@mazamscience.com>
 #
-# Top level web framework based on the jug package.
+# Top level web framework based on the beakr package.
 #
-# Source this script and a jug instance will be running at http://localhost:8080
+# Source this script and a beakr instance will be running at http://localhost:8080
 # until the script is ended.
 #
 # This script can be run inside a docker container to create an always-up web
 # service.
 #
-# See:  https://github.com/MazamaScience/jug
-# See:  https://github.com/MazamaScience/MazamaWebUtils
+# See:  https://github.com/MazamaScience/beakr
+# See:  https://github.com/MazamaScience/MazamaCoreUtils
 #
 ################################################################################
 
-# Specficic packages and scripts for this service -----------------------------
+# ----- Libraries and scripts --------------------------------------------------
 
 # NOTE:  Use library() so that these package versions will be documented by
-#        sessionInfo()
+# NOTE:  sessionInfo()
 
 suppressPackageStartupMessages({
-  library(methods)                # always included for Rscripts
-  library(jug)                    # web service framework
-  library(MazamaWebUtils)         # cache management
-  library(digest)                 # creation of uniqueID
-  library(stringr)                # manipulation of data in InfoList
-  
-  library(PWFSLSmoke)             # workhorse package for everything smoke
-  #   related. Includes magrittr and dplyr
-  library(PWFSLSmokePlots)        # Custom plots for ws_monitor data
+  library(readr)             # tidyverse file reading
+  library(digest)            # creation of uniqueID
+  # Mazama Science packages
+  library(beakr)             # web service framework
+  library(MazamaCoreUtils)   # cache management and more
+  library(PWFSLSmoke)        # workhorse package for everything smoke related
+  library(AirMonitorPlots)   # modern plotting functions for PWFSLSmoke data
 })
 
-# Load all shared utility functions
-#   - createAPIList: create a list of API parameters
-#   - setMonitorIDs: convert monitor ids t standard format
-#   - stopOnError:   error handling/translation
-# Additional files are sourced inside of <subservice>/createProduct.R
+R_files <- list.files("R/sharedUtils", pattern = ".+\\.R", full.names = TRUE)
 
-utilFiles <- list.files("R/sharedUtils", pattern = ".+\\.R", full.names = TRUE)
-
-for (file in utilFiles) {
+for (file in R_files) {
   source(file.path(getwd(), file))
 }
 
-# Specify global (configurable) variables -------------------------------------
+# Specify global (configurable) variables --------------------------------------
 
-VERSION <- "1.1.7" # 1 . dailyhourlybarplot . using pwfslsmoke:1.0.33
+# V4 data files . beakr 0.3.1 . ----
+VERSION <- "4.4.0"
 
 # Set up configurable variables
 
-if (Sys.getenv("JUG_HOST") == "") { # Running from RStudio
+if ( interactive()) { # Running from RStudio
 
-  # jug instance configuration
-  JUG_HOST <- "127.0.0.1" # jug default
-  JUG_PORT <- "8080"      # jug default
+  # beakr instance configuration
+  BEAKR_HOST <- "127.0.0.1" # beakr default
+  BEAKR_PORT <- "8080"      # beakr default
 
   # path and cache
   SERVICE_PATH <- "monitor-custom/dev"
-  CACHE_SIZE <- 100 # megabytes
+  CACHE_SIZE <- 5 # megabytes
 
   # directories for log output, data, and cache
   DATA_DIR <- file.path(getwd(), "data")
-  if (!file.exists(DATA_DIR)) dir.create(DATA_DIR)
+  if ( !file.exists(DATA_DIR) ) dir.create(DATA_DIR)
+
   LOG_DIR <- file.path(getwd(), "logs")
-  if (!file.exists(LOG_DIR)) dir.create(LOG_DIR)
+  if ( !file.exists(LOG_DIR) ) dir.create(LOG_DIR)
+
   CACHE_DIR <- file.path(getwd(), "output")
-  if (!file.exists(CACHE_DIR)) dir.create(CACHE_DIR)
+  if ( !file.exists(CACHE_DIR) ) dir.create(CACHE_DIR)
 
   # Clean out the cache (only when running from RStudio)
-  removalStatus <- file.remove( list.files(CACHE_DIR, full.names=TRUE) )
+  removalStatus <- file.remove( list.files(CACHE_DIR, full.names = TRUE) )
 
 } else { # Running from Docker
 
-  # jug instance configuration
-  JUG_HOST <- Sys.getenv("JUG_HOST")
-  JUG_PORT <- Sys.getenv("JUG_PORT")
+  # beakr instance configuration
+  BEAKR_HOST <- Sys.getenv("BEAKR_HOST")
+  BEAKR_PORT <- Sys.getenv("BEAKR_PORT")
 
   # path and cache
   SERVICE_PATH <- Sys.getenv("SERVICE_PATH")
@@ -94,40 +89,20 @@ if (Sys.getenv("JUG_HOST") == "") { # Running from RStudio
 options(warn = -1) # -1=ignore, 0=save/print, 1=print, 2=error
 
 
-# ----- Set up Logging --------------------------------------------------------
+# ----- Set up Logging ---------------------------------------------------------
 
-result <- try({
-  # Copy and old log files
-  timestamp <- strftime(lubridate::now(), "%Y-%m-%dT%H:%M:%S")
-  for ( logLevel in c("TRACE","DEBUG","INFO","ERROR") ) {
-    oldFile <- file.path(LOG_DIR,paste0(logLevel,".log"))
-    newFile <- file.path(LOG_DIR,paste0(logLevel,".log.",timestamp))
-    if ( file.exists(oldFile) ) {
-      file.rename(oldFile, newFile)
-    }
-  }
-}, silent=TRUE)
-stopOnError(result, "Could not rename old log files.")
+MazamaCoreUtils::initializeLogging(LOG_DIR)
 
-result <- try({
-  # Set up logging
-  logger.setup(traceLog = file.path(LOG_DIR, "TRACE.log"),
-               debugLog = file.path(LOG_DIR, "DEBUG.log"),
-               infoLog = file.path(LOG_DIR, "INFO.log"),
-               errorLog = file.path(LOG_DIR, "ERROR.log"))
-}, silent = TRUE)
-stopOnError(result, "Could not create log files.")
-
-if (Sys.getenv("JUG_HOST") == "") { # Running from RStudio
-  logger.setLevel(TRACE)            # send error messages to console (RStudio)
+if ( interactive() ) { # Running from RStudio
+  logger.setLevel(TRACE)
 }
 
 # Capture session info
 logger.debug(capture.output(sessionInfo()))
 
 # Log environment variables
-logger.debug('JUG_HOST = %s', JUG_HOST)
-logger.debug('JUG_PORT = %s', JUG_PORT)
+logger.debug('BEAKR_HOST = %s', BEAKR_HOST)
+logger.debug('BEAKR_PORT = %s', BEAKR_PORT)
 logger.debug('SERVICE_PATH = %s', SERVICE_PATH)
 logger.debug('CACHE_DIR = %s', CACHE_DIR)
 logger.debug('CACHE_SIZE = %s', CACHE_SIZE)
@@ -135,46 +110,34 @@ logger.debug('DATA_DIR = %s', DATA_DIR)
 logger.debug('LOG_DIR = %s', LOG_DIR)
 
 
-# ----- BEGIN jug app ---------------------------------------------------------
+# ----- Define helper functions ------------------------------------------------
 
-jug() %>%
+printUTC <- function(x) {
+  strftime(x, format = "%Y-%m-%d %H:%M:%S", tz = "UTC", usetz = TRUE)
+}
 
-  # Return json dscription of this service ------------------------------------
+# ----- BEGIN beakr app --------------------------------------------------------
+
+beakr::newBeakr() %>%
+
+  # * Return json dscription of this service -----------------------------------
 
   # regex matches zero or one final '/'
-  get(paste0("/", SERVICE_PATH, "/?$"), function(req, res, err) {
-
-    logger.info("----- %s -----", SERVICE_PATH)
-
-    json <- jsonlite::toJSON(
-      createAPIList(SERVICE_PATH, VERSION),
-      pretty = TRUE,
-      auto_unbox = TRUE)
-    res$content_type("application/json")
-
-    return(json)
-
-  }) %>%
-
-  # Return json dscription of this service ------------------------------------
-
-  # regex ignores capitalization and matches zero or one final '/'
-  get(paste0("/", SERVICE_PATH, "/[Aa][Pp][Ii]/?$"), function(req, res, err) {
+  beakr::httpGET(paste0("/", SERVICE_PATH, "/?$"), function(req, res, err) {
 
     logger.info("----- %s -----", req$path)
-    
+
     json <- jsonlite::toJSON(
       createAPIList(SERVICE_PATH, VERSION),
       pretty = TRUE,
       auto_unbox = TRUE)
-
-    res$content_type("application/json")
+    res$setContentType("application/json")
 
     return(json)
 
   }) %>%
 
-  # Products -----------------------------------------------------------------
+  # * Create Products ----------------------------------------------------------
 
   # NOTE:  All subservices are handled the same way. Each has its own subdirectory
   # NOTE:  with files that define the following top-level functions:
@@ -187,7 +150,7 @@ jug() %>%
   # NOTE:  run for every custom product.
 
   # regex matches alphanumerics and zero or one final '/'
-  get(paste0("/", SERVICE_PATH, "/[[:alnum:]]+/?"), function(req, res, err) {
+  beakr::httpGET(paste0("/", SERVICE_PATH, "/[[:alnum:]]+/?"), function(req, res, err) {
 
     # Extract lowercase subservice name
     subservice <-
@@ -217,7 +180,7 @@ jug() %>%
     stopOnError(result)
 
     # Create a new plot file if it isn't in the cache
-    if (!file.exists(infoList$plotPath)) {
+    if ( !file.exists(infoList$plotPath) ) {
 
       # Manage the cache
       MazamaCoreUtils::manageCache(CACHE_DIR, c("json", "png", "pdf")) # TODO:  Other potential output formats?
@@ -253,9 +216,9 @@ jug() %>%
         logger.debug("writing %s", infoList$jsonPath)
 
         responseList <- list(
-          status <- "OK",
-          rel_base <- paste0(SERVICE_PATH, "/", infoList$basePath),
-          plot_path <- paste0(SERVICE_PATH, "/", infoList$plotPath)
+          status = "OK",
+          rel_base = paste0(SERVICE_PATH, "/", infoList$basePath),
+          plot_path = paste0(SERVICE_PATH, "/", infoList$plotPath)
         )
 
         json <- jsonlite::toJSON(
@@ -277,9 +240,9 @@ jug() %>%
       if (infoList$responsetype == "raw") {
 
         if (infoList$outputfiletype == "png") {
-          res$content_type("image/png")
+          res$setContentType("image/png")
         } else if (infoList$outputfiletype == "pdf") {
-          res$content_type("application/pdf")
+          res$setContentType("application/pdf")
         }
 
         return(readr::read_file_raw(infoList$plotPath))
@@ -287,7 +250,7 @@ jug() %>%
 
       } else if (infoList$responsetype == "json") {
 
-        res$content_type("application/json")
+        res$setContentType("application/json")
         return(readr::read_file(infoList$jsonPath))
 
       } else {
@@ -302,15 +265,17 @@ jug() %>%
 
   }) %>%
 
-  # Serve static files --------------------------------------------------------
+  # * Serve static files -------------------------------------------------------
 
-  serve_static_files(SERVICE_PATH) %>%
+  beakr::serveStaticFiles(SERVICE_PATH) %>%
 
-  # Error handling ------------------------------------------------------------
-  simple_error_handler_json() %>%
+  # * Handle errors ------------------------------------------------------------
 
-  # Return --------------------------------------------------------------------
-  serve_it(host = JUG_HOST, port = as.integer(JUG_PORT))
+  beakr::handleErrors() %>%
+
+  # * Return -------------------------------------------------------------------
+
+  beakr::listen(host = BEAKR_HOST, port = as.integer(BEAKR_PORT))
 
 
-# ----- END jug app -----------------------------------------------------------
+# ----- END beakr app -----------------------------------------------------------

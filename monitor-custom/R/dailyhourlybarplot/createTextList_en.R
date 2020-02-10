@@ -3,15 +3,15 @@
 #
 # English language text strings.
 #
-# Author: Jonathan Callahan
+# Author: Mazama Science
 ########################################################################
 
-createTextList <- function(dataList=NULL, infoList=NULL) {
+createTextList <- function(dataList = NULL, infoList = NULL) {
 
   logger.debug("----- createTextList() -----")
 
-  if ( is.null(dataList) ) stop(paste0("Required parameter 'dataList' is missing."), call. = FALSE)
-  if ( is.null(infoList) ) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)
+  MazamaCoreUtils::stopIfNull(dataList, "Required parameter 'dataList' is missing.")
+  MazamaCoreUtils::stopIfNull(infoList, "Required parameter 'infoList' is missing.")
 
   # Commonly used labels
   textList <- list(
@@ -22,4 +22,5 @@ createTextList <- function(dataList=NULL, infoList=NULL) {
   )
 
   return(textList)
+  
 }

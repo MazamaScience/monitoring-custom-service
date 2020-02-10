@@ -10,6 +10,7 @@
 
  * using beakr 0.3.1
  * refactored directory structure to "latest Mazama standard"
+ * removed `uptime` sub-service
  
 # Version 1.x -- 2018 Fire Season
 

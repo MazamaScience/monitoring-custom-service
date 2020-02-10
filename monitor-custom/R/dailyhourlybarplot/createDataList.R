@@ -7,24 +7,82 @@
 ########################################################################
 
 createDataList <- function(infoList = NULL, dataDir = NULL) {
-  
+
+
   logger.debug("----- createDataList() -----")
-  
-  if (is.null(infoList)) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)
-  if (is.null(dataDir)) stop(paste0("Required parameter 'dataDir' is missing."), call. = FALSE)
-  if (is.null(infoList$monitorIDs)) stop(paste0("Required parameter 'intoList$monitorIDs' is missing."), call. = FALSE)
-  
-  # Get parameters
+
+  # ----- Setup ----------------------------------------------------------------
+
+  MazamaCoreUtils::stopIfNull(infoList, "Required parameter 'infoList' is missing.")
+  MazamaCoreUtils::stopIfNull(dataDir, "Required parameter 'dataDir' is missing.")
+
+  # ----- Get infoList parameters ----------------------------------------------
+
+  # monitorIDs is already a vector of monitorID values
   monitorIDs <- infoList$monitorIDs
   
   logger.trace("monitorID = '%s'", paste0(monitorIDs, collapse = ","))
   
-  # ----- Load and subset data ------------------------------------------------
+  startdate <- infoList$startdate
+  enddate <- infoList$enddate
+
+  logger.trace("Getting parameters from infoList:")
+
+  logger.trace("startdate = '%s'", printUTC(startdate))
+  logger.trace("enddate = '%s'", printUTC(enddate))
+
+  # ----- Load ws_monitor data -------------------------------------------------
+
+  ## NOTE:
+  #  Host data directories are mounted at dataDir as specified in the
+  #  docker-compose file
+
+  if ( startdate > lubridate::now(tzone = "UTC") - lubridate::days(10) ) {
+
+    # * Recent data uses local files -------------------------------------------
+
+    result <- try({
+
+      logger.trace("loading latest monitoring data from %s", dataDir)
+
+      ws_monitor <- PWFSLSmoke::monitor_load(
+        startdate = startdate,
+        enddate = enddate,
+        monitorIDs = monitorIDs,
+        dataDir = dataDir
+      )
+
+    }, silent = TRUE)
+
+  } else {
+
+    # * Archival data loads as needed ------------------------------------------
+
+    result <- try({
+
+      logger.trace("Loading archival data with `monitor_load()`")
+
+      ws_monitor <- PWFSLSmoke::monitor_load(
+        startdate = startdate,
+        enddate = enddate,
+        monitorIDs = monitorIDs
+      )
+
+    }, silent = TRUE)
+
+  }
+
+  if ( "try-error" %in% class(result) ) {
+    err_msg <- geterrmessage()
+    stop(paste0('Error loading data: ', err_msg))
+  }
+
+  # # ----- Load and subset data ------------------------------------------------
   
-  # Load latest monitoring data (most recent 45 days)
-  dailyData <- loadDaily()
-  latestData <- loadLatest()
-  ws_monitor <- monitor_join(dailyData, latestData, monitorIDs)
+  # # Load latest monitoring data (most recent 45 days)
+  # dailyData <- loadDaily()
+  # latestData <- loadLatest()
+  # ws_monitor <- monitor_join(dailyData, latestData, monitorIDs)
   
   # ----- Validate data -------------------------------------------------------
   

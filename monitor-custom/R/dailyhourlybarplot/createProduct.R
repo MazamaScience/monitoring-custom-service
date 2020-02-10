@@ -48,7 +48,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   now <- lubridate::now(tzone = timezone)
   today <- lubridate::floor_date(now, unit = 'day')
   endtime <- lubridate::floor_date(now, unit='hour')
-  starttime <- today - lubridate::ddays(infoList$lookbackdays)
+  starttime <- today - lubridate::ddays(infoList$days)
   tlim <- as.POSIXct(c(starttime, endtime)) # Guarantee they are of class POSIXct
   
   # # Subset the data based on monitorIDs

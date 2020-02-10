@@ -22,16 +22,18 @@ The basic files required for a product-only webservice (no UI) are the following
 ├── Makefile
 ├── NEWS.md
 ├── README.md
-├── docker-compose-desktop.yml
-├── docker-compose-test.yml
-├── docker-compose.yml
-└── monitor-custom/
-    ├── Dockerfile
+├── README_THIS_IS_GIT_BRANCH_master
+├── docker
+│   ├── docker-compose-desktop.yml
+│   ├── docker-compose-test.yml
+│   └── docker-compose-v4.yml
+└── monitor-custom
     ├── Dockerfile-test
-    ├── R/
-    ├── logs/
-    ├── monitor-custom-app.R
-    └── output/
+    ├── Dockerfile-v4
+    └── R
+        ├── dailyhourlybarplot/
+        ├── monitor-custom-app.R
+        └── sharedUtils/
 ```
 
 ## Running the app from RStudio ##

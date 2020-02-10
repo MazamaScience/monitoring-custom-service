@@ -1,4 +1,4 @@
-########################################################################
+################################################################################
 # dailyhourlybarplot/createInfoList.R
 #
 # Create an infoList from a jug request object.
@@ -8,28 +8,33 @@
 # plotting scripts.
 #
 # Author: Spencer Pease, Jonathan Callahan
-########################################################################
+################################################################################
 
 createInfoList <- function(req = NULL,
                            cacheDir = NULL) {
 
   logger.debug("----- createInfoList() -----")
 
-  if (is.null(req)) stop(paste0("Required parameter 'req' is missing."), call. = FALSE)
-  if (is.null(cacheDir)) stop(paste0("Required parameter 'cacheDir' is missing."), call. = FALSE)
+  # ----- Setup ----------------------------------------------------------------
+
+  MazamaCoreUtils::stopIfNull(req, "Required parameter 'req' is missing.")
+  MazamaCoreUtils::stopIfNull(cacheDir, "Required parameter 'cacheDir' is missing.")
 
   # Initialize the infoList from the request parameters
-  infoList <- req$params
+  infoList <- req$parameters
   names(infoList) <- tolower(names(infoList))
 
-  logger.trace("req$params")
-  logger.trace(capture.output(str(req$params)))
+  logger.trace("req$parameters")
+  logger.trace(capture.output(str(req$parameters)))
 
   # ----- Check for required parameters ----------------------------------------
 
   requiredParams <- c("monitorIDs")
 
-  if ("monitorIDs" %in% requiredParams) {
+  # Convert various specifications of monitors into a vector of monitorIDs
+  # appropriate for use with the PWFSLSmoke package.
+  
+  if ( "monitorIDs" %in% requiredParams ) {
     infoList <- setMonitorIDs(infoList)
   }
 
@@ -43,11 +48,29 @@ createInfoList <- function(req = NULL,
     stop(errortxt, call. = FALSE)
   }
 
-  # ----- Set parameter defaults ----------------------------------------------
+  # ----- Create default infoList parameters -----------------------------------
 
-  # Set defaults
-  infoList$language <- tolower(ifelse(is.null(infoList$language),"en",infoList$language))
-  infoList$lookbackdays <- ifelse(is.null(infoList$lookbackdays), 7, trunc(as.numeric(infoList$lookbackdays)))
+  infoList$language <- 
+    MazamaCoreUtils::setIfNull(infoList$language, "en") %>% tolower()
+
+  infoList$responsetype <- 
+    MazamaCoreUtils::setIfNull(infoList$responsetype, "raw") %>% tolower()
+
+  infoList$days <- 
+    MazamaCoreUtils::setIfNull(infoList$days, 7) %>% as.numeric()
+
+  # Support older API
+  if ( "lookbackdays" %in% names(infoList) ) {
+    infoList$days <- 
+      MazamaCoreUtils::setIfNull(infoList$lookbackdays, 7) %>% as.numeric()
+  }
+
+  infoList$includelink <- 
+    MazamaCoreUtils::setIfNull(infoList$includelink, "true") %>% tolower()
+
+  infoList$hourlytype <- 
+    MazamaCoreUtils::setIfNull(infoList$hourlytype, "nowcast") %>% tolower()
+
   if ( is.null(infoList$columns) ) {
     if ( length(infoList$monitorIDs) <= 6 ) {
       infoList$columns = 1
@@ -57,23 +80,49 @@ createInfoList <- function(req = NULL,
       infoList$columns = 3
     }
   }
-  infoList$includelink <- ifelse(is.null(infoList$includelink), TRUE, infoList$includelink)
-  infoList$hourlytype <- ifelse(is.null(infoList$hourlytype), "nowcast", infoList$hourlytype)
-  infoList$includethirdcol <- ifelse(is.null(infoList$includethirdcol), FALSE, infoList$includethirdcol)
+  
+  infoList$includethirdcol <- 
+    MazamaCoreUtils::setIfNull(infoList$includethirdcol, "false") %>% tolower()
+
   # infoList$title should default to NULL
   # infoList$xlabel should default to NULL
   # infoList$ylabel should default to NULL
 
-  infoList$responsetype <- tolower(ifelse(is.null(infoList$responsetype), "raw", infoList$responsetype))
-  infoList$outputfiletype <- ifelse(is.null(infoList$outputfiletype), "png", infoList$outputfiletype)
-  infoList$units <- ifelse(is.null(infoList$units), "in", infoList$units)
+  infoList$outputfiletype <- 
+    MazamaCoreUtils::setIfNull(infoList$outputfiletype, "png") %>% tolower()
+
+  infoList$units <- 
+    MazamaCoreUtils::setIfNull(infoList$units, "in") %>% tolower()
+
+  if ( is.null(infoList$timezone) ) {
+
+    infoList$timezone <- "UTC"
+    
+  } else {
+
+    ## Note:
+    #  Oslon Names are case-sensitive, but each entry is unique regardless of
+    #  case. So, we can match ignoring case and look up to index to get the
+    #  properly cased name.
+
+    tzIndex <- which(tolower(OlsonNames()) %in% tolower(infoList$timezone))
+
+    if (identical(tzIndex, integer())) {
+      stop(paste0("'", infoList$timezone, "' is not a valid timezone."))
+    } else {
+      infoList$timezone <- OlsonNames()[tzIndex]
+    }
+
+  }
+
+  # ----- Validate parameters --------------------------------------------------
 
   # Validate parameters
   if (!infoList$language %in% c("en","es")) { stop("invalid language", call. = FALSE) }
   if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype", call. = FALSE) }
   if (!infoList$outputfiletype %in% c("png", "pdf")) { stop("invalid file format", call. = FALSE) }
   if (!infoList$units %in% c("in", "cm", "mm")) { stop("invalid units", call. = FALSE) }
-  if (infoList$lookbackdays < 2 ) { infoList$lookbackdays <- 2 }
+  if (infoList$days < 2 ) { infoList$days <- 2 }
   if (!infoList$hourlytype %in% c("nowcast", "raw", "none")) { stop("invalid hourly data type", call. = FALSE) }
 
   if (tolower(infoList$includelink) == "true") {
@@ -109,8 +158,43 @@ createInfoList <- function(req = NULL,
     infoList$height <- ifelse(is.null(infoList$height), 8, as.numeric(infoList$height))
   }
 
-  # Get the currentHour so that the plot will is updated once per hour
-  currentHour <- lubridate::floor_date(lubridate::now('UTC'), unit='hour')
+   # ----- Create start and end dates -------------------------------------------
+  
+  dateRange <- MazamaCoreUtils::dateRange(
+    startdate = infoList$startdate,
+    enddate = infoList$enddate,
+    timezone = infoList$timezone,
+    unit = "hour",
+    ceilingStart = FALSE,
+    ceilingEnd = TRUE,
+    days = infoList$days
+  )
+
+  # NOTE:  dateRange has day boundaries. Reset dateRange[2] to "now" if infoList
+  # NOTE:  did not originally contain startdate and enddate parameters. (default)
+
+  if ( is.null(infoList$startdate) && is.null(infoList$enddate) ) {
+    dateRange[2] <- lubridate::now(tzone = infoList$timezone)
+  }
+
+  infoList$startdate <- dateRange[1]
+  infoList$enddate <- dateRange[2]
+  
+  infoList$tlim <- dateRange  
+   
+  # ----- Create timestamp for caching -----------------------------------------
+
+  ## DETAILS:
+  #  If enddate is the end of the current day, create an every-5-minutes
+  #  timestamp so that we catch rapid updates to the data throughout the day,
+  #  while still benefiting from cache hits.
+
+  timestamp <- ifelse(
+    infoList$enddate <= lubridate::now(tzone = infoList$timezone),
+    infoList$enddate,
+    lubridate::floor_date(lubridate::now(tzone = infoList$timezone), "5 mins")
+  )
+  
   
   # ----- Create uniqueID based on parameters that affect the presentation ----
 
@@ -129,7 +213,8 @@ createInfoList <- function(req = NULL,
     infoList$height,
     infoList$width,
     infoList$dpi,
-    currentHour)
+    timeStamp
+  )
 
   infoList$uniqueID <- digest::digest(uniqueList, algo = "md5")
 
