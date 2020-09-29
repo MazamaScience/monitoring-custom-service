@@ -41,25 +41,8 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
   # ----- Calculate tlim ------------------------------------------------------
   
-  # Create starttime and endtime in monitor local time
-  # NOTE:  Don't use lubridate::today() as it generates class 'Date' which causes confusion.
-  # NOTE:  Instead, stick with lubridate::now() which generates class 'POSIXct'.
-  timezone <- ws_monitor$meta$timezone[1] # Use first available timezone
-  now <- lubridate::now(tzone = timezone)
-  today <- lubridate::floor_date(now, unit = 'day')
-  endtime <- lubridate::floor_date(now, unit='hour')
-  starttime <- today - lubridate::ddays(infoList$days)
-  tlim <- as.POSIXct(c(starttime, endtime)) # Guarantee they are of class POSIXct
-  
-  # # Subset the data based on monitorIDs
-  # ws_monitor <- monitor_subset(ws_monitor,
-  #                              tlim = tlim,
-  #                              dropMonitors = FALSE)
-  # 
-  # # Is there any data left?
-  # if ( monitor_isEmpty(monitor_subset(ws_monitor)) ) {
-  #   stop(paste("No data available for the specified dates"), call. = FALSE)
-  # }
+  # NOTE:  POSIXct startdate and enddate are created in createInfoList.R
+  tlim <- c(infoList$startdate, infoList$enddate)
   
   # ----- Create plot ---------------------------------------------------------
 

@@ -6,6 +6,10 @@
 
 ## Version 4.4 -- 'beakr' refactor
 
+### monitor-data 4.4.1
+
+ * updated to PWFSLSmoke 1.2.113
+
 ### monitor-data 4.4.0
 
  * using beakr 0.3.1

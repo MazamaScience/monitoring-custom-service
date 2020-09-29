@@ -200,7 +200,8 @@ createInfoList <- function(req = NULL,
 
   uniqueList <- list(
     infoList$monitorIDs,
-    infoList$lookbackdays,
+    infoList$startdate,
+    infoList$enddate,
     infoList$language,
     infoList$columns,
     infoList$includelink,

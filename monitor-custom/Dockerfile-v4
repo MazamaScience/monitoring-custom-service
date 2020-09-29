@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.104
+FROM mazamascience/pwfslsmoke:1.2.113
 MAINTAINER Jonathan Callahan <jonathan@mazamascience.com>
 
 #######################################################################
@@ -6,12 +6,12 @@ MAINTAINER Jonathan Callahan <jonathan@mazamascience.com>
 RUN install2.r --error \
     rmarkdown \
     ggplot2 \
-    ggthemes
-    
+    ggthemes \
+    beakr \
+    MazamaCoreUtils
+
 # Install latest development versions of packages
 RUN installGithub.r \
-    MazamaScience/beakr \
-    MazamaScience/MazamaCoreUtils \
     MazamaScience/PWFSLSmokePlots
 
 #######################################################################
