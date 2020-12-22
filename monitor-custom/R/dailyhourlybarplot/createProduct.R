@@ -10,7 +10,7 @@
 #'
 #' @description
 #' Function that grabs the appropriate parameters from `infoList`, data from
-#' `dataList`, passes it along to `PWFSLSmokePlots::createTarnayPlot()`, and
+#' `dataList`, passes it along to `AirMonitorPlots::monitor_ggDailyHourlyBarplot()`, and
 #' then saves the returned graphic.
 
 createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
@@ -27,7 +27,6 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   monitorIDs <- infoList$monitorIDs
   columns <- infoList$columns
   includeLink <- infoList$includelink
-  includeThirdCol <- infoList$includethirdcol
   hourlyType <- infoList$hourlytype
   title <- infoList$title
   xLabel <- infoList$xLabel
@@ -47,7 +46,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   timezone <- ws_monitor$meta$timezone[1] # Use first available timezone
   now <- lubridate::now(tzone = timezone)
   today <- lubridate::floor_date(now, unit = 'day')
-  endtime <- lubridate::floor_date(now, unit='hour')
+  endtime <- lubridate::floor_date(now, unit = 'hour')
   starttime <- today - lubridate::ddays(infoList$days)
   tlim <- as.POSIXct(c(starttime, endtime)) # Guarantee they are of class POSIXct
   
@@ -62,18 +61,17 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   # }
   
   # ----- Create plot ---------------------------------------------------------
-
-  plot <- PWFSLSmokePlots::createTarnayPlot(
-    monitors = monitorIDs,
-    data = ws_monitor,
+  
+  plot <- AirMonitorPlots::monitor_ggDailyHourlyBarplot(
+    ws_monitor = ws_monitor,
+    monitorIDs = monitorIDs,
     tlim = tlim,
     columns = columns,
     title = title,
     xLabel = xLabel,
     yLabel = yLabel,
     includeLink = includeLink,
-    hourlyType = hourlyType,
-    includeThirdCol = includeThirdCol
+    hourlyDataType = hourlyType
   )
 
   # ----- Save plot -----------------------------------------------------------

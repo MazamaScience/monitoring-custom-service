@@ -29,7 +29,7 @@ suppressPackageStartupMessages({
   library(beakr)             # web service framework
   library(MazamaCoreUtils)   # cache management and more
   library(PWFSLSmoke)        # workhorse package for everything smoke related
-  library(PWFSLSmokePlots)   # custom plotting functions for PWFSLSmoke data
+  # library(PWFSLSmokePlots)   # custom plotting functions for PWFSLSmoke data
 })
 
 R_files <- list.files("R/sharedUtils", pattern = ".+\\.R", full.names = TRUE)
