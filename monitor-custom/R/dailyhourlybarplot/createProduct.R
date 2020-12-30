@@ -48,7 +48,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   today <- lubridate::floor_date(now, unit = 'day')
   endtime <- lubridate::floor_date(now, unit = 'hour')
   starttime <- today - lubridate::ddays(infoList$days)
-  tlim <- as.POSIXct(c(starttime, endtime)) # Guarantee they are of class POSIXct
+  # tlim <- as.POSIXct(c(starttime, endtime)) # Guarantee they are of class POSIXct
   
   # # Subset the data based on monitorIDs
   # ws_monitor <- monitor_subset(ws_monitor,
@@ -62,10 +62,12 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   
   # ----- Create plot ---------------------------------------------------------
   
-  plot <- AirMonitorPlots::monitor_ggDailyHourlyBarplot(
+  # Create plot using pre subset data
+  plot <- monitor_ggDailyHourlyBarplot(
     ws_monitor = ws_monitor,
     monitorIDs = monitorIDs,
-    tlim = tlim,
+    startdate = starttime,
+    enddate = endtime,
     columns = columns,
     title = title,
     xLabel = xLabel,

@@ -15,6 +15,14 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
 
   MazamaCoreUtils::stopIfNull(infoList, "Required parameter 'infoList' is missing.")
   MazamaCoreUtils::stopIfNull(dataDir, "Required parameter 'dataDir' is missing.")
+  
+  if ( !is.null(dataDir) ) {
+    if ( !dir.exists(dataDir) ) {
+      err_msg <- sprintf("dataDir = '%s' doesn't exist", dataDir)
+      logger.error(err_msg)
+      stop(err_msg)
+    }
+  }
 
   # ----- Get infoList parameters ----------------------------------------------
 
