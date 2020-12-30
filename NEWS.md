@@ -6,6 +6,11 @@
 
 ## Version 4.4 -- 'beakr' refactor
 
+### monitor-data 4.4.1
+
+ * refactor to use `AirMonitorPlots::monitor_ggDailyHourlyBarplot()`
+ * validate existence of `dataDir` if used
+
 ### monitor-data 4.4.0
 
  * using beakr 0.3.1

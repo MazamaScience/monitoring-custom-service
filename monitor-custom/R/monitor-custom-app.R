@@ -29,7 +29,7 @@ suppressPackageStartupMessages({
   library(beakr)             # web service framework
   library(MazamaCoreUtils)   # cache management and more
   library(PWFSLSmoke)        # workhorse package for everything smoke related
-  # library(PWFSLSmokePlots)   # custom plotting functions for PWFSLSmoke data
+  library(AirMonitorPlots)   # plotting functions for monitor data
 })
 
 R_files <- list.files("R/sharedUtils", pattern = ".+\\.R", full.names = TRUE)
@@ -145,7 +145,7 @@ beakr::newBeakr() %>%
   # NOTE:   * createInfoList
   # NOTE:   * createProduct
   # NOTE:   * createTextList
-  # NOTE:  
+  # NOTE:
   # NOTE:  This standard protocol allows the following chunk of code to be
   # NOTE:  run for every custom product.
 
