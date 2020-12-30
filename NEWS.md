@@ -10,6 +10,7 @@
 
  * refactor to use `AirMonitorPlots::monitor_ggDailyHourlyBarplot()`
  * validate existence of `dataDir` if used
+ * updated to docker image mazamascience/pwfslsmoke:1.2.113
 
 ### monitor-data 4.4.0
 

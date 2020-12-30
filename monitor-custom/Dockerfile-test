@@ -1,4 +1,4 @@
-FROM mazamascience/pwfslsmoke:1.2.104
+FROM mazamascience/pwfslsmoke:1.2.113
 MAINTAINER Jonathan Callahan <jonathan@mazamascience.com>
 
 #######################################################################
@@ -12,7 +12,7 @@ RUN install2.r --error \
 RUN installGithub.r \
     MazamaScience/beakr \
     MazamaScience/MazamaCoreUtils \
-    MazamaScience/PWFSLSmokePlots
+    MazamaScience/AirMonitorPlots
 
 #######################################################################
 # beakr instance configuration
