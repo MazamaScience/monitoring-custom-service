@@ -40,8 +40,8 @@ for (file in R_files) {
 
 # Specify global (configurable) variables --------------------------------------
 
-# V4 data files . beakr 0.3.1 . ----
-VERSION <- "4.4.0"
+# V4 data files . beakr 0.3.1 . mazamascience/pwfslsmoke:1.2.113
+VERSION <- "4.4.1"
 
 # Set up configurable variables
 
