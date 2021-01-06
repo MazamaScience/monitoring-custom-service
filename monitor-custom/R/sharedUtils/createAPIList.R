@@ -23,7 +23,7 @@ createAPIList <- function(name = NULL, version = NULL) {
   #         "[required / default option; options / other options]"
   #       )
 
-  paramList <- list(
+  dailyhourlybarplotParamList <- list(
     monitors = paste(
       "monitor ID.",
       "[repeatable parameter, will be deprecated in favor of monitorids]"),
@@ -83,13 +83,47 @@ createAPIList <- function(name = NULL, version = NULL) {
       "[default = en; en|es]")
   )
   
+  dailyaveragetableParamList = list(
+    monitors = paste(
+      "monitor ID.",
+      "[repeatable parameter, will be deprecated in favor of monitorids]"),
+    monitorids = paste(
+      "Comma-separated list of monitorIDs.",
+      "[ignored if monitors is defined]"),
+    startdate = paste(
+      "Start date (inclusive).",
+      "[default = 'enddate' - 'days'; otherwise string in YYYYmmdd format (e.g. 20190820)]"),
+    enddate = paste(
+      "End date (exclusive).",
+      "[default = 'startdate' + 'days' or tomorrow if 'startdate' is not explicitly specified; otherwise string in YYYYmmdd format (e.g. 20190820)]"),
+    days = paste(
+      "Days of data to include if either 'startdate' or 'enddate' is not explicitly specified.",
+      "[default = 7; otherwise a positive integer]"),
+    timezone = paste(
+      "Olson timezone name used to interpret 'startdate' and 'enddate'.",
+      "[default = 'UTC']"),
+    outputfiletype = paste(
+      "file type of the output graphic",
+      "[default = png; png|pdf]"),
+    responsetype = paste(
+      "response type",
+      "[default = raw; raw|json]"),
+    language = paste(
+      "[not implemented] language code",
+      "[default = en; en|es]")
+  )
+  
   APIList <- list(
     name = "monitor-custom",
     version = version,
     services = list(
       dailyhourlybarplot = list(
         method = "GET",
-        params = paramList
+        params = dailyhourlybarplotParamList
+      ),
+      dailyaveragetable = list(
+        method = "GET",
+        params = dailyaveragetableParamList
       )
     )
   )
