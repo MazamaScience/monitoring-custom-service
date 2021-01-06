@@ -163,7 +163,8 @@ createInfoList <- function(req = NULL,
     infoList$lookbackdays,
     infoList$language,
     infoList$outputfiletype,
-    timeStamp
+    infoList$useaqi,
+    timestamp
   )
 
   infoList$uniqueID <- digest::digest(uniqueList, algo = "md5")
