@@ -125,7 +125,6 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
     tableData = tableData
   )
   
-  
   return(dataList)
   
 }

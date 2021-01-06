@@ -72,38 +72,51 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       monitor_nowcast() %>%
       monitor_dailyStatistic() %>%
       monitor_subset(tlim = dateRange)
-    print("true")
   } else {
     dailyData <-
       monData %>%
       monitor_dailyStatistic() %>%
       monitor_subset(tlim = dateRange)
-    print("false")
   }
   
-  # ----- Create table ---------------------------------------------------------
-  
-  # Create table
-  table <- flextable::flextable(
-    dailyData$data
-  ) %>%
-    flextable::bg(
-      bg = "#FFFFFF",
-      part = "all"
-    ) %>%
-    flextable::autofit(
-      add_w = 0.1,
-      add_h = 0.1,
-      part = c("body", "header")
-    )
-  
-
   # ----- Save table -----------------------------------------------------------
-
-  flextable::save_as_image(
-    table,
-    path = plotPath
-  )
-
+  
+  if ( infoList$outputfiletype == "png") {
+    
+    # Create table
+    table <- flextable::flextable(
+      dailyData$data
+    ) %>%
+      flextable::bg(
+        bg = "#FFFFFF",
+        part = "all"
+      ) %>%
+      flextable::autofit(
+        add_w = 0.1,
+        add_h = 0.1,
+        part = c("body", "header")
+      )
+    
+    flextable::save_as_image(
+      table,
+      path = plotPath
+    )
+    
+  } else if ( infoList$outputfiletype == "xlsx" ) {
+    
+    oldOptions <- options()
+    options(xlsx.datetime.format="yyyy-mm-dd")
+    options(xlsx.date.format="yyyy-mm-dd")
+    
+    xlsx::write.xlsx2(
+      x = dailyData$data,
+      file = plotPath,
+      row.names = FALSE
+    )
+    
+    options(oldOptions)
+    
+  }
+  
   return(invisible())
 }

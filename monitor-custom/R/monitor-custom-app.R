@@ -25,6 +25,7 @@
 suppressPackageStartupMessages({
   library(readr)             # tidyverse file reading
   library(digest)            # creation of uniqueID
+  library(xlsx)
   # Mazama Science packages
   library(beakr)             # web service framework
   library(MazamaCoreUtils)   # cache management and more
@@ -183,7 +184,7 @@ beakr::newBeakr() %>%
     if ( !file.exists(infoList$plotPath) ) {
 
       # Manage the cache
-      MazamaCoreUtils::manageCache(CACHE_DIR, c("json", "png", "pdf")) # TODO:  Other potential output formats?
+      MazamaCoreUtils::manageCache(CACHE_DIR, c("json", "png", "pdf", "xlsx")) # TODO:  Other potential output formats?
 
       result <- try({
 
@@ -243,6 +244,8 @@ beakr::newBeakr() %>%
           res$setContentType("image/png")
         } else if (infoList$outputfiletype == "pdf") {
           res$setContentType("application/pdf")
+        } else if (infoList$outputfiletype == "xlsx") {
+          res$setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         }
 
         return(readr::read_file_raw(infoList$plotPath))
@@ -255,7 +258,7 @@ beakr::newBeakr() %>%
 
       } else {
 
-        err_msg <- paste0("Invalild responsetype: ", infoList$responsetype)
+        err_msg <- paste0("Invalid responsetype: ", infoList$responsetype)
         stop(err_msg, call. = FALSE)
 
       }

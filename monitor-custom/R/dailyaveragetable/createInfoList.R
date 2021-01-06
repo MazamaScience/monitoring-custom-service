@@ -66,7 +66,7 @@ createInfoList <- function(req = NULL,
   }
 
   infoList$outputfiletype <- 
-    MazamaCoreUtils::setIfNull(infoList$outputfiletype, "png") %>% tolower()
+    MazamaCoreUtils::setIfNull(infoList$outputfiletype, "xlsx") %>% tolower()
 
   if ( is.null(infoList$timezone) ) {
 
@@ -97,7 +97,7 @@ createInfoList <- function(req = NULL,
   # Validate parameters
   if (!infoList$language %in% c("en","es")) { stop("invalid language", call. = FALSE) }
   if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype", call. = FALSE) }
-  if (!infoList$outputfiletype %in% c("png", "pdf")) { stop("invalid file format", call. = FALSE) }
+  if (!infoList$outputfiletype %in% c("png", "pdf", "xlsx")) { stop("invalid file format", call. = FALSE) }
   if (infoList$days < 2 ) { infoList$days <- 2 }
   if (!infoList$useaqi %in% c("true", "false")) { stop("invalid useaqi value. Must be 'true' or 'false'", call. = FALSE) }
 
