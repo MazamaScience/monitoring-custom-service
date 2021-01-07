@@ -17,8 +17,8 @@ createInfoList <- function(req = NULL,
 
   # ----- Setup ----------------------------------------------------------------
 
-  MazamaCoreUtils::stopIfNull(req, "Required parameter 'req' is missing.")
-  MazamaCoreUtils::stopIfNull(cacheDir, "Required parameter 'cacheDir' is missing.")
+  MazamaCoreUtils::stopIfNull(req)
+  MazamaCoreUtils::stopIfNull(cacheDir)
 
   # Initialize the infoList from the request parameters
   infoList <- req$parameters
@@ -33,7 +33,7 @@ createInfoList <- function(req = NULL,
 
   # Convert various specifications of monitors into a vector of monitorIDs
   # appropriate for use with the PWFSLSmoke package.
-  
+
   if ( "monitorIDs" %in% requiredParams ) {
     infoList <- setMonitorIDs(infoList)
   }
@@ -50,28 +50,28 @@ createInfoList <- function(req = NULL,
 
   # ----- Create default infoList parameters -----------------------------------
 
-  infoList$language <- 
+  infoList$language <-
     MazamaCoreUtils::setIfNull(infoList$language, "en") %>% tolower()
 
-  infoList$responsetype <- 
+  infoList$responsetype <-
     MazamaCoreUtils::setIfNull(infoList$responsetype, "raw") %>% tolower()
 
-  infoList$days <- 
+  infoList$days <-
     MazamaCoreUtils::setIfNull(infoList$days, 7) %>% as.numeric()
 
   # Support older API
   if ( "lookbackdays" %in% names(infoList) ) {
-    infoList$days <- 
+    infoList$days <-
       MazamaCoreUtils::setIfNull(infoList$lookbackdays, 7) %>% as.numeric()
   }
 
-  infoList$outputfiletype <- 
+  infoList$outputfiletype <-
     MazamaCoreUtils::setIfNull(infoList$outputfiletype, "xlsx") %>% tolower()
 
   if ( is.null(infoList$timezone) ) {
 
     infoList$timezone <- "UTC"
-    
+
   } else {
 
     ## Note:
@@ -88,10 +88,10 @@ createInfoList <- function(req = NULL,
     }
 
   }
-  
+
   infoList$useaqi <-
     MazamaCoreUtils::setIfNull(infoList$useaqi, "false") %>% tolower()
-    
+
   # ----- Validate parameters --------------------------------------------------
 
   # Validate parameters
@@ -119,7 +119,7 @@ createInfoList <- function(req = NULL,
   }
 
    # ----- Create start and end dates -------------------------------------------
-  
+
   dateRange <- MazamaCoreUtils::dateRange(
     startdate = infoList$startdate,
     enddate = infoList$enddate,
@@ -139,9 +139,9 @@ createInfoList <- function(req = NULL,
 
   infoList$startdate <- dateRange[1]
   infoList$enddate <- dateRange[2]
-  
-  infoList$tlim <- dateRange  
-   
+
+  infoList$tlim <- dateRange
+
   # ----- Create timestamp for caching -----------------------------------------
 
   ## DETAILS:
@@ -149,18 +149,19 @@ createInfoList <- function(req = NULL,
   #  timestamp so that we catch rapid updates to the data throughout the day,
   #  while still benefiting from cache hits.
 
+  # NOTE:  To improve cache hits, this is not used for seldom-requested products.
   timestamp <- ifelse(
     infoList$enddate <= lubridate::now(tzone = infoList$timezone),
     infoList$enddate,
     lubridate::floor_date(lubridate::now(tzone = infoList$timezone), "5 mins")
   )
-  
-  
+
   # ----- Create uniqueID based on parameters that affect the presentation ----
 
   uniqueList <- list(
     infoList$monitorIDs,
-    infoList$lookbackdays,
+    infoList$startdate,
+    infoList$enddate,
     infoList$language,
     infoList$outputfiletype,
     infoList$useaqi,

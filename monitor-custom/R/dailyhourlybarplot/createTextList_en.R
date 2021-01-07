@@ -10,8 +10,8 @@ createTextList <- function(dataList = NULL, infoList = NULL) {
 
   logger.debug("----- createTextList() -----")
 
-  MazamaCoreUtils::stopIfNull(dataList, "Required parameter 'dataList' is missing.")
-  MazamaCoreUtils::stopIfNull(infoList, "Required parameter 'infoList' is missing.")
+  MazamaCoreUtils::stopIfNull(dataList)
+  MazamaCoreUtils::stopIfNull(infoList)
 
   # Commonly used labels
   textList <- list(
@@ -22,5 +22,5 @@ createTextList <- function(dataList = NULL, infoList = NULL) {
   )
 
   return(textList)
-  
+
 }
