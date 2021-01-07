@@ -106,7 +106,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
   } else if ( infoList$outputfiletype == "xlsx" ) {
 
-    oldOptions <- options()
+    oldOptions <- base::options()
     options(xlsx.datetime.format = "yyyy-mm-dd")
     options(xlsx.date.format = "yyyy-mm-dd")
 
@@ -116,7 +116,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       row.names = FALSE
     )
 
-    options(oldOptions)
+    base::options(oldOptions)
 
   }
 
