@@ -104,17 +104,11 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     
   } else if ( infoList$outputfiletype == "xlsx" ) {
     
-    oldOptions <- options()
-    options(xlsx.datetime.format="yyyy-mm-dd")
-    options(xlsx.date.format="yyyy-mm-dd")
-    
-    xlsx::write.xlsx2(
+    # Create xlsx spreadsheet
+    writexl::write_xlsx(
       x = dailyData$data,
-      file = plotPath,
-      row.names = FALSE
+      path = plotPath
     )
-    
-    options(oldOptions)
     
   }
   

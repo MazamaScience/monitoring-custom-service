@@ -25,7 +25,6 @@
 suppressPackageStartupMessages({
   library(readr)             # tidyverse file reading
   library(digest)            # creation of uniqueID
-  library(xlsx)
   # Mazama Science packages
   library(beakr)             # web service framework
   library(MazamaCoreUtils)   # cache management and more
