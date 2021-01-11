@@ -1,17 +1,16 @@
 ########################################################################
 # dailyaveragetable/createProduct.R
 #
-# Create the a daily and hourly summary barplot.
+# Create a table of daily average monitor readings.
 #
 # Author: Spencer Pease, Jonathan Callahan
 ########################################################################
 
-#' @title Create daily and hourly summary barplot
+#' @title Create a table of daily average monitor readings
 #'
 #' @description
 #' Function that grabs the appropriate parameters from `infoList`, data from
-#' `dataList`, passes it along to `AirMonitorPlots::monitor_ggDailyHourlyBarplot()`, and
-#' then saves the returned graphic.
+#' `dataList`, generates a table, and saves it as an image or spreadsheet.
 
 createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
@@ -21,11 +20,10 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   if (is.null(infoList)) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)
   if (is.null(textList)) stop(paste0("Required parameter 'textList' is missing."), call. = FALSE)
 
-  # ----- get parameters ------------------------------------------------------
+  # ----- Get parameters ------------------------------------------------------
 
   ws_monitor <- dataList$ws_monitor
   monitorIDs <- infoList$monitorIDs
-
   plotPath <- infoList$plotPath
 
   # ----- Calculate tlim ------------------------------------------------------
@@ -36,22 +34,13 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   timezone <- ws_monitor$meta$timezone[1] # Use first available timezone
   now <- lubridate::now(tzone = timezone)
   today <- lubridate::floor_date(now, unit = 'day')
-  endtime <- lubridate::floor_date(now, unit = 'hour')
+  
   starttime <- today - lubridate::ddays(infoList$days)
-  # tlim <- as.POSIXct(c(starttime, endtime)) # Guarantee they are of class POSIXct
+  endtime <- lubridate::floor_date(now, unit = 'hour')
   
-  # # Subset the data based on monitorIDs
-  # ws_monitor <- monitor_subset(ws_monitor,
-  #                              tlim = tlim,
-  #                              dropMonitors = FALSE)
-  # 
-  # # Is there any data left?
-  # if ( monitor_isEmpty(monitor_subset(ws_monitor)) ) {
-  #   stop(paste("No data available for the specified dates"), call. = FALSE)
-  # }
+  # ----- Aggregate data -------------------------------------------------------
   
-  # ----- Aggregate data ---
-  
+  # Define the date range
   dateRange <- MazamaCoreUtils::dateRange(
     startdate = infoList$startdate,
     enddate = infoList$enddate,
@@ -60,23 +49,22 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     ceilingEnd = TRUE
   )
   
-  # Get data from monitors
-  
-  monData <-
+  # Calculate daily data from monitors
+  monitorData <-
     ws_monitor %>%
-    monitor_subset(monitorIDs = monitorIDs)
+    monitor_subset(monitorIDs = monitorIDs) %>%
+    monitor_subset(tlim = dateRange)
   
   if (infoList$useaqi == 'true') {
     dailyData <-
-      monData %>%
+      monitorData %>%
       monitor_nowcast() %>%
-      monitor_dailyStatistic() %>%
-      monitor_subset(tlim = dateRange)
+      monitor_dailyStatistic()
+      
   } else {
     dailyData <-
-      monData %>%
-      monitor_dailyStatistic() %>%
-      monitor_subset(tlim = dateRange)
+      monitorData %>%
+      monitor_dailyStatistic()
   }
   
   # ----- Save table -----------------------------------------------------------
@@ -90,6 +78,9 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       flextable::bg(
         bg = "#FFFFFF",
         part = "all"
+      ) %>%
+      flextable::bold(
+        part = "header"
       ) %>%
       flextable::autofit(
         add_w = 0.1,
