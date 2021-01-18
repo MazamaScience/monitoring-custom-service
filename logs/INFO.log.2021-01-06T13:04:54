@@ -1,7 +1,0 @@
-INFO [2021-01-06 12:57:52] ----- /monitor-custom/dev/dailyaveragetable -----
-ERROR [2021-01-06 12:57:52] Error in file(filename, "r", encoding = encoding) : 
-  cannot open the connection
-INFO [2021-01-06 12:57:55] ----- /monitor-custom/dev/dailyaveragetable -----
-ERROR [2021-01-06 12:57:55] Error in file(filename, "r", encoding = encoding) : 
-  cannot open the connection
-INFO [2021-01-06 12:58:00] ----- /monitor-custom/dev/ -----
