@@ -74,19 +74,20 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     # Create table
     table <- flextable::flextable(
       dailyData$data
-    ) %>%
-      flextable::bg(
-        bg = "#FFFFFF",
-        part = "all"
-      ) %>%
-      flextable::bold(
-        part = "header"
-      ) %>%
-      flextable::autofit(
-        add_w = 0.1,
-        add_h = 0.1,
-        part = c("body", "header")
-      )
+    ) 
+    # %>%
+    #   flextable::bg(
+    #     bg = "#FFFFFF",
+    #     part = "all"
+    #   ) %>%
+    #   flextable::bold(
+    #     part = "header"
+    #   ) %>%
+    #   flextable::autofit(
+    #     add_w = 0.1,
+    #     add_h = 0.1,
+    #     part = c("body", "header")
+    #   )
     
     flextable::save_as_image(
       table,

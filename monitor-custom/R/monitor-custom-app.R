@@ -25,6 +25,8 @@
 suppressPackageStartupMessages({
   library(readr)             # tidyverse file reading
   library(digest)            # creation of uniqueID
+  library(flextable)         # creation of table graphics
+  library(writexl)           # creation of spreadsheets
   # Mazama Science packages
   library(beakr)             # web service framework
   library(MazamaCoreUtils)   # cache management and more
@@ -247,6 +249,8 @@ beakr::newBeakr() %>%
           res$setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         }
 
+        logger.debug("about to read_file_raw")
+        
         return(readr::read_file_raw(infoList$plotPath))
 
 
