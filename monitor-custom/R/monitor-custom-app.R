@@ -42,8 +42,8 @@ for (file in R_files) {
 
 # Specify global (configurable) variables --------------------------------------
 
-# V4 data files . beakr 0.3.1 . ----
-VERSION <- "4.4.0"
+# V4 data files . dailyaveragetable . ----
+VERSION <- "4.5.0"
 
 # Set up configurable variables
 
@@ -250,7 +250,7 @@ beakr::newBeakr() %>%
         }
 
         logger.debug("about to read_file_raw")
-        
+
         return(readr::read_file_raw(infoList$plotPath))
 
 

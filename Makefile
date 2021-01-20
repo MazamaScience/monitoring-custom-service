@@ -3,7 +3,7 @@
 #
 # ProxypPass settings are be defined in: /etc/apache2/sites-available/default-ssl.conf
 #
-# # 6660-6669 monitor-custom -----------------------------------------------------
+# # 6660-6669 monitor-custom ---------------------------------------------------
 # # 6661 -- v1 production
 # # 6664 -- v4 production
 # # 6669 -- test (development)
@@ -17,8 +17,8 @@
 # Test these settings with:    sudo apache2ctl configtest
 # Reload these settings with:  sudo service apache2 reload
 
-# Version info: V4 . beakr 0.3.1 . mazamascience/pwfslsmoke:1.2.113
-VERSION=4.4.1
+# Version info: V4 . dailyaveragetable . ----
+VERSION=4.5.0
 
 # NOTE:  The SERVICE_PATH should match that found in Dockerfile and Dockerfile-test
 SERVICE_PATH_PRODUCTION=monitor-custom/v4
@@ -40,7 +40,7 @@ configure_app:
 configure_app_osx:
 	sed -i '' 's%VERSION <- ".*"%VERSION <- "$(VERSION)"%' monitor-custom/R/monitor-custom-app.R
 
-# DESKTOP version -------------------------------------------------------------
+# DESKTOP version --------------------------------------------------------------
 
 desktop_download_data:
 	curl https://airfire-data-exports.s3-us-west-2.amazonaws.com/monitoring/v1/RData/airnow_PM2.5_latest10.RData -o monitor-custom/data/airnow_PM2.5_latest10.RData --create-dirs

@@ -1,22 +1,29 @@
 FROM mazamascience/pwfslsmoke:1.2.113
 MAINTAINER Jonathan Callahan <jonathan@mazamascience.com>
 
-#######################################################################
+################################################################################
 # For the monitor-custom app
 RUN install2.r --error \
-    rmarkdown \
+    beakr \
+    flextable \
     ggplot2 \
     ggthemes \
-    flextable \
-    writexl
-    
+    MazamaCoreUtils \
+    rmarkdown \
+    writexl \
+    xtable \
+    webshot \
+    magick \
+    ggplot2 \
+    scales \
+    broom \
+    mgcv
+
 # Install latest development versions of packages
 RUN installGithub.r \
-    MazamaScience/beakr \
-    MazamaScience/MazamaCoreUtils \
     MazamaScience/AirMonitorPlots
 
-#######################################################################
+################################################################################
 # beakr instance configuration
 #
 # ProxyPass settings are defined in:  /etc/apache2/sites-enabled/default-ssl.conf
@@ -34,7 +41,7 @@ ENV BEAKR_PORT 6669
 
 EXPOSE 6669
 
-#######################################################################
+################################################################################
 # app
 #
 # Setup for AWS hosts

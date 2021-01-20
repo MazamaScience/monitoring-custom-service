@@ -7,9 +7,9 @@
 ########################################################################
 
 createAPIList <- function(name = NULL, version = NULL) {
-  
+
   logger.debug("----- createAPIList() -----")
-  
+
   # ----- Validate parameters --------------------------------------------------
 
   MazamaCoreUtils::stopIfNull(name, "Required parameter 'name' is missing.")
@@ -82,7 +82,7 @@ createAPIList <- function(name = NULL, version = NULL) {
       "[not implemented] language code",
       "[default = en; en|es]")
   )
-  
+
   dailyaveragetableParamList = list(
     monitors = paste(
       "monitor ID.",
@@ -104,7 +104,7 @@ createAPIList <- function(name = NULL, version = NULL) {
       "[default = 'UTC']"),
     outputfiletype = paste(
       "file type of the output graphic",
-      "[default = png; png|pdf]"),
+      "[default = xlsx; xlsx]"),
     responsetype = paste(
       "response type",
       "[default = raw; raw|json]"),
@@ -112,7 +112,7 @@ createAPIList <- function(name = NULL, version = NULL) {
       "[not implemented] language code",
       "[default = en; en|es]")
   )
-  
+
   APIList <- list(
     name = "monitor-custom",
     version = version,
@@ -127,7 +127,7 @@ createAPIList <- function(name = NULL, version = NULL) {
       )
     )
   )
-  
+
   return(APIList)
-  
+
 }

@@ -73,28 +73,34 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
   if ( infoList$outputfiletype == "png") {
 
-    # Create table
-    table <- flextable::flextable(
-      dailyData$data
-    )
-    # %>%
-    #   flextable::bg(
-    #     bg = "#FFFFFF",
-    #     part = "all"
-    #   ) %>%
-    #   flextable::bold(
-    #     part = "header"
-    #   ) %>%
-    #   flextable::autofit(
-    #     add_w = 0.1,
-    #     add_h = 0.1,
-    #     part = c("body", "header")
-    #   )
+    # TODO:  Weren't able to get flextable::save_as_image() to work so comment
+    # TODO:  this section out for now. If .png (or .pdf or latex) output ever
+    # TODO:  becomes a priority we can revisit this.
 
-    flextable::save_as_image(
-      table,
-      path = plotPath
-    )
+    # # Create table
+    # table <- flextable::flextable(
+    #   dailyData$data
+    # )
+    # # %>%
+    # #   flextable::bg(
+    # #     bg = "#FFFFFF",
+    # #     part = "all"
+    # #   ) %>%
+    # #   flextable::bold(
+    # #     part = "header"
+    # #   ) %>%
+    # #   flextable::autofit(
+    # #     add_w = 0.1,
+    # #     add_h = 0.1,
+    # #     part = c("body", "header")
+    # #   )
+    #
+    # flextable::save_as_image(
+    #   table,
+    #   path = plotPath
+    # )
+
+    stop("outputfiletype '.png' is not supported")
 
   } else if ( infoList$outputfiletype == "xlsx" ) {
 
@@ -103,6 +109,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       x = dailyData$data,
       path = plotPath
     )
+
   }
 
   return(invisible())

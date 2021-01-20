@@ -24,7 +24,7 @@ createInfoList <- function(req = NULL,
   infoList <- req$parameters
   names(infoList) <- tolower(names(infoList))
 
-  logger.trace("req$parameters")
+  logger.trace("incoming req$parameters:")
   logger.trace(capture.output(str(req$parameters)))
 
   # ----- Check for required parameters ----------------------------------------
@@ -95,9 +95,9 @@ createInfoList <- function(req = NULL,
   # ----- Validate parameters --------------------------------------------------
 
   # Validate parameters
-  if (!infoList$language %in% c("en","es")) { stop("invalid language", call. = FALSE) }
-  if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype", call. = FALSE) }
-  if (!infoList$outputfiletype %in% c("png", "pdf", "xlsx")) { stop("invalid file format", call. = FALSE) }
+  if (!infoList$language %in% c("en")) { stop("invalid language. Must be 'en'", call. = FALSE) }
+  if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype. Must be 'raw' or 'json'", call. = FALSE) }
+  if (!infoList$outputfiletype %in% c("xlsx")) { stop("invalid outputfiletype. Must be 'xlsx'", call. = FALSE) }
   if (infoList$days < 2 ) { infoList$days <- 2 }
   if (!infoList$useaqi %in% c("true", "false")) { stop("invalid useaqi value. Must be 'true' or 'false'", call. = FALSE) }
 
@@ -174,6 +174,9 @@ createInfoList <- function(req = NULL,
   infoList$basePath <- paste0(cacheDir, "/", infoList$uniqueID)
   infoList$plotPath <- paste0(infoList$basePath, ".", infoList$outputfiletype)
   infoList$jsonPath <- paste0(infoList$basePath, ".json")
+
+  logger.trace("generated infoList:")
+  logger.trace(capture.output(str(infoList)))
 
   return(infoList)
 

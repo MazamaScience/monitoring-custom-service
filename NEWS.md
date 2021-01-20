@@ -4,15 +4,21 @@
 
 # Version 4.x -- PWFSLSmoke version 4 metadata
 
+## Version 4.5 -- Daily average table and Excel spreadsheets
+
+### monitor-custom 4.5.0
+
+ * WIP: Adding new `dailyaveragetable` product output as an excel spreadsheet.
+
 ## Version 4.4 -- 'beakr' refactor
 
-### monitor-data 4.4.1
+### monitor-custom 4.4.1
 
  * refactor to use `AirMonitorPlots::monitor_ggDailyHourlyBarplot()`
  * validate existence of `dataDir` if used
  * updated to docker image mazamascience/pwfslsmoke:1.2.113
 
-### monitor-data 4.4.0
+### monitor-custom 4.4.0
 
  * using beakr 0.3.1
  * refactored directory structure to "latest Mazama standard"
