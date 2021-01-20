@@ -101,9 +101,9 @@ createAPIList <- function(name = NULL, version = NULL) {
       "[default = 7; otherwise a positive integer]"),
     timezone = paste(
       "Olson timezone name used to interpret 'startdate' and 'enddate'.",
-      "[default = 'UTC']"),
+      "[default = monitor local time for most monitors]"),
     outputfiletype = paste(
-      "file type of the output graphic",
+      "file type of the output",
       "[default = xlsx; xlsx]"),
     responsetype = paste(
       "response type",
