@@ -1,7 +1,7 @@
 ########################################################################
-# dailyhourlybarplot/textList_en.R
+# dailyaveragetable/textList_es.R
 #
-# English language text strings.
+# Spanish language text strings.
 #
 # Author: Mazama Science
 ########################################################################
@@ -15,9 +15,9 @@ createTextList <- function(dataList = NULL, infoList = NULL) {
 
   # Commonly used labels
   textList <- list(
-    AQI_category_labels = AQI_en$names,
-    AQI_legend_title = 'AQI Level',
-    date = 'Date',
+    AQI_category_labels = AQI_es$names,
+    AQI_legend_title = 'Nivel AQI',
+    date = 'Fecha',
     pm25_name = 'PM2.5'
   )
 

@@ -1,5 +1,5 @@
 ################################################################################
-# dailyhourlybarplot/createInfoList.R
+# dailyaveragetable/createInfoList.R
 #
 # Create an infoList from a jug request object.
 #
@@ -10,11 +10,12 @@
 # Author: Spencer Pease, Jonathan Callahan
 ################################################################################
 
-createInfoList <- function(req = NULL, cacheDir = NULL) {
+createInfoList <- function(req = NULL,
+                           cacheDir = NULL) {
 
   logger.debug("----- createInfoList() -----")
 
-  # ----- Validate parameters --------------------------------------------------
+  # ----- Setup ----------------------------------------------------------------
 
   MazamaCoreUtils::stopIfNull(req)
   MazamaCoreUtils::stopIfNull(cacheDir)
@@ -23,7 +24,7 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
   infoList <- req$parameters
   names(infoList) <- tolower(names(infoList))
 
-  logger.trace("req$parameters")
+  logger.trace("incoming req$parameters:")
   logger.trace(capture.output(str(req$parameters)))
 
   # ----- Check for required parameters ----------------------------------------
@@ -64,34 +65,8 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
       MazamaCoreUtils::setIfNull(infoList$lookbackdays, 7) %>% as.numeric()
   }
 
-  infoList$includelink <-
-    MazamaCoreUtils::setIfNull(infoList$includelink, "true") %>% tolower()
-
-  infoList$hourlytype <-
-    MazamaCoreUtils::setIfNull(infoList$hourlytype, "nowcast") %>% tolower()
-
-  if ( is.null(infoList$columns) ) {
-    if ( length(infoList$monitorIDs) <= 6 ) {
-      infoList$columns = 1
-    } else if ( length(infoList$monitorIDs) <= 12 ) {
-      infoList$columns = 2
-    } else {
-      infoList$columns = 3
-    }
-  }
-
-  infoList$includethirdcol <-
-    MazamaCoreUtils::setIfNull(infoList$includethirdcol, "false") %>% tolower()
-
-  # infoList$title should default to NULL
-  # infoList$xlabel should default to NULL
-  # infoList$ylabel should default to NULL
-
   infoList$outputfiletype <-
-    MazamaCoreUtils::setIfNull(infoList$outputfiletype, "png") %>% tolower()
-
-  infoList$units <-
-    MazamaCoreUtils::setIfNull(infoList$units, "in") %>% tolower()
+    MazamaCoreUtils::setIfNull(infoList$outputfiletype, "xlsx") %>% tolower()
 
   if ( is.null(infoList$timezone) ) {
 
@@ -114,31 +89,17 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
 
   }
 
+  infoList$useaqi <-
+    MazamaCoreUtils::setIfNull(infoList$useaqi, "false") %>% tolower()
+
   # ----- Validate parameters --------------------------------------------------
 
   # Validate parameters
-  if (!infoList$language %in% c("en","es")) { stop("invalid language", call. = FALSE) }
-  if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype", call. = FALSE) }
-  if (!infoList$outputfiletype %in% c("png", "pdf")) { stop("invalid file format", call. = FALSE) }
-  if (!infoList$units %in% c("in", "cm", "mm")) { stop("invalid units", call. = FALSE) }
+  if (!infoList$language %in% c("en")) { stop("invalid language. Must be 'en'", call. = FALSE) }
+  if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype. Must be 'raw' or 'json'", call. = FALSE) }
+  if (!infoList$outputfiletype %in% c("xlsx")) { stop("invalid outputfiletype. Must be 'xlsx'", call. = FALSE) }
   if (infoList$days < 2 ) { infoList$days <- 2 }
-  if (!infoList$hourlytype %in% c("nowcast", "raw", "none")) { stop("invalid hourly data type", call. = FALSE) }
-
-  if (tolower(infoList$includelink) == "true") {
-    infoList$includelink <- TRUE
-  } else if (tolower(infoList$includelink) == "false") {
-    infoList$includelink <- FALSE
-  } else if (!is(infoList$includelink, "logical")) {
-    stop("includelink must be either 'true' or 'false'", call. = FALSE)
-  }
-
-  if (tolower(infoList$includethirdcol) == "true") {
-    infoList$includethirdcol <- TRUE
-  } else if (tolower(infoList$includethirdcol) == "false") {
-    infoList$includethirdcol <- FALSE
-  } else if (!is(infoList$includethirdcol, "logical")) {
-    stop("includethirdcol must be either 'true' or 'false'", call. = FALSE)
-  }
+  if (!infoList$useaqi %in% c("true", "false")) { stop("invalid useaqi value. Must be 'true' or 'false'", call. = FALSE) }
 
   # Handle plot sizing
 
@@ -202,18 +163,9 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
     infoList$startdate,
     infoList$enddate,
     infoList$language,
-    infoList$columns,
-    infoList$includelink,
-    infoList$hourlytype,
-    infoList$title,
-    infoList$xlabel,
-    infoList$ylabel,
     infoList$outputfiletype,
-    infoList$includethirdcol,
-    infoList$height,
-    infoList$width,
-    infoList$dpi,
-    timeStamp
+    infoList$useaqi,
+    timestamp
   )
 
   infoList$uniqueID <- digest::digest(uniqueList, algo = "md5")
@@ -222,6 +174,9 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
   infoList$basePath <- paste0(cacheDir, "/", infoList$uniqueID)
   infoList$plotPath <- paste0(infoList$basePath, ".", infoList$outputfiletype)
   infoList$jsonPath <- paste0(infoList$basePath, ".json")
+
+  logger.trace("generated infoList:")
+  logger.trace(capture.output(str(infoList)))
 
   return(infoList)
 

@@ -1,5 +1,5 @@
 ########################################################################
-# dailyhourlybarplot/createDataList.R
+# dailyaveragetable/createDataList.R
 #
 # Create a list of data needed to generate the plot.
 #

@@ -25,6 +25,8 @@
 suppressPackageStartupMessages({
   library(readr)             # tidyverse file reading
   library(digest)            # creation of uniqueID
+  library(flextable)         # creation of table graphics
+  library(writexl)           # creation of spreadsheets
   # Mazama Science packages
   library(beakr)             # web service framework
   library(MazamaCoreUtils)   # cache management and more
@@ -40,8 +42,8 @@ for (file in R_files) {
 
 # Specify global (configurable) variables --------------------------------------
 
-# V4 data files . beakr 0.3.1 . mazamascience/pwfslsmoke:1.2.113
-VERSION <- "4.4.1"
+# V4 data files . dailyaveragetable . ----
+VERSION <- "4.5.0"
 
 # Set up configurable variables
 
@@ -183,7 +185,7 @@ beakr::newBeakr() %>%
     if ( !file.exists(infoList$plotPath) ) {
 
       # Manage the cache
-      MazamaCoreUtils::manageCache(CACHE_DIR, c("json", "png", "pdf")) # TODO:  Other potential output formats?
+      MazamaCoreUtils::manageCache(CACHE_DIR, c("json", "png", "pdf", "xlsx")) # TODO:  Other potential output formats?
 
       result <- try({
 
@@ -243,7 +245,11 @@ beakr::newBeakr() %>%
           res$setContentType("image/png")
         } else if (infoList$outputfiletype == "pdf") {
           res$setContentType("application/pdf")
+        } else if (infoList$outputfiletype == "xlsx") {
+          res$setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         }
+
+        logger.debug("about to read_file_raw")
 
         return(readr::read_file_raw(infoList$plotPath))
 
@@ -255,7 +261,7 @@ beakr::newBeakr() %>%
 
       } else {
 
-        err_msg <- paste0("Invalild responsetype: ", infoList$responsetype)
+        err_msg <- paste0("Invalid responsetype: ", infoList$responsetype)
         stop(err_msg, call. = FALSE)
 
       }

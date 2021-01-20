@@ -17,11 +17,13 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
   logger.debug("----- createProduct() [dailyhourlybarplot] -----")
 
-  if (is.null(dataList)) stop(paste0("Required parameter 'dataList' is missing."), call. = FALSE)
-  if (is.null(infoList)) stop(paste0("Required parameter 'infoList' is missing."), call. = FALSE)
-  if (is.null(textList)) stop(paste0("Required parameter 'textList' is missing."), call. = FALSE)
+  # ----- Validate parameters --------------------------------------------------
 
-  # ----- get parameters ------------------------------------------------------
+  MazamaCoreUtils::stopIfNull(dataList)
+  MazamaCoreUtils::stopIfNull(infoList)
+  MazamaCoreUtils::stopIfNull(textList)
+
+  # ----- Get parameters ------------------------------------------------------
 
   ws_monitor <- dataList$ws_monitor
   monitorIDs <- infoList$monitorIDs
@@ -39,7 +41,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   units <- infoList$units
 
   # ----- Calculate tlim ------------------------------------------------------
-  
+
   # Create starttime and endtime in monitor local time
   # NOTE:  Don't use lubridate::today() as it generates class 'Date' which causes confusion.
   # NOTE:  Instead, stick with lubridate::now() which generates class 'POSIXct'.
@@ -49,19 +51,19 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   endtime <- lubridate::floor_date(now, unit = 'hour')
   starttime <- today - lubridate::ddays(infoList$days)
   # tlim <- as.POSIXct(c(starttime, endtime)) # Guarantee they are of class POSIXct
-  
+
   # # Subset the data based on monitorIDs
   # ws_monitor <- monitor_subset(ws_monitor,
   #                              tlim = tlim,
   #                              dropMonitors = FALSE)
-  # 
+  #
   # # Is there any data left?
   # if ( monitor_isEmpty(monitor_subset(ws_monitor)) ) {
   #   stop(paste("No data available for the specified dates"), call. = FALSE)
   # }
-  
+
   # ----- Create plot ---------------------------------------------------------
-  
+
   # Create plot using pre subset data
   plot <- monitor_ggDailyHourlyBarplot(
     ws_monitor = ws_monitor,

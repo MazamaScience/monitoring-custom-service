@@ -1,5 +1,5 @@
 ########################################################################
-# dailyhourlybarplot/textList_en.R
+# dailyaveragetable/textList_en.R
 #
 # English language text strings.
 #
