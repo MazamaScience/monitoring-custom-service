@@ -69,12 +69,20 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   
   # ----- Save table -----------------------------------------------------------
   
-  if ( infoList$outputfiletype == "png") {
+  if ( infoList$outputfiletype == "xlsx" ) {
+  
+    # Create xlsx spreadsheet
+    writexl::write_xlsx(
+      x = dailyData$data,
+      path = plotPath
+    )
     
-    # Create table
-    table <- flextable::flextable(
-      dailyData$data
-    ) 
+  } else if ( infoList$outputfiletype == "png") {
+    
+    # # Create table
+    # table <- flextable::flextable(
+    #   dailyData$data
+    # ) 
     # %>%
     #   flextable::bg(
     #     bg = "#FFFFFF",
@@ -88,19 +96,11 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     #     add_h = 0.1,
     #     part = c("body", "header")
     #   )
-    
-    flextable::save_as_image(
-      table,
-      path = plotPath
-    )
-    
-  } else if ( infoList$outputfiletype == "xlsx" ) {
-    
-    # Create xlsx spreadsheet
-    writexl::write_xlsx(
-      x = dailyData$data,
-      path = plotPath
-    )
+    # 
+    # flextable::save_as_image(
+    #   table,
+    #   path = plotPath
+    # )
     
   }
   
