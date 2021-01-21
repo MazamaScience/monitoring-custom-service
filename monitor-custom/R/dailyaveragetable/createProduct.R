@@ -67,13 +67,17 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       monitor_dailyStatistic()
   }
   
+  # Create the final dataframe for the table
+  dailyAverages <- dailyData$data
+  names(dailyAverages)[1] <- "datetime_UTC"
+  
   # ----- Save table -----------------------------------------------------------
   
   if ( infoList$outputfiletype == "xlsx" ) {
   
     # Create xlsx spreadsheet
     writexl::write_xlsx(
-      x = dailyData$data,
+      x = dailyAverages,
       path = plotPath
     )
     
