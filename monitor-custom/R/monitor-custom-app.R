@@ -249,8 +249,6 @@ beakr::newBeakr() %>%
           res$setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         }
 
-        logger.debug("about to read_file_raw")
-
         return(readr::read_file_raw(infoList$plotPath))
 
 

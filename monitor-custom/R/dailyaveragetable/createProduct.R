@@ -68,6 +68,11 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       monitorData %>%
       monitor_dailyStatistic()
   }
+  
+  # Round the daily average readings to 1 decimal place
+  dailyAverages <- dailyData$data
+  colCount <- ncol(dailyAverages)
+  dailyAverages[2:colCount] <- round(dailyAverages[2:colCount], digits = 1)
 
   # ----- Save table -----------------------------------------------------------
 
@@ -142,7 +147,8 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     openxlsx::writeData(
       wb = wb,
       sheet = "Daily Averages",
-      x = dailyData$data,
+      x = dailyAverages,
+      startCol = 1,
       startRow = 3,
       colNames = FALSE
     )
