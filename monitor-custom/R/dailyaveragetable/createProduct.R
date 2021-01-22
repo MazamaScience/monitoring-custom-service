@@ -83,8 +83,8 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   )
   
   datetimesDf <- data.frame(
-    datetime_UTC = utcDatetimes,
-    datetime_local = dailyData$data$datetime
+    datetime_local = dailyData$data$datetime,
+    datetime_UTC = utcDatetimes
   )
   
   # Create a final daily averages dataframe with UTC and local datetime columns
@@ -130,14 +130,14 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     wb <- openxlsx::createWorkbook()
     openxlsx::addWorksheet(wb, "Daily Averages")
     
-    # Write datetime headers
+    # Write datetime dataframe
     openxlsx::writeData(
       wb,
       sheet = "Daily Averages",
-      x = matrix(c("datetime_UTC", "datetime_local"), nrow = 1),
+      x = datetimesDf,
       startCol = 1,
       startRow = 2,
-      colNames = FALSE
+      colNames = TRUE
     )
     
     # Write monitor ID headers
@@ -164,8 +164,8 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     openxlsx::writeData(
       wb = wb,
       sheet = "Daily Averages",
-      x = dailyAveragesDf,
-      startCol = 1,
+      x = dailyAverageValuesDf,
+      startCol = 3,
       startRow = 3,
       colNames = FALSE
     )
