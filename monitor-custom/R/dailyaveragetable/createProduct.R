@@ -106,26 +106,60 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
     # Create a new xlsx spreadsheet
     wb <- openxlsx::createWorkbook()
-    openxlsx::addWorksheet(wb, "Daily Average")
+    openxlsx::addWorksheet(wb, "Daily Averages")
     
-    # Write the daily average data
+    # Write datetime column header
     openxlsx::writeData(
       wb,
-      sheet = "Daily Average",
-      x = dailyData$data
+      sheet = "Daily Averages",
+      x = "datetime_UTC",
+      startCol = 1,
+      startRow = 2,
+      colNames = FALSE
     )
     
+    # Write site ID column headers
+    openxlsx::writeData(
+      wb,
+      sheet = "Daily Averages",
+      x = matrix(dailyData$meta$monitorID, nrow = 1),
+      startCol = 2,
+      startRow = 1,
+      colNames = FALSE
+    )
+    
+    # Write site name column headers
+    openxlsx::writeData(
+      wb,
+      sheet = "Daily Averages",
+      x = matrix(dailyData$meta$siteName, nrow = 1),
+      startCol = 2,
+      startRow = 2,
+      colNames = FALSE
+    )
+    
+    # Write daily average data
+    openxlsx::writeData(
+      wb = wb,
+      sheet = "Daily Averages",
+      x = dailyData$data,
+      startRow = 3,
+      colNames = FALSE
+    )
+    
+    # Make the datetime column wider
     openxlsx::setColWidths(
       wb,
-      sheet = "Daily Average",
+      sheet = "Daily Averages",
       cols = 1,
       widths = 18
     )
     
-    # Save the spreadsheet
+    # Save spreadsheet
     openxlsx::saveWorkbook(
       wb = wb,
-      file = infoList$plotPath
+      file = infoList$plotPath,
+      overwrite = TRUE
     )
 
   }
