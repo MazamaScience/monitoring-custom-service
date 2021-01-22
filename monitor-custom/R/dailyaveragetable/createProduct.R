@@ -104,10 +104,28 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
 
   } else if ( infoList$outputfiletype == "xlsx" ) {
 
-    # Create xlsx spreadsheet
-    writexl::write_xlsx(
-      x = dailyData$data,
-      path = plotPath
+    # Create a new xlsx spreadsheet
+    wb <- openxlsx::createWorkbook()
+    openxlsx::addWorksheet(wb, "Daily Average")
+    
+    # Write the daily average data
+    openxlsx::writeData(
+      wb,
+      sheet = "Daily Average",
+      x = dailyData$data
+    )
+    
+    openxlsx::setColWidths(
+      wb,
+      sheet = "Daily Average",
+      cols = 1,
+      widths = 18
+    )
+    
+    # Save the spreadsheet
+    openxlsx::saveWorkbook(
+      wb = wb,
+      file = infoList$plotPath
     )
 
   }
