@@ -69,10 +69,27 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       monitor_dailyStatistic()
   }
   
-  # Round the daily average readings to 1 decimal place
-  dailyAverages <- dailyData$data
-  colCount <- ncol(dailyAverages)
-  dailyAverages[2:colCount] <- round(dailyAverages[2:colCount], digits = 1)
+  # Extract the daily average values and round to 1 decimal place
+  # TODO: extract columns based on names rather than indexes
+  dailyAverageValuesDf <- dailyData$data[2:ncol(dailyData$data)]
+  dailyAverageValuesDf <- round(dailyAverageValuesDf, digits = 1)
+  
+  # Calculate the UTC datetimes from the local datetimes. Must be done this way
+  # since PWFSLSmoke::monitor_dailyStatistic() automatically aggregates the
+  # daily average using the most common timezone between all the given monitors
+  utcDatetimes <- MazamaCoreUtils::parseDatetime(
+    datetime = dailyData$data$datetime,
+    timezone = "UTC"
+  )
+  
+  datetimesDf <- data.frame(
+    datetime_UTC = utcDatetimes,
+    datetime_local = dailyData$data$datetime
+  )
+  
+  # Create a final daily averages dataframe with UTC and local datetime columns
+  # and value columns for each monitor
+  dailyAveragesDf <- cbind(datetimesDf, dailyAverageValuesDf)
 
   # ----- Save table -----------------------------------------------------------
 
@@ -113,51 +130,51 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     wb <- openxlsx::createWorkbook()
     openxlsx::addWorksheet(wb, "Daily Averages")
     
-    # Write datetime column header
+    # Write datetime headers
     openxlsx::writeData(
       wb,
       sheet = "Daily Averages",
-      x = "datetime_UTC",
+      x = matrix(c("datetime_UTC", "datetime_local"), nrow = 1),
       startCol = 1,
       startRow = 2,
       colNames = FALSE
     )
     
-    # Write site ID column headers
+    # Write monitor ID headers
     openxlsx::writeData(
       wb,
       sheet = "Daily Averages",
       x = matrix(dailyData$meta$monitorID, nrow = 1),
-      startCol = 2,
+      startCol = 3,
       startRow = 1,
       colNames = FALSE
     )
     
-    # Write site name column headers
+    # Write monitor site name headers
     openxlsx::writeData(
       wb,
       sheet = "Daily Averages",
       x = matrix(dailyData$meta$siteName, nrow = 1),
-      startCol = 2,
+      startCol = 3,
       startRow = 2,
       colNames = FALSE
     )
     
-    # Write daily average data
+    # Write daily average values
     openxlsx::writeData(
       wb = wb,
       sheet = "Daily Averages",
-      x = dailyAverages,
+      x = dailyAveragesDf,
       startCol = 1,
       startRow = 3,
       colNames = FALSE
     )
     
-    # Make the datetime column wider
+    # Make datetime columns wider
     openxlsx::setColWidths(
       wb,
       sheet = "Daily Averages",
-      cols = 1,
+      cols = 1:2,
       widths = 18
     )
     
