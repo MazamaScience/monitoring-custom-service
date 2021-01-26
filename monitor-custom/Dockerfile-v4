@@ -10,7 +10,7 @@ RUN install2.r --error \
     ggthemes \
     MazamaCoreUtils \
     rmarkdown \
-    writexl
+    openxlsx
 
 # Install latest development versions of packages
 RUN installGithub.r \
