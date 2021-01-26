@@ -170,6 +170,31 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       colNames = FALSE
     )
     
+    # Find the coordinates of the daily average cells that didn't have enough
+    # readings to calculate the average
+    emptyAverageCellCoords <- which(is.na(dailyAverageValuesDf), arr.ind = TRUE)
+    
+    if ( nrow(emptyAverageCellCoords) > 0 ) {
+      
+      # Write NA values in the empty daily average cells
+      for ( i in seq_len(nrow(emptyAverageCellCoords)) ) {
+        
+        # Account for coordinate offsets within the spreadsheet
+        naCol <- emptyAverageCellCoords[i, 2] + 2
+        naRow <- emptyAverageCellCoords[i, 1] + 2
+        
+        # Write Excel NA cell formula
+        openxlsx::writeFormula(
+          wb,
+          sheet = "Daily Averages",
+          x = "=NA()",
+          xy = c(naCol, naRow)
+        )
+        
+      }
+      
+    }
+    
     # Make datetime columns wider
     openxlsx::setColWidths(
       wb,
