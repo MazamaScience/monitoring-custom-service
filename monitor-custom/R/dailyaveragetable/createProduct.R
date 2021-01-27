@@ -202,19 +202,56 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       cols = 1:2,
       widths = 18
     )
-    
-    # Save spreadsheet
+      
+    # Save xlsx workbook
     openxlsx::saveWorkbook(
       wb = wb,
       file = infoList$plotPath,
       overwrite = TRUE
     )
 
+  } else if ( infoList$outputfiletype == "csv" ) {
+    
+    # Define an empty matrix
+    m <- matrix(
+      data = rep("", (nrow(dailyAveragesDf) + 2) * ncol(dailyAveragesDf)),
+      nrow = nrow(dailyAveragesDf) + 2,
+      ncol = ncol(dailyAveragesDf)
+    )
+    
+    # Write datetime column headers to matrix
+    m[2,1] <- "datetime_local"
+    m[2,2] <- "datetime_UTC"
+    
+    # Write monitor ID and site name headers to matrix
+    m[1,3:ncol(m)] <- matrix(dailyData$meta$monitorID, nrow = 1)
+    m[2,3:ncol(m)] <- matrix(dailyData$meta$siteName, nrow = 1)
+    
+    # Write datetime columns to matrix
+    m[3:nrow(m),1] <- format(datetimesDf$datetime_local, format = "%Y/%m/%d %H:%M:%S %p")
+    m[3:nrow(m),2] <- format(datetimesDf$datetime_UTC, format = "%Y/%m/%d %H:%M:%S %p")
+    
+    # Write each monitor's daily average column to matrix
+    for ( i in seq_len(ncol(dailyAverageValuesDf)) ) {
+      m[3:nrow(m), i + 2] <- dailyAverageValuesDf[,i]
+    }
+    
+    # Convert matrix to data frame
+    df <- as.data.frame(m)
+    
+    # Save data frame as csv
+    readr::write_csv(
+      df,
+      path = infoList$plotPath,
+      col_names = FALSE
+    )
+    
   }
 
   return(invisible())
 }
 
+# Debug script
 if ( FALSE ) {
   
   ws_monitor <- PWFSLSmoke::monitor_load(

@@ -97,7 +97,7 @@ createInfoList <- function(req = NULL,
   # Validate parameters
   if (!infoList$language %in% c("en")) { stop("invalid language. Must be 'en'", call. = FALSE) }
   if (!infoList$responsetype %in% c("raw", "json")) { stop("invalid responsetype. Must be 'raw' or 'json'", call. = FALSE) }
-  if (!infoList$outputfiletype %in% c("xlsx")) { stop("invalid outputfiletype. Must be 'xlsx'", call. = FALSE) }
+  if (!infoList$outputfiletype %in% c("xlsx", "csv")) { stop("invalid outputfiletype. Must be either 'xlsx' or 'csv'", call. = FALSE) }
   if (infoList$days < 2 ) { infoList$days <- 2 }
   if (!infoList$useaqi %in% c("true", "false")) { stop("invalid useaqi value. Must be 'true' or 'false'", call. = FALSE) }
 

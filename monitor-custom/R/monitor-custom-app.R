@@ -27,6 +27,7 @@ suppressPackageStartupMessages({
   library(digest)            # creation of uniqueID
   library(flextable)         # creation of table graphics
   library(openxlsx)         # creation of spreadsheets
+  library(rio)
   # Mazama Science packages
   library(beakr)             # web service framework
   library(MazamaCoreUtils)   # cache management and more
@@ -185,7 +186,7 @@ beakr::newBeakr() %>%
     if ( !file.exists(infoList$plotPath) ) {
 
       # Manage the cache
-      MazamaCoreUtils::manageCache(CACHE_DIR, c("json", "png", "pdf", "xlsx")) # TODO:  Other potential output formats?
+      MazamaCoreUtils::manageCache(CACHE_DIR, c("json", "png", "pdf", "xlsx", "csv")) # TODO:  Other potential output formats?
 
       result <- try({
 
@@ -247,6 +248,8 @@ beakr::newBeakr() %>%
           res$setContentType("application/pdf")
         } else if (infoList$outputfiletype == "xlsx") {
           res$setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        } else if (infoList$outputfiletype == "csv") {
+          res$setContentType("text/csv")
         }
 
         return(readr::read_file_raw(infoList$plotPath))
