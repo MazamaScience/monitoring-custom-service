@@ -202,6 +202,39 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       cols = 1:2,
       widths = 18
     )
+    
+    # Apply AQI color palette to daily average value cells
+    
+    # Since the conditional formatting rules don't allow for ranges (ex. 12.0 <= x < 35.5)
+    # the rules currently just test '<='. This means that the formatting rules
+    # must be applied from the largest PM 2.5 break to the smallest.
+    
+    xlsxDailyAverageValueColIndexes <- 3:ncol(dailyAveragesDf)
+    xlsxDailyAverageValueRowIndexes <- 3:(nrow(dailyAveragesDf) + 2) # +2 to account for monitor ID and site name
+    
+    # Apply conditional color format for the highest AQI breakpoint (250.5 - Inf)
+    openxlsx::conditionalFormatting(
+      wb,
+      sheet = "Daily Averages",
+      cols = xlsxDailyAverageValueColIndexes,
+      rows = xlsxDailyAverageValueRowIndexes,
+      rule = ">250.5",
+      style = openxlsx::createStyle(bgFill = "#7E0023")
+    )
+    
+    # Apply conditional color formats for the rest of the lower AQI breakpoints
+    for ( i in seq(from = length(PWFSLSmoke::AQI$colors), to = 2) ) {
+      
+      openxlsx::conditionalFormatting(
+        wb,
+        sheet = "Daily Averages",
+        cols = xlsxDailyAverageValueColIndexes,
+        rows = xlsxDailyAverageValueRowIndexes,
+        rule = paste0("<=", PWFSLSmoke::AQI$breaks_24[i]),
+        style = openxlsx::createStyle(bgFill = PWFSLSmoke::AQI$colors[i-1])
+      )
+      
+    }
       
     # Save xlsx workbook
     openxlsx::saveWorkbook(
@@ -251,6 +284,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
   return(invisible())
 }
 
+
 # Debug script
 if ( FALSE ) {
   
@@ -260,7 +294,9 @@ if ( FALSE ) {
     enddate = "20201001"
   )
   
-  dailyData <- PWFSLSmoke::monitor_dailyStatistic(ws_monitor)
+  dailyData <-
+    PWFSLSmoke::monitor_nowcast(ws_monitor) %>%
+    PWFSLSmoke::monitor_dailyStatistic()
   
   # Extract the daily average values and round to 1 decimal place
   # TODO: extract columns based on names rather than indexes
@@ -346,6 +382,36 @@ if ( FALSE ) {
         xy = c(naCol, naRow)
       )
     }
+    
+  }
+  
+  # Since the conditional formatting rules don't allow for ranges (ex. 12.0 <= x < 35.5)
+  # the rules currently just test '<='. This means that the formatting rules
+  # must be applied from the largest PM 2.5 break to the smallest.
+  
+  xlsxDailyAverageValueColIndexes <- 3:ncol(dailyAveragesDf)
+  xlsxDailyAverageValueRowIndexes <- 3:(nrow(dailyAveragesDf) + 2) # +2 to account for monitor ID and site name
+  
+  openxlsx::conditionalFormatting(
+    wb,
+    sheet = "Daily Averages",
+    cols = xlsxDailyAverageValueColIndexes,
+    rows = xlsxDailyAverageValueRowIndexes,
+    rule = ">250.5",
+    style = openxlsx::createStyle(bgFill = "#7E0023")
+  )
+  
+  # Apply conditional formats for the rest of the AQI colors
+  for ( i in seq(from = length(PWFSLSmoke::AQI$colors), to = 2) ) {
+    
+    openxlsx::conditionalFormatting(
+      wb,
+      sheet = "Daily Averages",
+      cols = xlsxDailyAverageValueColIndexes,
+      rows = xlsxDailyAverageValueRowIndexes,
+      rule = paste0("<=", PWFSLSmoke::AQI$breaks_24[i]),
+      style = openxlsx::createStyle(bgFill = PWFSLSmoke::AQI$colors[i-1])
+    )
     
   }
   
