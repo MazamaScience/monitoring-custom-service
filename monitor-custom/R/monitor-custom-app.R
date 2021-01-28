@@ -42,8 +42,8 @@ for (file in R_files) {
 
 # Specify global (configurable) variables --------------------------------------
 
-# V4 data files . dailyaveragetable . ----
-VERSION <- "4.5.0"
+# V4 data files . dailyaveragetable . xlsx improvements; csv output
+VERSION <- "4.5.1"
 
 # Set up configurable variables
 

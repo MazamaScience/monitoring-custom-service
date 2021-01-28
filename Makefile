@@ -17,8 +17,8 @@
 # Test these settings with:    sudo apache2ctl configtest
 # Reload these settings with:  sudo service apache2 reload
 
-# Version info: V4 . dailyaveragetable . ----
-VERSION=4.5.0
+# Version info: V4 . dailyaveragetable . xlsx improvements; csv output
+VERSION=4.5.1
 
 # NOTE:  The SERVICE_PATH should match that found in Dockerfile and Dockerfile-test
 SERVICE_PATH_PRODUCTION=monitor-custom/v4
