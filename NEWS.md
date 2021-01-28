@@ -6,6 +6,11 @@
 
 ## Version 4.5 -- Daily average table and Excel spreadsheets
 
+### monitor-custom 4.5.1
+
+ * Final tweaks to `dailyaveragetable` including colorized spreadsheets and
+ csv output.
+
 ### monitor-custom 4.5.0
 
  * WIP: Adding new `dailyaveragetable` product output as an excel spreadsheet.
