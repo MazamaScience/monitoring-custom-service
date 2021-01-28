@@ -130,15 +130,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     wb <- openxlsx::createWorkbook()
     openxlsx::addWorksheet(wb, "Daily Averages")
     
-    # Write datetime dataframe
-    openxlsx::writeData(
-      wb,
-      sheet = "Daily Averages",
-      x = datetimesDf,
-      startCol = 1,
-      startRow = 2,
-      colNames = TRUE
-    )
+    ## Write datetime and and daily average headers
     
     # Write monitor ID headers
     openxlsx::writeData(
@@ -160,6 +152,18 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       colNames = FALSE
     )
     
+    ## Write datetime timestamps and daily average values
+    
+    # Write datetime timestamps
+    openxlsx::writeData(
+      wb,
+      sheet = "Daily Averages",
+      x = datetimesDf,
+      startCol = 1,
+      startRow = 2,
+      colNames = TRUE
+    )
+    
     # Write daily average values
     openxlsx::writeData(
       wb = wb,
@@ -170,18 +174,18 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       colNames = FALSE
     )
     
-    # Find the coordinates of the daily average cells that didn't have enough
-    # readings to calculate the average
-    emptyAverageCellCoords <- which(is.na(dailyAverageValuesDf), arr.ind = TRUE)
+    ## Write NAs in empty daily average cells
     
-    if ( nrow(emptyAverageCellCoords) > 0 ) {
+    # Find the coordinates of all the empty daily average cells
+    emptyDailyAverageCellCoords <- which(is.na(dailyAverageValuesDf), arr.ind = TRUE)
+    
+    if ( nrow(emptyDailyAverageCellCoords) > 0 ) {
       
-      # Write NA values in the empty daily average cells
-      for ( i in seq_len(nrow(emptyAverageCellCoords)) ) {
+      for ( i in seq_len(nrow(emptyDailyAverageCellCoords)) ) {
         
         # Account for coordinate offsets within the spreadsheet
-        naCol <- emptyAverageCellCoords[i, 2] + 2
-        naRow <- emptyAverageCellCoords[i, 1] + 2
+        naCol <- emptyDailyAverageCellCoords[i, 2] + 2 # +2 to account for datetime_local and datetime_UTC cols
+        naRow <- emptyDailyAverageCellCoords[i, 1] + 2 # +2 to account for monitor ID and site name row
         
         # Write Excel NA cell formula
         openxlsx::writeFormula(
@@ -195,15 +199,33 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       
     }
     
+    ## Apply formatting to sheet
+    
+    # Define header style
+    headerStyle <- openxlsx::createStyle(
+      halign = "CENTER",
+      textDecoration = "Bold"
+    )
+    
+    # Apply header style to header cells
+    openxlsx::addStyle(
+      wb,
+      sheet = "Daily Averages",
+      style = headerStyle,
+      rows = 1:2,
+      cols = 1:ncol(dailyAveragesDf),
+      gridExpand = TRUE
+    )
+    
     # Make datetime columns wider
     openxlsx::setColWidths(
       wb,
       sheet = "Daily Averages",
-      cols = 1:2,
+      cols = 1:ncol(dailyAveragesDf),
       widths = 18
     )
     
-    # Apply AQI color palette to daily average value cells
+    # Apply AQI color palette to daily average cells
     
     # Since the conditional formatting rules don't allow for ranges (ex. 12.0 <= x < 35.5)
     # the rules currently just test '<='. This means that the formatting rules
@@ -212,7 +234,7 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
     xlsxDailyAverageValueColIndexes <- 3:ncol(dailyAveragesDf)
     xlsxDailyAverageValueRowIndexes <- 3:(nrow(dailyAveragesDf) + 2) # +2 to account for monitor ID and site name
     
-    # Apply conditional color format for the highest AQI breakpoint (250.5 - Inf)
+    # First apply conditional color format for the highest AQI breakpoint (250.5 - Inf)
     openxlsx::conditionalFormatting(
       wb,
       sheet = "Daily Averages",
@@ -236,7 +258,8 @@ createProduct <- function(dataList = NULL, infoList = NULL, textList = NULL) {
       
     }
       
-    # Save xlsx workbook
+    ## Save xlsx workbook
+    
     openxlsx::saveWorkbook(
       wb = wb,
       file = infoList$plotPath,
