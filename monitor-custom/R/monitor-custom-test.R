@@ -16,7 +16,8 @@ subservice <- "dailyhourlybarplot"
 req <- list(
   parameters = list(
     monitorids = "840TT1820013_01,160690012_01,530030004_01",
-    days = 10
+    startdate = "20200817",
+    enddate = "20201011"
   )
 )
 
@@ -31,7 +32,6 @@ suppressPackageStartupMessages({
   library(flextable)         # creation of table graphics
   library(openxlsx)          # creation of spreadsheets
   # Mazama Science packages
-  library(beakr)             # web service framework
   library(MazamaCoreUtils)   # cache management and more
   library(PWFSLSmoke)        # workhorse package for everything smoke related
   library(AirMonitorPlots)   # plotting functions for monitor data
@@ -73,15 +73,6 @@ MazamaCoreUtils::initializeLogging(LOG_DIR)
 
 logger.setLevel(TRACE)
 
-# Capture session info
-logger.debug(capture.output(sessionInfo()))
-
-# Log environment variables
-logger.debug('CACHE_DIR = %s', CACHE_DIR)
-logger.debug('DATA_DIR = %s', DATA_DIR)
-logger.debug('LOG_DIR = %s', LOG_DIR)
-
-
 # ----- Define helper functions ------------------------------------------------
 
 printUTC <- function(x) {
@@ -107,12 +98,9 @@ dataListScript <- paste0("R/", subservice, "/createDataList.R")
 productScript <- paste0("R/", subservice, "/createProduct.R")
 
 # Source these scripts
-result <- try({
-  source(infoListScript)        # function to convert request into infoList required by product
-  source(dataListScript)        # function to load data required by product
-  source(productScript)         # function to create product
-}, silent = TRUE)
-stopOnError(result)
+source(infoListScript)        # function to convert request into infoList required by product
+source(dataListScript)        # function to load data required by product
+source(productScript)         # function to create product
 
 # Create infoList
 infoList <- createInfoList(req, CACHE_DIR)

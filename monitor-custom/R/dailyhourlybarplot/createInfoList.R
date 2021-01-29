@@ -28,12 +28,12 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
 
   # ----- Check for required parameters ----------------------------------------
 
-  requiredParams <- c("monitorIDs")
+  requiredParams <- c("monitorids")
 
   # Convert various specifications of monitors into a vector of monitorIDs
   # appropriate for use with the PWFSLSmoke package.
 
-  if ( "monitorIDs" %in% requiredParams ) {
+  if ( "monitorids" %in% requiredParams ) {
     infoList <- setMonitorIDs(infoList)
   }
 
@@ -71,9 +71,9 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
     MazamaCoreUtils::setIfNull(infoList$hourlytype, "nowcast") %>% tolower()
 
   if ( is.null(infoList$columns) ) {
-    if ( length(infoList$monitorIDs) <= 6 ) {
+    if ( length(infoList$monitorids) <= 6 ) {
       infoList$columns = 1
-    } else if ( length(infoList$monitorIDs) <= 12 ) {
+    } else if ( length(infoList$monitorids) <= 12 ) {
       infoList$columns = 2
     } else {
       infoList$columns = 3
@@ -173,32 +173,32 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
   # NOTE:  did not originally contain startdate and enddate parameters. (default)
 
   if ( is.null(infoList$startdate) && is.null(infoList$enddate) ) {
-    dateRange[2] <- lubridate::now(tzone = infoList$timezone)
+    dateRange[2] <-
+      lubridate::now(tzone = infoList$timezone) %>%
+      lubridate::floor_date(unit = "hour")
   }
 
   infoList$startdate <- dateRange[1]
   infoList$enddate <- dateRange[2]
 
-  infoList$tlim <- dateRange
-
   # ----- Create timestamp for caching -----------------------------------------
 
-  ## DETAILS:
-  #  If enddate is the end of the current day, create an every-5-minutes
-  #  timestamp so that we catch rapid updates to the data throughout the day,
-  #  while still benefiting from cache hits.
+  # Create an every-5-minutes timestamp so that we catch rapid updates to the
+  # data throughout the day while still benefiting from cache hits.
 
-  # NOTE:  To improve cache hits, this is not used for seldom-requested products.
-  timestamp <- ifelse(
-    infoList$enddate <= lubridate::now(tzone = infoList$timezone),
-    infoList$enddate,
-    lubridate::floor_date(lubridate::now(tzone = infoList$timezone), "5 mins")
-  )
+  if ( is.null(infoList$startdate) && is.null(infoList$enddate) ) {
+    timestamp <-
+    lubridate::floor_date(lubridate::now(tzone = "UTC"), "5 mins") %>%
+    strftime("%Y%m%d%H%M", tz = "UTC")
+  } else {
+    # No need for rapid updates if we're using archival data
+    timestamp = "DUMMY"
+  }
 
   # ----- Create uniqueID based on parameters that affect the presentation ----
 
   uniqueList <- list(
-    infoList$monitorIDs,
+    infoList$monitorids,
     infoList$startdate,
     infoList$enddate,
     infoList$language,
