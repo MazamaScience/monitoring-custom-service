@@ -8,7 +8,6 @@
 
 createDataList <- function(infoList = NULL, dataDir = NULL) {
 
-
   logger.debug("----- createDataList() -----")
 
   # ----- Validate parameters --------------------------------------------------
@@ -26,11 +25,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
 
   # ----- Get infoList parameters ----------------------------------------------
 
-  # monitorIDs is already a vector of monitorID values
-  monitorIDs <- infoList$monitorIDs
-
-  logger.trace("monitorID = '%s'", paste0(monitorIDs, collapse = ","))
-
+  monitorids <- infoList$monitorids
   startdate <- infoList$startdate
   enddate <- infoList$enddate
 
@@ -38,6 +33,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
 
   logger.trace("startdate = '%s'", printUTC(startdate))
   logger.trace("enddate = '%s'", printUTC(enddate))
+  logger.trace("monitorids = '%s'", paste0(monitorids, collapse = ","))
 
   # ----- Load ws_monitor data -------------------------------------------------
 
@@ -56,7 +52,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
       ws_monitor <- PWFSLSmoke::monitor_load(
         startdate = startdate,
         enddate = enddate,
-        monitorIDs = monitorIDs,
+        monitorIDs = monitorids,
         dataDir = dataDir
       )
 
@@ -73,7 +69,7 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
       ws_monitor <- PWFSLSmoke::monitor_load(
         startdate = startdate,
         enddate = enddate,
-        monitorIDs = monitorIDs
+        monitorIDs = monitorids
       )
 
     }, silent = TRUE)
@@ -95,8 +91,8 @@ createDataList <- function(infoList = NULL, dataDir = NULL) {
   # ----- Validate data -------------------------------------------------------
 
   # Check for bad monitorIDs
-  badMonitorIDs <- setdiff(monitorIDs, ws_monitor$meta$monitorID)
-  goodMonitorIDs <- intersect(monitorIDs, ws_monitor$meta$monitorID)
+  badMonitorIDs <- setdiff(monitorids, ws_monitor$meta$monitorID)
+  goodMonitorIDs <- intersect(monitorids, ws_monitor$meta$monitorID)
   if ( length(badMonitorIDs) > 0 ) {
     logger.trace(
       "The following monitors are not found in the most recent 45 days of data: %s",

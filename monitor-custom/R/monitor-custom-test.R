@@ -11,13 +11,14 @@
 
 # Incoming request
 
-subservice <- "dailyhourlybarplot"
+subservice <- "dailyaveragetable"
 
 req <- list(
   parameters = list(
     monitorids = "840TT1820013_01,160690012_01,530030004_01",
     startdate = "20200817",
-    enddate = "20201011"
+    enddate = "20201011",
+    outputfiletype = "xlsx"
   )
 )
 

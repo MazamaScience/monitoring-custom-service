@@ -1,13 +1,13 @@
 ################################################################################
 # dailyhourlybarplot/createInfoList.R
 #
-# Create an infoList from a jug request object.
+# Create an infoList from a beaker request object.
 #
 # Besides basic conversion from strings to other data types, a lot of
 # specific choices can made here that will be used later on in different
 # plotting scripts.
 #
-# Author: Spencer Pease, Jonathan Callahan
+# Author: Tate Brasel, Spencer Pease, Jonathan Callahan
 ################################################################################
 
 createInfoList <- function(req = NULL, cacheDir = NULL) {
@@ -155,6 +155,7 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
     infoList$dpi <- ifelse(is.null(infoList$dpi), 100, as.numeric(infoList$dpi))
     infoList$width <- ifelse(is.null(infoList$width), 8, as.numeric(infoList$width))
     infoList$height <- ifelse(is.null(infoList$height), 8, as.numeric(infoList$height))
+    
   }
 
    # ----- Create start and end dates -------------------------------------------
@@ -222,6 +223,9 @@ createInfoList <- function(req = NULL, cacheDir = NULL) {
   infoList$basePath <- paste0(cacheDir, "/", infoList$uniqueID)
   infoList$plotPath <- paste0(infoList$basePath, ".", infoList$outputfiletype)
   infoList$jsonPath <- paste0(infoList$basePath, ".json")
+
+  logger.trace("generated infoList:")
+  logger.trace(capture.output(str(infoList)))
 
   return(infoList)
 

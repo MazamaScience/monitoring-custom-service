@@ -3,7 +3,7 @@
 #
 # Create a list of data needed to generate the plot.
 #
-# Author: Spencer Pease, Jonathan Callahan
+# Author: Tate Brasel, Spencer Pease, Jonathan Callahan
 ########################################################################
 
 createDataList <- function(infoList = NULL, dataDir = NULL) {
