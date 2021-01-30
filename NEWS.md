@@ -6,6 +6,10 @@
 
 ## Version 4.5 -- Daily average table and Excel spreadsheets
 
+### monitor-custom 4.5.2
+
+ * Large refactor to handle archival data requests.
+
 ### monitor-custom 4.5.1
 
  * Final tweaks to `dailyaveragetable` including colorized spreadsheets and
